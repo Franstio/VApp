@@ -53,7 +53,7 @@ namespace AutoScrewing
             {
                 DateTime dt = DateTime.Now;
                 int checksum = dt.Year + dt.Month + dt.Day + dt.Hour + dt.Month + dt.Second;
-                cmdText.Text = $"{{REQ100,{dt.Year},{dt.Month},{dt.Date},{dt.Hour},{dt.Minute},{dt.Second}.{checksum},{checksum + 5438},1,1,}}";
+                cmdText.Text = $"{{REQ100,{dt.Year},{dt.Month},{dt.Date},{dt.Hour},{dt.Minute},{dt.Second}.{checksum},{checksum + 5438},1,1,}}\n\r";
                 await listBox1.InvokeAsync(() =>
                 {
                     listBox1.Items.Add(cmdText.Text);
