@@ -19,21 +19,29 @@ namespace AutoScrewing
         {
             Task.Run(async () =>
             {
+
                 while (true)
                 {
-                    using (_client2)
+                    try
                     {
-                        await _client2.ConnectAsync(IPAddress.Parse(baseAddress), port);
-                        using (var stream = _client2.GetStream())
+                        using (_client2)
                         {
-                            byte[] rd = new byte[2048];
-                            await stream.ReadExactlyAsync(rd, 0, rd.Length);
-                            string text = Encoding.UTF8.GetString(rd);
-                            await listBox1.InvokeAsync(() =>
+                            await _client2.ConnectAsync(IPAddress.Parse(baseAddress), port);
+                            using (var stream = _client2.GetStream())
                             {
-                                listBox1.Items.Add(text);
-                            });
+                                byte[] rd = new byte[2048];
+                                await stream.ReadExactlyAsync(rd, 0, rd.Length);
+                                string text = Encoding.UTF8.GetString(rd);
+                                await listBox1.InvokeAsync(() =>
+                                {
+                                    listBox1.Items.Add(text);
+                                });
+                            }
                         }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.Error.WriteLine(ex.Message);
                     }
                 }
             });
