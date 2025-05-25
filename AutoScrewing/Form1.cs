@@ -7,6 +7,7 @@ namespace AutoScrewing
     public partial class Form1 : Form
     {
         TcpClient _client = new TcpClient();
+        TcpClient _client2 = new TcpClient();
         string baseAddress = "192.168.0.7";
         int port = 8501;
         public Form1()
@@ -16,7 +17,23 @@ namespace AutoScrewing
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
+            Task.Run(async () =>
+            {
+                using (_client2)
+                {
+                    await _client2.ConnectAsync(IPAddress.Parse(baseAddress), port);
+                    using (var stream = _client2.GetStream())
+                    {
+                        byte[] rd = new byte[2048];
+                        await stream.ReadExactlyAsync(rd, 0, rd.Length);
+                        string text = Encoding.UTF8.GetString(rd);
+                        await listBox1.InvokeAsync(() =>
+                        {
+                            listBox1.Items.Add(text);
+                        });
+                    }
+                }
+            });
         }
 
         private async void button1_Click(object sender, EventArgs e)
