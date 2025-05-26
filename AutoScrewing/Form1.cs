@@ -10,6 +10,7 @@ namespace AutoScrewing
     {
         SerialPort _client = new SerialPort();
         string baseAddress = "COM4";
+        CancellationTokenSource cts = new CancellationTokenSource();
         int port = 23;
         public Form1()
         {
@@ -28,6 +29,8 @@ namespace AutoScrewing
                 while (true) {
                     try
                     {
+                        if (cts.IsCancellationRequested)
+                            continue;
                         using (_client)
                         {
                             _client.Open();
@@ -49,27 +52,28 @@ namespace AutoScrewing
 
         private async void button1_Click(object sender, EventArgs e)
         {
-            if (cmdText.Text.Contains("CMD100"))
+            button1.Enabled = false;
+            cts.Cancel();
+            DateTime dt = DateTime.Now;
+            int checksum = dt.Year + dt.Month + dt.Day + dt.Hour + dt.Month + dt.Second;
+            string command = $"{{{cmdText.Text},{dt.Year},{dt.Month},{dt.Date},{dt.Hour},{dt.Minute},{dt.Second}.{checksum},{checksum + 5438},1,1,}}\n\r";
+            await listBox1.InvokeAsync(() =>
             {
-                DateTime dt = DateTime.Now;
-                int checksum = dt.Year + dt.Month + dt.Day + dt.Hour + dt.Month + dt.Second;
-                cmdText.Text = $"{{REQ100,{dt.Year},{dt.Month},{dt.Date},{dt.Hour},{dt.Minute},{dt.Second}.{checksum},{checksum + 5438},1,1,}}\n\r";
-                await listBox1.InvokeAsync(() =>
-                {
-                    listBox1.Items.Add(cmdText.Text);
-                });
-            }
+                listBox1.Items.Add($"INPUT: {command}");
+            });
             using (_client)
             {
                 _client.Open();
-                byte[] cmd = Encoding.ASCII.GetBytes(cmdText.Text);
-                 _client.Write(cmd, 0, cmd.Length); 
+                byte[] cmd = Encoding.ASCII.GetBytes(command);
+                _client.Write(cmd, 0, cmd.Length);
                 string text = _client.ReadExisting();
                 await listBox1.InvokeAsync(() =>
                 {
-                    listBox1.Items.Add(text);
+                    listBox1.Items.Add($"OUTPUT: {text}");
                 });
             }
+            cts = new CancellationTokenSource();
+            button1.Enabled = true;
         }
     }
 }
