@@ -39,6 +39,7 @@ namespace AutoScrewing
                         using (_client)
                         {
                             _client.Open();
+                            _client.ReadTimeout = 500;
                             byte[] rd = new byte[8];
                             string text = _client.ReadLine();
                             await listBox1.InvokeAsync(() =>
@@ -62,7 +63,7 @@ namespace AutoScrewing
             barrier.SignalAndWait(1000);
             DateTime dt = DateTime.Now;
             int checksum = dt.Year + dt.Month + dt.Day + dt.Hour + dt.Month + dt.Second;
-            string command = $"{{{cmdText.Text},{dt.Year},{dt.Month},{dt.Date},{dt.Hour},{dt.Minute},{dt.Second}.{checksum},{checksum + 5438},1,1,}}\n\r";
+            string command = $"{{{cmdText.Text},{dt.Year},{dt.Month},{dt.Day},{dt.Hour},{dt.Minute},{dt.Second}.{checksum},{checksum + 5438},1,1,}}\n\r";
             await listBox1.InvokeAsync(() =>
             {
                 listBox1.Items.Add($"INPUT: {command}");
