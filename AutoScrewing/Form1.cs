@@ -21,6 +21,7 @@ namespace AutoScrewing
         SerialPort BuildPort()
         {
             SerialPort sp = new SerialPort(baseAddress, 115200, Parity.None, 8, StopBits.One);
+            sp.NewLine = "\r\n";
             return sp;
         }
 
@@ -39,7 +40,7 @@ namespace AutoScrewing
                         {
                             _client.Open();
                             byte[] rd = new byte[8];
-                            string text = _client.ReadExisting();
+                            string text = _client.ReadLine();
                             await listBox1.InvokeAsync(() =>
                             {
                                 listBox1.Items.Add(text);
