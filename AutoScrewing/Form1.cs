@@ -10,6 +10,7 @@ namespace AutoScrewing
     {
         SerialPort _client = new SerialPort();
         string baseAddress = "COM4";
+        Barrier barrier = new Barrier(2);
         CancellationTokenSource cts = new CancellationTokenSource();
         int port = 23;
         public Form1()
@@ -30,7 +31,10 @@ namespace AutoScrewing
                     try
                     {
                         if (cts.IsCancellationRequested)
-                            continue;
+                        {
+                            barrier.SignalAndWait();
+                            continue;   
+                        }
                         using (_client)
                         {
                             _client.Open();
@@ -54,6 +58,7 @@ namespace AutoScrewing
         {
             button1.Enabled = false;
             cts.Cancel();
+            barrier.SignalAndWait();
             DateTime dt = DateTime.Now;
             int checksum = dt.Year + dt.Month + dt.Day + dt.Hour + dt.Month + dt.Second;
             string command = $"{{{cmdText.Text},{dt.Year},{dt.Month},{dt.Date},{dt.Hour},{dt.Minute},{dt.Second}.{checksum},{checksum + 5438},1,1,}}\n\r";
