@@ -79,6 +79,7 @@ namespace AutoScrewing
                 });
             }
             cts = new CancellationTokenSource();
+            barrier.SignalAndWait();
             button1.Enabled = true;
         }
     }
