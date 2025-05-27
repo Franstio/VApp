@@ -73,6 +73,7 @@ namespace AutoScrewing
                 _client.Open();
                 byte[] cmd = Encoding.ASCII.GetBytes(command);
                 _client.Write(cmd, 0, cmd.Length);
+                await Task.Delay(1000);
                 string text = _client.ReadExisting();
                 await listBox1.InvokeAsync(() =>
                 {
