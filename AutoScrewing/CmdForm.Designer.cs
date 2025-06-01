@@ -1,6 +1,6 @@
 ﻿namespace AutoScrewing
 {
-    partial class Form1
+    partial class CmdForm
     {
         /// <summary>
         ///  Required designer variable.

@@ -6,14 +6,14 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace AutoScrewing
 {
-    public partial class Form1 : Form
+    public partial class CmdForm : Form
     {
         SerialPort _client = new SerialPort();
         string baseAddress = "COM4";
         Barrier barrier = new Barrier(2);
         CancellationTokenSource cts = new CancellationTokenSource();
         int port = 23;
-        public Form1()
+        public CmdForm()
         {
             InitializeComponent();
             _client = BuildPort();
