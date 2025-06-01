@@ -39,7 +39,7 @@ namespace AutoScrewing
                         using (_client)
                         {
                             _client.Open();
-                            _client.ReadTimeout = 500;
+                            _client.ReadTimeout = 1000;
                             byte[] rd = new byte[8];
                             string text = _client.ReadLine();
                             await listBox1.InvokeAsync(() =>
@@ -71,6 +71,7 @@ namespace AutoScrewing
             using (_client)
             {
                 _client.Open();
+                _client.ReadTimeout = 1000;
                 byte[] cmd = Encoding.ASCII.GetBytes(command);
                 _client.Write(cmd, 0, cmd.Length);
                 await Task.Delay(1000);

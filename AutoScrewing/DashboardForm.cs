@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO.Ports;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,6 +15,10 @@ namespace AutoScrewing
     public partial class DashboardForm : Form
     {
         private DashboardModel _dashboardmodel = new DashboardModel();
+        SerialPort _client = new SerialPort();
+        string baseAddress = "COM4";
+        Barrier barrier = new Barrier(2);
+        CancellationTokenSource cts = new CancellationTokenSource();
         private DashboardModel DashboardModel { get => _dashboardmodel;  set {
                 _dashboardmodel = value;
                 SetDashbaordControl(_dashboardmodel);        
@@ -43,6 +48,7 @@ namespace AutoScrewing
                 TighteningStatus = "3NG-F"
             };
             DashboardModel = data;
+            Task.Run(()=>ReadIncomingData());
         }
         
         private async void SetDashbaordControl(DashboardModel model)
@@ -63,6 +69,46 @@ namespace AutoScrewing
                 SeqLabel.Text=  model.JobSeq.Seq.ToString();
 
             });
+        }
+
+        SerialPort BuildPort()
+        {
+            SerialPort sp = new SerialPort(baseAddress, 115200, Parity.None, 8, StopBits.One);
+            sp.NewLine = "\r\n";
+            return sp;
+        }
+        private void ReadIncomingData()
+        {
+            while (true)
+            {
+                try
+                {
+                    if (cts.IsCancellationRequested)
+                    {
+                        barrier.SignalAndWait();
+                        continue;
+                    }
+                    using (_client)
+                    {
+                        _client.Open();
+                        _client.ReadTimeout = 1000;
+                        byte[] rd = new byte[8];
+                        string text = _client.ReadLine();
+                        string[] data = text.Split(',');
+                        if (data.Length < 29)
+                            continue;
+                        DashboardModel model = new DashboardModel();
+                        model.ScrewTotal = int.Parse(data[26].Split('/')[1]);
+                        model.ScrewCount = int.Parse(data[26].Split('/')[0]);
+                        model.DeviceID = data[10];
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.Error.WriteLine(ex.Message);
+                }
+            }
         }
     }
 }
