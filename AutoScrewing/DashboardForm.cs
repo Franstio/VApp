@@ -31,23 +31,23 @@ namespace AutoScrewing
 
         private void DashboardForm_Load(object sender, EventArgs e)
         {
-            DashboardModel data = new DashboardModel()
-            {
-                DeviceID = "001",
-                Thread = 9,
-                Time = new TimeSpan(0, 0, 0, 2, 7210),
-                Torque = 0.802M,
-                ScrewCount = 1,
-                ScrewTotal = 1,
-                ProgramSeq = "P1\t1",
-                OK=5,
-                NG=52,
-                OKALL=5,
-                Job=1,
-                Seq=1,
-                TighteningStatus = "3NG-F"
-            };
-            DashboardModel = data;
+            //DashboardModel data = new DashboardModel()
+            //{
+            //    DeviceID = "001",
+            //    Thread = 9,
+            //    Time = new TimeSpan(0, 0, 0, 2, 7210),
+            //    Torque = 0.802M,
+            //    ScrewCount = 1,
+            //    ScrewTotal = 1,
+            //    ProgramSeq = "P1\t1",
+            //    OK=5,
+            //    NG=52,
+            //    OKALL=5,
+            //    Job=1,
+            //    Seq=1,
+            //    TighteningStatus = "3NG-F"
+            //};
+            //DashboardModel = data;
             Task.Run(()=>ReadIncomingData());
         }
         
@@ -95,13 +95,20 @@ namespace AutoScrewing
                         byte[] rd = new byte[8];
                         string text = _client.ReadLine();
                         string[] data = text.Split(',');
-                        if (data.Length < 29)
+                        if (data.Length < 29 || !data.Contains("DATA100"))
                             continue;
                         DashboardModel model = new DashboardModel();
-                        model.ScrewTotal = int.Parse(data[26].Split('/')[1]);
-                        model.ScrewCount = int.Parse(data[26].Split('/')[0]);
+//                        string tt =
+//"{DATA100,2025,06,01,16,56,50,2154,7592,4,001,T02VE00007__________,C14Z-E00812_________,0000000017,01,01,01,4Nm___,01,000.00000,1,0021.4500,0139.6,01/01,1,3NG-F,9,}";//28
+                        model.ScrewTotal = int.Parse(data[23].Split('/')[1]);
+                        model.ScrewCount = int.Parse(data[23].Split('/')[0]);
                         model.DeviceID = data[10];
-
+                        model.TighteningStatus = data[25];
+                        model.Thread = decimal.Parse(data[22]);
+                        model.Time = TimeSpan.Parse(data[21]);
+                        model.Torque = decimal.Parse(data[19]);
+                        model.TorqueType = data[18].Replace("_", "");
+                        DashboardModel = model;
                     }
                 }
                 catch (Exception ex)
