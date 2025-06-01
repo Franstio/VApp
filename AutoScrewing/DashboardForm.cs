@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml;
 
 namespace AutoScrewing
 {
@@ -78,7 +79,16 @@ namespace AutoScrewing
             sp.NewLine = "\r\n";
             return sp;
         }
-        private void ReadIncomingData()
+        string GetCommand(string cmd)
+        {
+
+
+            DateTime dt = DateTime.Now;
+            int checksum = dt.Year + dt.Month + dt.Day + dt.Hour + dt.Month + dt.Second;
+            string command = $"{{{cmd},{dt.Year},{dt.Month},{dt.Day},{dt.Hour},{dt.Minute},{dt.Second},{checksum},{checksum + 5438},1,1,}}\n\r";
+            return command;
+        }
+        private async Task ReadIncomingData()
         {
             while (true)
             {
@@ -93,6 +103,10 @@ namespace AutoScrewing
                     {
                         _client.Open();
                         _client.ReadTimeout = 1000;
+                        string cmd = GetCommand("DATA100");
+                        byte[] buffer = Encoding.ASCII.GetBytes(cmd);
+                        _client.Write(buffer,0,buffer.Length);
+                        await Task.Delay(1000);
                         byte[] rd = new byte[8];
                         string text = _client.ReadLine();
                         string[] data = text.Split(',');
@@ -115,6 +129,15 @@ namespace AutoScrewing
                 catch (Exception ex)
                 {
                     Console.Error.WriteLine(ex.Message);
+                    string cmd = GetCommand("CMD100");
+                    byte[] buffer = Encoding.ASCII.GetBytes(cmd);
+                    using (_client)
+                    {
+                        if (!_client.IsOpen)
+                            _client.Open();
+                        _client.Write(buffer, 0, buffer.Length);
+                        await Task.Delay(1000);
+                    }
                 }
             }
         }
