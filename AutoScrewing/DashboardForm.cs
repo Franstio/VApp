@@ -111,7 +111,7 @@ namespace AutoScrewing
                         string text = _client.ReadLine();
                         string[] data = text.Split(',');
                         if (data.Length < 29 || !data.Contains("DATA100"))
-                            continue;
+                            throw new Exception("Invalid Data");
                         DashboardModel model = new DashboardModel();
 //                        string tt =
 //"{DATA100,2025,06,01,16,56,50,2154,7592,4,001,T02VE00007__________,C14Z-E00812_________,0000000017,01,01,01,4Nm___,01,000.00000,1,0021.4500,0139.6,01/01,1,3NG-F,9,}";//28
