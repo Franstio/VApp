@@ -48,6 +48,7 @@ namespace AutoScrewing
             //    TighteningStatus = "3NG-F"
             //};
             //DashboardModel = data;
+            _client = BuildPort();
             Task.Run(()=>ReadIncomingData());
         }
         
