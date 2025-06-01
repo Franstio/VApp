@@ -38,6 +38,7 @@ namespace AutoScrewing
                         }
                         using (_client)
                         {
+                            cts.Token.ThrowIfCancellationRequested();
                             _client.Open();
                             _client.ReadTimeout = 1000;
                             byte[] rd = new byte[8];
@@ -50,6 +51,7 @@ namespace AutoScrewing
                     }
                     catch (Exception ex)
                     {
+                        barrier.SignalAndWait(1000);
                         Console.Error.WriteLine(ex.Message);
                     }
                 }
