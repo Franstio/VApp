@@ -131,7 +131,7 @@ namespace AutoScrewing
                         {
                             model.ScrewTotal = int.Parse(data[26].Split('/')[1]);
                             model.ScrewCount = int.Parse(data[26].Split('/')[0]);
-                            model.DeviceID = data[10];
+                            model.DeviceID = data[11];
                             model.TighteningStatus = "-";
                             model.Thread = 0;
                             model.Time = TimeSpan.Zero;
