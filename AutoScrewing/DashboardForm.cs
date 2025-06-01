@@ -111,20 +111,33 @@ namespace AutoScrewing
                         byte[] rd = new byte[8];
                         string text = _client.ReadLine();
                         string[] data = text.Split(',');
-                        if (data.Length < 28 || !data.Contains("DATA100"))
+                        if (data.Length < 28 )
                             throw new Exception("Invalid Data");
                         DashboardModel model = new DashboardModel();
                         //                        string tt =
                         //"{DATA100,2025,06,01,16,56,50,2154,7592,4,001,T02VE00007__________,C14Z-E00812_________,0000000017,01,01,01,4Nm___,01,000.00000,1,0021.4500,0139.6,01/01,1,3NG-F,9,}";//28
-                        model.ScrewTotal = int.Parse(data[23].Split('/')[1]);
-                        model.ScrewCount = int.Parse(data[23].Split('/')[0]);
-                        model.DeviceID = data[10];
-                        model.TighteningStatus = data[25];
-                        model.Thread = decimal.Parse(data[22]);
-                        model.Time = TimeSpan.Parse(data[21]);
-                        model.Torque = decimal.Parse(data[19]);
-                        model.TorqueType = data[18].Replace("_", "");
-                        DashboardModel = model;
+                        if (data.Contains("DATA100"))
+                        {
+                            model.ScrewTotal = int.Parse(data[23].Split('/')[1]);
+                            model.ScrewCount = int.Parse(data[23].Split('/')[0]);
+                            model.DeviceID = data[10];
+                            model.TighteningStatus = data[25];
+                            model.Thread = decimal.Parse(data[22]);
+                            model.Time = TimeSpan.Parse(data[21]);
+                            model.Torque = decimal.Parse(data[19]);
+                            model.TorqueType = data[18].Replace("_", "");
+                        }
+                        else if (data.Contains("REQ100"))
+                        {
+                            model.ScrewTotal = int.Parse(data[26].Split('/')[1]);
+                            model.ScrewCount = int.Parse(data[26].Split('/')[0]);
+                            model.DeviceID = data[10];
+                            model.TighteningStatus = "-";
+                            model.Thread = 0;
+                            model.Time = TimeSpan.Zero;
+                            model.Torque = 0;
+                        }
+                            DashboardModel = model;
 
                     }
                     catch (Exception ex)
