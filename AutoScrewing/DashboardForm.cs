@@ -1,4 +1,5 @@
-﻿using AutoScrewing.Models;
+﻿using AutoScrewing.Lib;
+using AutoScrewing.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,14 +11,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace AutoScrewing
 {
     public partial class DashboardForm : Form
     {
+        private KilewController kilewController = new KilewController();
         private DashboardModel _dashboardmodel = new DashboardModel();
-        SerialPort _client = new SerialPort();
-        string baseAddress = "COM4";
         Barrier barrier = new Barrier(2);
         CancellationTokenSource cts = new CancellationTokenSource();
         private DashboardModel DashboardModel { get => _dashboardmodel;  set {
@@ -49,7 +50,6 @@ namespace AutoScrewing
             //    TighteningStatus = "3NG-F"
             //};
             //DashboardModel = data;
-            _client = BuildPort();
             Task.Run(()=>ReadIncomingData());
         }
         
@@ -72,87 +72,58 @@ namespace AutoScrewing
 
             });
         }
-
-        SerialPort BuildPort()
-        {
-            SerialPort sp = new SerialPort(baseAddress, 115200, Parity.None, 8, StopBits.One);
-            sp.NewLine = "\r\n";
-            return sp;
-        }
-        string GetCommand(string cmd)
-        {
-
-
-            DateTime dt = DateTime.Now;
-            int checksum = dt.Year + dt.Month + dt.Day + dt.Hour + dt.Month + dt.Second;
-            string command = $"{{{cmd},{dt.Year},{dt.Month},{dt.Day},{dt.Hour},{dt.Minute},{dt.Second},{checksum},{checksum + 5438},1,1,}}\n\r";
-            return command;
-        }
         private async Task ReadIncomingData()
         {
             while (true)
             {
 
-                using (_client)
+                try
                 {
-                    _client.Open();
-                    _client.ReadTimeout = 1000;
-                    try
+                    if (cts.IsCancellationRequested)
                     {
-                        if (cts.IsCancellationRequested)
-                        {
-                            barrier.SignalAndWait();
-                            continue;
-                        }
-                        string cmd = GetCommand("DATA100");
-                        byte[] buffer = Encoding.ASCII.GetBytes(cmd);
-                        _client.Write(buffer, 0, buffer.Length);
-                        await Task.Delay(1000);
-                        byte[] rd = new byte[8];
-                        string text = _client.ReadLine();
-                        string[] data = text.Split(',');
-                        if (data.Length < 28 )
-                            throw new Exception("Invalid Data");
-                        DashboardModel model = new DashboardModel();
-                        //                        string tt =
-                        //"{DATA100,2025,06,01,16,56,50,2154,7592,4,001,T02VE00007__________,C14Z-E00812_________,0000000017,01,01,01,4Nm___,01,000.00000,1,0021.4500,0139.6,01/01,1,3NG-F,9,}";//28
-                        if (data[0].Replace("{","").Contains("DATA100"))
-                        {
-                            model.ScrewTotal = int.Parse(data[23].Split('/')[1]);
-                            model.ScrewCount = int.Parse(data[23].Split('/')[0]);
-                            model.DeviceID = data[10];
-                            model.TighteningStatus = data[25];
-                            model.Thread = decimal.Parse(data[22]);
-                            model.Time = TimeSpan.Parse(data[21]);
-                            model.Torque = decimal.Parse(data[19]);
-                            model.TorqueType = data[18].Replace("_", "");
-                        }
-                        else if (data[0].Replace("{","").Contains("REQ100"))
-                        {
-                            model.ScrewTotal = int.Parse(data[26].Split('/')[1]);
-                            model.ScrewCount = int.Parse(data[26].Split('/')[0]);
-                            model.DeviceID = data[11];
-                            model.TighteningStatus = "-";
-                            model.Thread = 0;
-                            model.Time = TimeSpan.Zero;
-                            model.Torque = 0;
-                        }
-                            DashboardModel = model;
-
+                        barrier.SignalAndWait();
+                        continue;
                     }
-                    catch (Exception ex)
+
+                    string res = await kilewController.Send("DATA100");
+                    string[] data = res.Split(",");
+                    if (data.Length < 28)
+                        throw new Exception("Invalid Data");
+                    DashboardModel model = new DashboardModel();
+                    //                        string tt =
+                    //"{DATA100,2025,06,01,16,56,50,2154,7592,4,001,T02VE00007__________,C14Z-E00812_________,0000000017,01,01,01,4Nm___,01,000.00000,1,0021.4500,0139.6,01/01,1,3NG-F,9,}";//28
+                    if (data[0].Replace("{", "").Contains("DATA100"))
                     {
-                        Console.Error.WriteLine(ex.Message);
-                        string cmd = GetCommand("CMD100");
-                        byte[] buffer = Encoding.ASCII.GetBytes(cmd);
-
-                        if (!_client.IsOpen)
-                            _client.Open();
-                        _client.Write(buffer, 0, buffer.Length);
-                        await Task.Delay(1000);
-
+                        model.ScrewTotal = int.Parse(data[23].Split('/')[1]);
+                        model.ScrewCount = int.Parse(data[23].Split('/')[0]);
+                        model.DeviceID = data[10];
+                        model.TighteningStatus = data[25];
+                        model.Thread = decimal.Parse(data[22]);
+                        model.Time = TimeSpan.Parse(data[21]);
+                        model.Torque = decimal.Parse(data[19]);
+                        model.TorqueType = data[18].Replace("_", "");
                     }
+                    else if (data[0].Replace("{", "").Contains("REQ100"))
+                    {
+                        model.ScrewTotal = int.Parse(data[26].Split('/')[1]);
+                        model.ScrewCount = int.Parse(data[26].Split('/')[0]);
+                        model.DeviceID = data[11];
+                        model.TighteningStatus = "-";
+                        model.Thread = 0;
+                        model.Time = TimeSpan.Zero;
+                        model.Torque = 0;
+                    }
+                    DashboardModel = model;
+
                 }
+                catch (Exception ex)
+                {
+                    Console.Error.WriteLine(ex.Message);
+                    string cmd = await kilewController.Send("CMD100");
+                    await Task.Delay(1000);
+
+                }
+
             }
         }
     }
