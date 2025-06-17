@@ -21,10 +21,13 @@ namespace AutoScrewing
         private DashboardModel _dashboardmodel = new DashboardModel();
         Barrier barrier = new Barrier(2);
         CancellationTokenSource cts = new CancellationTokenSource();
-        private DashboardModel DashboardModel { get => _dashboardmodel;  set {
+        private DashboardModel DashboardModel
+        {
+            get => _dashboardmodel; set
+            {
                 _dashboardmodel = value;
-                SetDashbaordControl(_dashboardmodel);        
-            } 
+                SetDashbaordControl(_dashboardmodel);
+            }
         }
         public DashboardForm()
         {
@@ -50,26 +53,14 @@ namespace AutoScrewing
             //    TighteningStatus = "3NG-F"
             //};
             //DashboardModel = data;
-            Task.Run(()=>ReadIncomingData());
+            Task.Run(() => ReadIncomingData());
         }
-        
+
         private async void SetDashbaordControl(DashboardModel model)
         {
             await InvokeAsync(() =>
             {
-                TighteningStatusLabel.Text = model.TighteningStatus;
-                TorqueLabel.Text = $"{model.Torque} {model.TorqueType}";
-                ScrewCountLabel.Text = $"{model.ScrewCount} of {model.ScrewTotal}";
-                TimeLabel.Text = string.Format("{0:00000} Sec", model.Time.TotalSeconds);
-                ProgramSeqLabel.Text = model.ProgramSeq;
-                ThreadLabel.Text = string.Format("{0:00000}",model.Thread);
-                DeviceIDLabel.Text = model.DeviceID;
-                OkAllLabel.Text = model.StatusCount.OKALL.ToString();
-                OkCountLabel.Text = model.StatusCount.OK.ToString();
-                NgCountLabel.Text = model.StatusCount.NG.ToString();
-                jobLabel.Text = model.JobSeq.Job.ToString();
-                SeqLabel.Text=  model.JobSeq.Seq.ToString();
-
+                torqueLabel.Text = $"{model.Torque} {model.TorqueType}";
             });
         }
         private async Task ReadIncomingData()
@@ -125,6 +116,16 @@ namespace AutoScrewing
                 }
 
             }
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            timeLabel.Text = DateTime.Now.ToShortTimeString();
         }
     }
 }
