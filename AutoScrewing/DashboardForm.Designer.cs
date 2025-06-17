@@ -34,7 +34,7 @@
             screwingResultLabel = new Label();
             torqueLabel = new Label();
             groupBox2 = new GroupBox();
-            sensorResultLabel = new Label();
+            laserResultLabel = new Label();
             groupBox3 = new GroupBox();
             cameraResultLabel = new Label();
             dataGridView1 = new DataGridView();
@@ -106,7 +106,7 @@
             // 
             // groupBox2
             // 
-            groupBox2.Controls.Add(sensorResultLabel);
+            groupBox2.Controls.Add(laserResultLabel);
             groupBox2.Dock = DockStyle.Fill;
             groupBox2.Font = new Font("Consolas", 24F, FontStyle.Bold);
             groupBox2.Location = new Point(440, 3);
@@ -117,15 +117,15 @@
             groupBox2.TabStop = false;
             groupBox2.Text = "Sensor Laser";
             // 
-            // sensorResultLabel
+            // laserResultLabel
             // 
-            sensorResultLabel.Dock = DockStyle.Fill;
-            sensorResultLabel.Location = new Point(10, 48);
-            sensorResultLabel.Name = "sensorResultLabel";
-            sensorResultLabel.Size = new Size(302, 143);
-            sensorResultLabel.TabIndex = 0;
-            sensorResultLabel.Text = "OK/NG";
-            sensorResultLabel.TextAlign = ContentAlignment.MiddleCenter;
+            laserResultLabel.Dock = DockStyle.Fill;
+            laserResultLabel.Location = new Point(10, 48);
+            laserResultLabel.Name = "laserResultLabel";
+            laserResultLabel.Size = new Size(302, 143);
+            laserResultLabel.TabIndex = 0;
+            laserResultLabel.Text = "OK/NG";
+            laserResultLabel.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // groupBox3
             // 
@@ -281,7 +281,7 @@
         private Label screwingResultLabel;
         private Label torqueLabel;
         private GroupBox groupBox2;
-        private Label sensorResultLabel;
+        private Label laserResultLabel;
         private GroupBox groupBox3;
         private Label cameraResultLabel;
         private DataGridView dataGridView1;

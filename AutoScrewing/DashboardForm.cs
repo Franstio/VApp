@@ -18,6 +18,7 @@ namespace AutoScrewing
     public partial class DashboardForm : Form
     {
         private KilewController kilewController = new KilewController();
+        private PLCController plcController = new PLCController();
         private DashboardModel _dashboardmodel = new DashboardModel();
         Barrier barrier = new Barrier(2);
         CancellationTokenSource cts = new CancellationTokenSource();
@@ -61,6 +62,8 @@ namespace AutoScrewing
             await InvokeAsync(() =>
             {
                 torqueLabel.Text = $"{model.Torque} {model.TorqueType}";
+                screwingResultLabel.Text = model.TighteningStatus;
+                laserResultLabel.Text = model.LaserStatus ? "OK" : "NG";
             });
         }
         private async Task ReadIncomingData()
@@ -75,12 +78,11 @@ namespace AutoScrewing
                         barrier.SignalAndWait();
                         continue;
                     }
-
-                    string res = await kilewController.Send("DATA100");
-                    string[] data = res.Split(",");
-                    if (data.Length < 28)
-                        throw new Exception("Invalid Data");
+                    Task<string[]> screwingTask = Task.Run(async () => await ReadingScrewing());
+                    Task<bool> laserTask = Task.Run(async () => await ReadingLaser());
+                    await Task.WhenAll(screwingTask, laserTask);
                     DashboardModel model = new DashboardModel();
+                    string[] data = await screwingTask;
                     //                        string tt =
                     //"{DATA100,2025,06,01,16,56,50,2154,7592,4,001,T02VE00007__________,C14Z-E00812_________,0000000017,01,01,01,4Nm___,01,000.00000,1,0021.4500,0139.6,01/01,1,3NG-F,9,}";//28
                     if (data[0].Replace("{", "").Contains("DATA100"))
@@ -104,6 +106,7 @@ namespace AutoScrewing
                         model.Time = TimeSpan.Zero;
                         model.Torque = 0;
                     }
+                    model.LaserStatus = await laserTask;
                     DashboardModel = model;
 
                 }
@@ -117,7 +120,33 @@ namespace AutoScrewing
 
             }
         }
+        private async Task<bool> ReadingLaser()
+        {
+            PLCController.PLCItem[] cmd = [
+                new PLCController.PLCItem("RD", "MR308", -1, "Read For Reading Laser NG"),
+                new PLCController.PLCItem("RD", "MR308", -1, "Read For Reading Laser OK")
+            ];
+            Task<string>[] task = new Task<string>[2];
+            for (int i = 0;i<cmd.Length;i++)
+            {
+                task[i] = Task.Run<string>(async () => await plcController.Send(cmd[i]));
+            }
+            await Task.WhenAll(task);
+            if (await task[1] == "1")
+                return true;
+            else if (await task[0] == "1")
+                return false;
+            return false;
+        }
+        private async Task<string[]> ReadingScrewing()
+        {
+            string res = await kilewController.Send("DATA100");
+            string[] data = res.Split(",");
+            if (data.Length < 28)
+                throw new Exception("Invalid Data");
+            return data;
 
+        }
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
 
