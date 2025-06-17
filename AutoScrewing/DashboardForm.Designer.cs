@@ -219,6 +219,7 @@
             // 
             // timeLabel
             // 
+            timeLabel.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             timeLabel.AutoSize = true;
             timeLabel.Font = new Font("Segoe UI", 18F);
             timeLabel.Location = new Point(720, 29);
