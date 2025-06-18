@@ -36,15 +36,23 @@ namespace AutoScrewing.Lib
                 _client = BuildPort();
             using (_client)
             {
-                if (!_client.IsOpen)
-                    _client.Open();
-                cmd = GetCommand(cmd);
-                byte[] buffer = Encoding.ASCII.GetBytes(cmd);
-                _client.Write(buffer, 0, buffer.Length);
-                await Task.Delay(1000);
-                byte[] rd = new byte[8];
-                string text = _client.ReadLine();
-                return text;
+                try
+                {
+                    if (!_client.IsOpen)
+                        _client.Open();
+                    cmd = GetCommand(cmd);
+                    byte[] buffer = Encoding.ASCII.GetBytes(cmd);
+                    _client.Write(buffer, 0, buffer.Length);
+                    await Task.Delay(1000);
+                    byte[] rd = new byte[8];
+                    string text = _client.ReadLine();
+                    return text;
+                }
+                catch(Exception e)
+                {
+                    Console.Error.WriteLine(e.Message);
+                    Console.Error.WriteLine(e.StackTrace);
+                }
             }
         }
     }

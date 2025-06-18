@@ -1,4 +1,5 @@
-﻿using AutoScrewing.Database.Repository;
+﻿using AutoScrewing.Database.Models;
+using AutoScrewing.Database.Repository;
 using AutoScrewing.Lib;
 using AutoScrewing.Models;
 using System;
@@ -22,6 +23,7 @@ namespace AutoScrewing
         private KilewController kilewController = new KilewController();
         private PLCController plcController = new PLCController();
         private DashboardModel _dashboardmodel = new DashboardModel();
+        Queue<TransactionModel> Items = new Queue<TransactionModel>();
         Barrier barrier = new Barrier(2);
         CancellationTokenSource cts = new CancellationTokenSource();
         private DashboardModel DashboardModel

@@ -24,8 +24,8 @@ namespace AutoScrewing.Lib
         {
             var client = new TcpClient();
             client.NoDelay  = true;
-            client.SendTimeout = 1500;
-            client.ReceiveTimeout = 1500;
+            client.SendTimeout = 15000;
+            client.ReceiveTimeout = 15000;
             return client;
         }
         private async Task<string> GetMessage(Stream stream)
@@ -58,7 +58,7 @@ namespace AutoScrewing.Lib
             }
             catch (Exception e )
             {
-                Console.Error.WriteLine(e.InnerException);
+                Console.Error.WriteLine(e.StackTrace);
                 Console.Error.WriteLine(e.Message);
                 SemaphoreSlim.Release();
                 return string.Empty;
