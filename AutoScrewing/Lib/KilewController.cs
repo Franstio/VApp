@@ -52,6 +52,7 @@ namespace AutoScrewing.Lib
                 {
                     Console.Error.WriteLine(e.Message);
                     Console.Error.WriteLine(e.StackTrace);
+                    return string.Empty;
                 }
             }
         }
