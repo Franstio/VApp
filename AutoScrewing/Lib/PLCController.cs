@@ -14,8 +14,12 @@ namespace AutoScrewing.Lib
         public string PLC_TARGET { get; set; } = "192.168.0.10";//255.255.255.0
         public record PLCItem(string type,string command,int value,string description);
         private CancellationTokenSource cancelToken = new CancellationTokenSource();
-        private Queue<PLCItem> PLC_Queue { get; set; } = new Queue<PLCItem>();
 
+        private static SemaphoreSlim SemaphoreSlim = new SemaphoreSlim(1);
+        public PLCController()
+        {
+            PLC_TARGET = Settings1.Default.PLC_TARGET;
+        }
         TcpClient BuildTcpClient()
         {
             var client = new TcpClient();
@@ -32,42 +36,34 @@ namespace AutoScrewing.Lib
         }
         public async Task<string> Send(PLCItem item)
         {
-            using (var tcpClient = BuildTcpClient())
+            await SemaphoreSlim.WaitAsync();
+            try
             {
-                string val = item.type == "WR" ? item.value.ToString() : "";
-                await tcpClient.ConnectAsync(IPAddress.Parse(PLC_TARGET), 8501);
-                string command = $"{item.type} {item.command} {val}\r\n";
-                byte[] buffer = Encoding.ASCII.GetBytes(command);
+                using (var tcpClient = BuildTcpClient())
+                {
+                    string val = item.type == "WR" ? item.value.ToString() : "";
+                    await tcpClient.ConnectAsync(IPAddress.Parse(PLC_TARGET), 8501);
+                    string command = $"{item.type} {item.command} {val}\r\n";
+                    byte[] buffer = Encoding.ASCII.GetBytes(command);
 
-                await tcpClient.GetStream().WriteAsync(buffer, 0, buffer.Length);
+                    await tcpClient.GetStream().WriteAsync(buffer, 0, buffer.Length);
 
-                await Task.Delay(100);
+                    await Task.Delay(100);
 
-                string res = await GetMessage(tcpClient.GetStream());
-                Console.WriteLine($"Writing {item.command} with value {item.value} and result {res} {DateTime.Now.ToLongDateString()} | {item.description}");
-                return res;
+                    string res = await GetMessage(tcpClient.GetStream());
+                    Console.WriteLine($"Writing {item.command} with value {item.value} and result {res} {DateTime.Now.ToLongDateString()} | {item.description}");
+                    SemaphoreSlim.Release();
+                    return res;
+                }
+            }
+            catch (Exception e )
+            {
+                Console.Error.WriteLine(e.InnerException);
+                Console.Error.WriteLine(e.Message);
+                SemaphoreSlim.Release();
+                return string.Empty;
             }
         }
 
-        public async Task RunQueue()
-        {
-            cancelToken.Token.ThrowIfCancellationRequested();
-            while (!cancelToken.IsCancellationRequested)
-            {
-                try
-                {
-                    if (PLC_Queue.Count == 0)
-                        continue;
-                    PLCItem item = PLC_Queue.Dequeue();
-                    
-                }
-                catch (OperationCanceledException ex)
-                {
-                    cancelToken = new CancellationTokenSource();
-                    return;
-                }
-            }
-            cancelToken = new CancellationTokenSource();
-        }
     }
 }

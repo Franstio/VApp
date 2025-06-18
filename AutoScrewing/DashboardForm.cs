@@ -1,4 +1,5 @@
-﻿using AutoScrewing.Lib;
+﻿using AutoScrewing.Database.Repository;
+using AutoScrewing.Lib;
 using AutoScrewing.Models;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,7 @@ namespace AutoScrewing
 {
     public partial class DashboardForm : Form
     {
+        private TransactionRepository TransactionRepository = new TransactionRepository();
         private KilewController kilewController = new KilewController();
         private PLCController plcController = new PLCController();
         private DashboardModel _dashboardmodel = new DashboardModel();
@@ -149,12 +151,12 @@ namespace AutoScrewing
         }
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
-
+            
         }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            timeLabel.Text = DateTime.Now.ToShortTimeString();
+            timeLabel.Text = DateTime.Now.ToUniversalTime().ToString();
         }
     }
 }
