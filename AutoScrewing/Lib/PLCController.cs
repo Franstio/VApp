@@ -41,9 +41,9 @@ namespace AutoScrewing.Lib
             {
                 using (var tcpClient = BuildTcpClient())
                 {
-                    string val = item.type == "WR" ? item.value.ToString() : "";
+                    string val = item.type == "WR" ? $" {item.value.ToString()}" : "";
                     await tcpClient.ConnectAsync(IPAddress.Parse(PLC_TARGET), 8501);
-                    string command = $"{item.type} {item.command} {val}\r\n";
+                    string command = $"{item.type} {item.command}{val}\r\n";
                     byte[] buffer = Encoding.ASCII.GetBytes(command);
 
                     await tcpClient.GetStream().WriteAsync(buffer, 0, buffer.Length);
