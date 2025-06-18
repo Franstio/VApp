@@ -17,7 +17,7 @@ namespace AutoScrewing.Models
         public string TorqueType { get; set; } = "N.m";
         public int ScrewCount { get; set; } = 0 ;
         public int ScrewTotal { get; set; } = 0;
-        public TimeSpan Time { get; set; } = TimeSpan.Zero;
+        public string Time { get; set; } = string.Empty;
         public string ProgramSeq { get;set;} = string.Empty;
         public decimal Thread { get; set; } = 0;
         public string DeviceID { get; set; } = string.Empty;

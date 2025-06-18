@@ -96,7 +96,7 @@ namespace AutoScrewing
                         model.DeviceID = data[10];
                         model.TighteningStatus = data[25];
                         model.Thread = decimal.Parse(data[22]);
-                        model.Time = TimeSpan.Parse(data[21]);
+                        model.Time = data[21];
                         model.Torque = decimal.Parse(data[19]);
                         model.TorqueType = data[18].Replace("_", "");
                     }
@@ -107,7 +107,7 @@ namespace AutoScrewing
                         model.DeviceID = data[11];
                         model.TighteningStatus = "-";
                         model.Thread = 0;
-                        model.Time = TimeSpan.Zero;
+                        model.Time = TimeSpan.Zero.ToString();
                         model.Torque = 0;
                     }
                     model.LaserStatus = await laserTask;
