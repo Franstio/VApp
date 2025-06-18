@@ -129,10 +129,10 @@ namespace AutoScrewing
                 new PLCController.PLCItem("RD", "MR308", -1, "Read For Reading Laser NG"),
                 new PLCController.PLCItem("RD", "MR308", -1, "Read For Reading Laser OK")
             ];
-            Task<string>[] task = new Task<string>[2];
+            List<Task<string>> task = [];
             for (int i = 0;i<cmd.Length;i++)
             {
-                task[i] = Task.Run<string>(async () => await plcController.Send(cmd[i]));
+                task.Add( Task.Run<string>(async () => await plcController.Send(cmd[i])));
             }
             await Task.WhenAll(task);
             if (await task[1] == "1")
