@@ -31,7 +31,7 @@ namespace AutoScrewing.Lib
         private async Task<string> GetMessage(Stream stream)
         {
             byte[] buffer = new byte[64];
-            await stream.ReadExactlyAsync(buffer);
+            await stream.ReadAsync(buffer, 0,buffer.Length);
             return  Encoding.ASCII.GetString(buffer);
         }
         public async Task<string> Send(PLCItem item)
