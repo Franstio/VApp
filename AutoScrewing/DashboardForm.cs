@@ -146,6 +146,10 @@ namespace AutoScrewing
             string[] data = res.Split(",");
             if (data.Length < 28)
                 throw new Exception("Invalid Data");
+            if (data[0].Contains("REQ100"))
+            {
+                res = await kilewController.Send("CMD100");
+            }
             return data;
 
         }
