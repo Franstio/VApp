@@ -22,7 +22,8 @@ namespace AutoScrewing.Models
         public decimal Thread { get; set; } = 0;
         public string DeviceID { get; set; } = string.Empty;
         public string TighteningStatus { get; set; } = string.Empty;
-        public bool LaserStatus { get; set; } = false;  
+        public bool LaserStatus { get; set; } = false;
+        public string SCAN_ID { get; set; } = string.Empty;
         public StatusCountModel StatusCount
         {
             get => new StatusCountModel()

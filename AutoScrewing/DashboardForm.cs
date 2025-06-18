@@ -109,6 +109,7 @@ namespace AutoScrewing
                         model.Torque = 0;
                     }
                     model.LaserStatus = await laserTask;
+                    model.SCAN_ID = textBox1.Text;
                     DashboardModel = model;
 
                 }
@@ -151,7 +152,7 @@ namespace AutoScrewing
         }
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
-            
+            textBox1.Text = textBox1.Text.Replace("SCAN", "");
         }
 
         private void timer1_Tick(object sender, EventArgs e)

@@ -38,5 +38,6 @@ namespace AutoScrewing.Database.Repository
                 var list = await conn.QueryAsync<TransactionModel>("Select Scan_ID,Torque,ScrewingResult,LaserResult,CameraResult,Result,IsError,TransactionTime From Transaction order by TransactionTime Desc");
                 return list.ToList();
             }
+        }
     }
 }
