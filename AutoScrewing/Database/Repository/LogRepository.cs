@@ -30,6 +30,7 @@ namespace AutoScrewing.Database.Repository
             {
                 using (var conn = await GetConnection())
                 {
+                    log.Result = log.Result.Replace("\0", "");
                     string query = $"Insert into {Table_Name}(record_time,log_type,source,description,status,payload,result) Values(@Record_Time,@Log_Type,@Source,@Description,@Status,@Payload,@Result);";
                     await conn.ExecuteAsync(query, log);
                 }
