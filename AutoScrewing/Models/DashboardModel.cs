@@ -24,6 +24,7 @@ namespace AutoScrewing.Models
         public string TighteningStatus { get; set; } = string.Empty;
         public bool LaserStatus { get; set; } = false;
         public string SCAN_ID { get; set; } = string.Empty;
+        public bool CameraStatus { get; set; } = string.Empty;
         public StatusCountModel StatusCount
         {
             get => new StatusCountModel()

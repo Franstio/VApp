@@ -77,6 +77,7 @@ namespace AutoScrewing
                 screwingResultLabel.Text = model.TighteningStatus;
                 screwingTimeLabel.Text = model.Time;
                 laserResultLabel.Text = model.LaserStatus ? "OK" : "NG";
+                cameraResultLabel.Text = model.CameraStatus ? "OK" : "NG";
             });
         }
         private async Task<bool> ReadCamera()
@@ -131,6 +132,7 @@ namespace AutoScrewing
                     await Task.WhenAll(screwingTask, laserTask);
                     DashboardModel model = await screwingTask;
                     model.LaserStatus = await laserTask;
+                    model.CameraStatus = await cameraTask;
                     DashboardModel = model;
                 }
                 catch (Exception ex)
