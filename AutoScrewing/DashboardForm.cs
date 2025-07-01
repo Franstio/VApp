@@ -279,8 +279,8 @@ namespace AutoScrewing
                 return;
             }
             scan = scan.Replace("SCAN", "");
-            await Task.Delay(1000);
             await meshController.Tracking(scan);
+            await Task.Delay(1000);
             ScrewingQueue.Enqueue(new OngoingItemModel() { Scan_ID = scan, StartTime = DateTime.Now,CurrentStatus="Screwing" });
         }
 
