@@ -83,5 +83,17 @@ namespace AutoScrewing {
                 this["OPERATION_USER"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("COM4")]
+        public string Screwing_Port {
+            get {
+                return ((string)(this["Screwing_Port"]));
+            }
+            set {
+                this["Screwing_Port"] = value;
+            }
+        }
     }
 }

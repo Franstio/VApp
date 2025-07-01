@@ -17,5 +17,8 @@
     <Setting Name="OPERATION_USER" Type="System.String" Scope="User">
       <Value Profile="(Default)">123</Value>
     </Setting>
+    <Setting Name="Screwing_Port" Type="System.String" Scope="User">
+      <Value Profile="(Default)">COM4</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

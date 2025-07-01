@@ -17,6 +17,10 @@ namespace AutoScrewing.Lib
         string baseAddress = "COM4";
         SemaphoreSlim semaphoreSlim = new SemaphoreSlim(1);
         private LogRepository logRepository  = new LogRepository();
+        public KilewController()
+        {
+            baseAddress = Settings1.Default.Screwing_Port ;
+        }
         SerialPort BuildPort()
         {
             SerialPort sp = new SerialPort(baseAddress, 115200, Parity.None, 8, StopBits.One);
