@@ -32,6 +32,7 @@
             groupBox1 = new GroupBox();
             tableLayoutPanel1 = new TableLayoutPanel();
             screwingResultLabel = new Label();
+            screwingTimeLabel = new Label();
             torqueLabel = new Label();
             groupBox2 = new GroupBox();
             laserResultLabel = new Label();
@@ -64,42 +65,54 @@
             groupBox1.Location = new Point(3, 3);
             groupBox1.Name = "groupBox1";
             groupBox1.Padding = new Padding(10);
-            groupBox1.Size = new Size(431, 201);
+            groupBox1.Size = new Size(524, 266);
             groupBox1.TabIndex = 0;
             groupBox1.TabStop = false;
             groupBox1.Text = "Screwing";
             // 
             // tableLayoutPanel1
             // 
-            tableLayoutPanel1.ColumnCount = 2;
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 60F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 40F));
-            tableLayoutPanel1.Controls.Add(screwingResultLabel, 1, 0);
+            tableLayoutPanel1.ColumnCount = 3;
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            tableLayoutPanel1.Controls.Add(screwingResultLabel, 2, 0);
+            tableLayoutPanel1.Controls.Add(screwingTimeLabel, 1, 0);
             tableLayoutPanel1.Controls.Add(torqueLabel, 0, 0);
             tableLayoutPanel1.Dock = DockStyle.Fill;
             tableLayoutPanel1.Location = new Point(10, 48);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 1;
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutPanel1.Size = new Size(411, 143);
+            tableLayoutPanel1.Size = new Size(504, 208);
             tableLayoutPanel1.TabIndex = 0;
             // 
             // screwingResultLabel
             // 
             screwingResultLabel.Dock = DockStyle.Fill;
-            screwingResultLabel.Location = new Point(249, 0);
+            screwingResultLabel.Location = new Point(381, 0);
             screwingResultLabel.Name = "screwingResultLabel";
-            screwingResultLabel.Size = new Size(159, 143);
-            screwingResultLabel.TabIndex = 2;
+            screwingResultLabel.Size = new Size(120, 208);
+            screwingResultLabel.TabIndex = 3;
             screwingResultLabel.Text = "OK/NG";
             screwingResultLabel.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // screwingTimeLabel
+            // 
+            screwingTimeLabel.Dock = DockStyle.Fill;
+            screwingTimeLabel.Location = new Point(255, 0);
+            screwingTimeLabel.Name = "screwingTimeLabel";
+            screwingTimeLabel.Size = new Size(120, 208);
+            screwingTimeLabel.TabIndex = 2;
+            screwingTimeLabel.Text = "OK/NG";
+            screwingTimeLabel.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // torqueLabel
             // 
             torqueLabel.Dock = DockStyle.Fill;
             torqueLabel.Location = new Point(3, 0);
             torqueLabel.Name = "torqueLabel";
-            torqueLabel.Size = new Size(240, 143);
+            torqueLabel.Size = new Size(246, 208);
             torqueLabel.TabIndex = 1;
             torqueLabel.Text = "0N";
             torqueLabel.TextAlign = ContentAlignment.MiddleCenter;
@@ -109,10 +122,10 @@
             groupBox2.Controls.Add(laserResultLabel);
             groupBox2.Dock = DockStyle.Fill;
             groupBox2.Font = new Font("Consolas", 24F, FontStyle.Bold);
-            groupBox2.Location = new Point(440, 3);
+            groupBox2.Location = new Point(533, 3);
             groupBox2.Name = "groupBox2";
             groupBox2.Padding = new Padding(10);
-            groupBox2.Size = new Size(322, 201);
+            groupBox2.Size = new Size(391, 266);
             groupBox2.TabIndex = 1;
             groupBox2.TabStop = false;
             groupBox2.Text = "Sensor Laser";
@@ -122,7 +135,7 @@
             laserResultLabel.Dock = DockStyle.Fill;
             laserResultLabel.Location = new Point(10, 48);
             laserResultLabel.Name = "laserResultLabel";
-            laserResultLabel.Size = new Size(302, 143);
+            laserResultLabel.Size = new Size(371, 208);
             laserResultLabel.TabIndex = 0;
             laserResultLabel.Text = "OK/NG";
             laserResultLabel.TextAlign = ContentAlignment.MiddleCenter;
@@ -132,10 +145,10 @@
             groupBox3.Controls.Add(cameraResultLabel);
             groupBox3.Dock = DockStyle.Fill;
             groupBox3.Font = new Font("Consolas", 24F, FontStyle.Bold);
-            groupBox3.Location = new Point(768, 3);
+            groupBox3.Location = new Point(930, 3);
             groupBox3.Name = "groupBox3";
             groupBox3.Padding = new Padding(10);
-            groupBox3.Size = new Size(323, 201);
+            groupBox3.Size = new Size(393, 266);
             groupBox3.TabIndex = 2;
             groupBox3.TabStop = false;
             groupBox3.Text = "Camera";
@@ -145,7 +158,7 @@
             cameraResultLabel.Dock = DockStyle.Fill;
             cameraResultLabel.Location = new Point(10, 48);
             cameraResultLabel.Name = "cameraResultLabel";
-            cameraResultLabel.Size = new Size(303, 143);
+            cameraResultLabel.Size = new Size(373, 208);
             cameraResultLabel.TabIndex = 1;
             cameraResultLabel.Text = "OK/NG";
             cameraResultLabel.TextAlign = ContentAlignment.MiddleCenter;
@@ -158,9 +171,9 @@
             dataGridView1.Columns.AddRange(new DataGridViewColumn[] { Serial, Screwing, Laser, Camera, Judgement });
             tableLayoutPanel2.SetColumnSpan(dataGridView1, 3);
             dataGridView1.Dock = DockStyle.Fill;
-            dataGridView1.Location = new Point(3, 210);
+            dataGridView1.Location = new Point(3, 275);
             dataGridView1.Name = "dataGridView1";
-            dataGridView1.Size = new Size(1088, 201);
+            dataGridView1.Size = new Size(1320, 266);
             dataGridView1.TabIndex = 3;
             // 
             // Serial
@@ -197,7 +210,7 @@
             // 
             button1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             button1.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
-            button1.Location = new Point(12, 494);
+            button1.Location = new Point(12, 624);
             button1.Name = "button1";
             button1.Size = new Size(281, 53);
             button1.TabIndex = 4;
@@ -222,7 +235,7 @@
             timeLabel.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             timeLabel.AutoSize = true;
             timeLabel.Font = new Font("Segoe UI", 18F);
-            timeLabel.Location = new Point(720, 29);
+            timeLabel.Location = new Point(952, 29);
             timeLabel.Name = "timeLabel";
             timeLabel.Size = new Size(135, 32);
             timeLabel.TabIndex = 6;
@@ -244,7 +257,7 @@
             tableLayoutPanel2.RowCount = 2;
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel2.Size = new Size(1094, 414);
+            tableLayoutPanel2.Size = new Size(1326, 544);
             tableLayoutPanel2.TabIndex = 7;
             // 
             // timer1
@@ -257,7 +270,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1118, 559);
+            ClientSize = new Size(1350, 689);
             Controls.Add(tableLayoutPanel2);
             Controls.Add(timeLabel);
             Controls.Add(textBox1);
@@ -279,7 +292,7 @@
 
         private GroupBox groupBox1;
         private TableLayoutPanel tableLayoutPanel1;
-        private Label screwingResultLabel;
+        private Label screwingTimeLabel;
         private Label torqueLabel;
         private GroupBox groupBox2;
         private Label laserResultLabel;
@@ -296,5 +309,6 @@
         private TableLayoutPanel tableLayoutPanel2;
         private Label timeLabel;
         private System.Windows.Forms.Timer timer1;
+        private Label screwingResultLabel;
     }
 }

@@ -1,10 +1,16 @@
-﻿using System;
+﻿using AutoScrewing.Database.Models;
+using AutoScrewing.Database.Repository;
+using Microsoft.VisualBasic.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Sockets;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Nodes;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace AutoScrewing.Lib
@@ -12,6 +18,7 @@ namespace AutoScrewing.Lib
     public class PLCController
     {
         public string PLC_TARGET { get; set; } = "192.168.0.10";//255.255.255.0
+        private LogRepository logRepository = new LogRepository();
         public record PLCItem(string type,string command,int value,string description);
         private CancellationTokenSource cancelToken = new CancellationTokenSource();
 
@@ -37,6 +44,8 @@ namespace AutoScrewing.Lib
         public async Task<string> Send(PLCItem item)
         {
             await SemaphoreSlim.WaitAsync();
+            LogModel Log = new LogModel(DateTime.Now, "PLC-Send", "PLC Controller Send", item.description, "SEND");
+            Log.Payload = JsonSerializer.Serialize(item);
             try
             {
                 using (var tcpClient = BuildTcpClient())
@@ -52,12 +61,18 @@ namespace AutoScrewing.Lib
 
                     string res = await GetMessage(tcpClient.GetStream());
                     Console.WriteLine($"Writing {item.command} with value {item.value} and result {res} {DateTime.Now.ToLongDateString()} | {item.description}");
+                    Log.Result = res;
+                    Log.Status = $"{Log.Status}-Success";
+                    await logRepository.RecordLog(Log);
                     SemaphoreSlim.Release();
                     return res;
                 }
             }
             catch (Exception e )
             {
+                Log.Result = e.Message + " | " + e.StackTrace;
+                Log.Status = $"{Log.Status}-Failed";
+                await logRepository.RecordLog(Log);
                 Console.Error.WriteLine(e.StackTrace);
                 Console.Error.WriteLine(e.Message);
                 SemaphoreSlim.Release();

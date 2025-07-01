@@ -5,5 +5,17 @@
     <Setting Name="PLC_TARGET" Type="System.String" Scope="User">
       <Value Profile="(Default)">192.168.0.10</Value>
     </Setting>
+    <Setting Name="DBCon" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Host=localhost;Username=autoscrewing_usr;Password=autoscrewing_usr;Database=autoscrewing</Value>
+    </Setting>
+    <Setting Name="MESH_URL" Type="System.String" Scope="User">
+      <Value Profile="(Default)">http://localhost</Value>
+    </Setting>
+    <Setting Name="OPERATION_ID" Type="System.String" Scope="User">
+      <Value Profile="(Default)">123</Value>
+    </Setting>
+    <Setting Name="OPERATION_USER" Type="System.String" Scope="User">
+      <Value Profile="(Default)">123</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

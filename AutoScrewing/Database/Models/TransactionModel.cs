@@ -15,6 +15,17 @@ namespace AutoScrewing.Database.Models
         public bool CameraResult { get; set; } = false;
         public bool Result { get; set; } = false;
         public bool IsError { get; set; } = false;
+        public string ScrewingTime { get; set; } = string.Empty;
+        public decimal ThreadCount { get; set; } = 0;
+        public string ErrorDesc { get; set; } = string.Empty;
         public DateTime TransactionTime { get; set; } = DateTime.Now;
+
+        public void AddError(string error)
+        {
+            IsError = true;
+            var data = ErrorDesc.Split(',').ToList();
+            data.Add(error);
+            ErrorDesc = string.Join(",",ErrorDesc);
+        }
     }
 }

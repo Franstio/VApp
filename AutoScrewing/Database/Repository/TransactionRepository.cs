@@ -1,20 +1,26 @@
 ﻿using AutoScrewing.Database.Models;
 using Dapper;
+using Microsoft.VisualBasic.Logging;
 using Npgsql;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace AutoScrewing.Database.Repository
 {
     public class TransactionRepository
     {
         public string CONNECTION_STRING { get; set; } = "";
+        public string Table_Name { get; set; } = "as_transaction";
+        private LogRepository logRepository = new LogRepository();
         public TransactionRepository()
         {
-
+            CONNECTION_STRING = Settings1.Default.DBCon;
         }
         async Task<NpgsqlConnection> GetConnection()
         {
@@ -22,21 +28,52 @@ namespace AutoScrewing.Database.Repository
             await conn.OpenAsync();
             return conn;
         }
-        public async Task CreateTransaction(TransactionModel model)
+        public async Task CreateTransaction(TransactionModel model, [CallerMemberName] string? methodName = null, [CallerFilePath] string? filePath = null, [CallerLineNumber] int lineNumber = 0)
         {
-            using (var conn =await GetConnection())
+            LogModel log = new LogModel("SQL", "Transaction Repository", $"Called by `{methodName}` in `{System.IO.Path.GetFileName(filePath)}` at line `{lineNumber}`", "Send");
+            log.Payload = JsonSerializer.Serialize(model);
+            try
             {
-                var transaction = await conn.ExecuteAsync(
-                    @"Insert into Transaction(Scan_ID,Torque,ScrewingResult,LaserResult,CameraResult,Result,IsError,TransactionTime)
-                    Values (@Scan_ID,@Torque,@ScrewingResult,@LasertResult,@CameraResult,@Result,@IsError,@TransactionTime)", model);
+                using (var conn = await GetConnection())
+                {
+                    var transaction = await conn.ExecuteAsync(
+                        $@"Insert into {Table_Name}(scan_id,torque,screwingResult,screwingtime,threadcount,laserresult,cameraresult,result,iserror,transactiontime,errordesc)
+                    Values (@Scan_ID,@Torque,@ScrewingResult,@LasertResult,@ScrewingTime,@ThreadCount,@CameraResult,@Result,@IsError,@TransactionTime,@ErrorDesc)", model);
+                    log.Result = JsonSerializer.Serialize (transaction);
+                    log.Status += "-Success";
+                }
+            }
+            catch (Exception e)
+            {
+                log.Result = JsonSerializer.Serialize($"{e.Message} - {e.StackTrace}");
+                log.Status += "-Failed";
+            }
+            finally
+            {
+                await logRepository.RecordLog(log);
             }
         }
-        public async Task<List<TransactionModel>> GetTransaction()
+        public async Task<List<TransactionModel>> GetTransaction([CallerMemberName] string? methodName = null, [CallerFilePath] string? filePath = null, [CallerLineNumber] int lineNumber = 0)
         {
-            using (var conn = await GetConnection())
+            LogModel log = new LogModel("SQL", "Transaction Repository", $"Called by `{methodName}` in `{System.IO.Path.GetFileName(filePath)}` at line `{lineNumber}`", "Send");
+            try
             {
-                var list = await conn.QueryAsync<TransactionModel>("Select Scan_ID,Torque,ScrewingResult,LaserResult,CameraResult,Result,IsError,TransactionTime From Transaction order by TransactionTime Desc");
-                return list.ToList();
+                using (var conn = await GetConnection())
+                {
+                    var list = await conn.QueryAsync<TransactionModel>($"Select scan_id,torque,screwingresult,screwingtime,threadcount,laserresult,cameraresult,result,iserror,transactiontime,errordesc From {Table_Name} order by TransactionTime Desc");
+                    log.Result = JsonSerializer.Serialize(list);
+                    log.Status += "-Success";
+                    await logRepository.RecordLog(log);
+                    return list.ToList();
+                }
+            }
+            catch (Exception e)
+            {
+
+                log.Result = JsonSerializer.Serialize($"{e.Message} - {e.StackTrace}");
+                log.Status += "-Failed";
+                await logRepository.RecordLog(log);
+                return [];
             }
         }
     }

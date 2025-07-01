@@ -34,5 +34,54 @@ namespace AutoScrewing {
                 this["PLC_TARGET"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Host=localhost;Username=autoscrewing_usr;Password=autoscrewing_usr;Database=autos" +
+            "crewing")]
+        public string DBCon {
+            get {
+                return ((string)(this["DBCon"]));
+            }
+            set {
+                this["DBCon"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://localhost")]
+        public string MESH_URL {
+            get {
+                return ((string)(this["MESH_URL"]));
+            }
+            set {
+                this["MESH_URL"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("123")]
+        public string OPERATION_ID {
+            get {
+                return ((string)(this["OPERATION_ID"]));
+            }
+            set {
+                this["OPERATION_ID"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("123")]
+        public string OPERATION_USER {
+            get {
+                return ((string)(this["OPERATION_USER"]));
+            }
+            set {
+                this["OPERATION_USER"] = value;
+            }
+        }
     }
 }
