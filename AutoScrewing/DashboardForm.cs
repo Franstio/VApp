@@ -28,7 +28,7 @@ namespace AutoScrewing
         Queue<TransactionModel> Items = new Queue<TransactionModel>();
         Barrier barrier = new Barrier(2);
         CancellationTokenSource cts = new CancellationTokenSource();
-        Queue<TransactionModel> 
+        Queue<TransactionModel>
             ScrewingQueue = new Queue<TransactionModel>(),
             LaserQueue = new Queue<TransactionModel>(),
             CameraQueue = new Queue<TransactionModel>();
@@ -66,7 +66,7 @@ namespace AutoScrewing
             //};
             //DashboardModel = data;
             Task.Run(() => ReadIncomingData());
-//            textBox1.Text = "test";
+            //            textBox1.Text = "test";
         }
 
         private async void SetDashbaordControl(DashboardModel model)
@@ -109,7 +109,7 @@ namespace AutoScrewing
                 {
                     item.AddError("Camera");
                 }
-                item.CameraResult = result; 
+                item.CameraResult = result;
                 await TransactionRepository.CreateTransaction(item);
             }
             return result;
@@ -235,6 +235,16 @@ namespace AutoScrewing
         private void timer1_Tick(object sender, EventArgs e)
         {
             timeLabel.Text = DateTime.Now.ToString("dd-MMM-yy HH:mm:ss");
+        }
+
+        private void textBox1_Enter(object sender, EventArgs e)
+        {
+            textBox1.Text = string.Empty;
+        }
+
+        private void textBox1_Leave(object sender, EventArgs e)
+        {
+            textBox1.Text = "Scan...";
         }
     }
 }

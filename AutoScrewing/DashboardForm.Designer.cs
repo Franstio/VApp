@@ -223,12 +223,13 @@
             textBox1.Font = new Font("Segoe UI", 18F);
             textBox1.Location = new Point(12, 29);
             textBox1.Name = "textBox1";
-            textBox1.ReadOnly = true;
             textBox1.Size = new Size(399, 39);
             textBox1.TabIndex = 5;
             textBox1.Text = "Scan";
             textBox1.TextAlign = HorizontalAlignment.Center;
             textBox1.TextChanged += textBox1_TextChanged;
+            textBox1.Enter += textBox1_Enter;
+            textBox1.Leave += textBox1_Leave;
             // 
             // timeLabel
             // 
