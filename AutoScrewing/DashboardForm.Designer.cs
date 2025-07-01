@@ -73,8 +73,8 @@
             // tableLayoutPanel1
             // 
             tableLayoutPanel1.ColumnCount = 3;
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 45F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
             tableLayoutPanel1.Controls.Add(screwingResultLabel, 2, 0);
             tableLayoutPanel1.Controls.Add(screwingTimeLabel, 1, 0);
@@ -90,9 +90,9 @@
             // screwingResultLabel
             // 
             screwingResultLabel.Dock = DockStyle.Fill;
-            screwingResultLabel.Location = new Point(381, 0);
+            screwingResultLabel.Location = new Point(380, 0);
             screwingResultLabel.Name = "screwingResultLabel";
-            screwingResultLabel.Size = new Size(120, 208);
+            screwingResultLabel.Size = new Size(121, 208);
             screwingResultLabel.TabIndex = 3;
             screwingResultLabel.Text = "OK/NG";
             screwingResultLabel.TextAlign = ContentAlignment.MiddleCenter;
@@ -100,9 +100,9 @@
             // screwingTimeLabel
             // 
             screwingTimeLabel.Dock = DockStyle.Fill;
-            screwingTimeLabel.Location = new Point(255, 0);
+            screwingTimeLabel.Location = new Point(229, 0);
             screwingTimeLabel.Name = "screwingTimeLabel";
-            screwingTimeLabel.Size = new Size(120, 208);
+            screwingTimeLabel.Size = new Size(145, 208);
             screwingTimeLabel.TabIndex = 2;
             screwingTimeLabel.Text = "OK/NG";
             screwingTimeLabel.TextAlign = ContentAlignment.MiddleCenter;
@@ -112,7 +112,7 @@
             torqueLabel.Dock = DockStyle.Fill;
             torqueLabel.Location = new Point(3, 0);
             torqueLabel.Name = "torqueLabel";
-            torqueLabel.Size = new Size(246, 208);
+            torqueLabel.Size = new Size(220, 208);
             torqueLabel.TabIndex = 1;
             torqueLabel.Text = "0N";
             torqueLabel.TextAlign = ContentAlignment.MiddleCenter;
