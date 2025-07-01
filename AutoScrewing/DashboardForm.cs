@@ -66,7 +66,7 @@ namespace AutoScrewing
             //};
             //DashboardModel = data;
             Task.Run(() => ReadIncomingData());
-            textBox1.Text = "test";
+//            textBox1.Text = "test";
         }
 
         private async void SetDashbaordControl(DashboardModel model)
