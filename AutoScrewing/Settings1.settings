@@ -20,5 +20,8 @@
     <Setting Name="Screwing_Port" Type="System.String" Scope="User">
       <Value Profile="(Default)">COM4</Value>
     </Setting>
+    <Setting Name="RunningPass" Type="System.String" Scope="User">
+      <Value Profile="(Default)">OPENRUN</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

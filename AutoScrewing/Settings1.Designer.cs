@@ -95,5 +95,17 @@ namespace AutoScrewing {
                 this["Screwing_Port"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("OPENRUN")]
+        public string RunningPass {
+            get {
+                return ((string)(this["RunningPass"]));
+            }
+            set {
+                this["RunningPass"] = value;
+            }
+        }
     }
 }

@@ -270,18 +270,18 @@ namespace AutoScrewing
         {
             if (e.KeyChar != '\r')
                 return;
-            if (textBox1.Text == "") return;
-            else if (textBox1.Text == "OPENRUN")
+            string scan = textBox1.Text;
+            textBox1.Clear();
+            if (scan == "") return;
+            else if (scan == Settings1.Default.RunningPass)
             {
                 new RunningQueue(this).Show();
                 return;
             }
-            textBox1.Text = textBox1.Text.Replace("SCAN", "");
+            scan = scan.Replace("SCAN", "");
             await Task.Delay(1000);
-            await meshController.Tracking(textBox1.Text);
-            ScrewingQueue.Enqueue(new OngoingItemModel() { Scan_ID = textBox1.Text, StartTime = DateTime.Now,CurrentStatus="Screwing" });
-            textBox1.Clear();
-
+            await meshController.Tracking(scan);
+            ScrewingQueue.Enqueue(new OngoingItemModel() { Scan_ID = scan, StartTime = DateTime.Now,CurrentStatus="Screwing" });
         }
 
         public interface IDashboardOngoingItems
