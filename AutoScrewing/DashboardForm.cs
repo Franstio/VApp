@@ -1,5 +1,6 @@
 ﻿using AutoScrewing.Database.Models;
 using AutoScrewing.Database.Repository;
+using AutoScrewing.Dialogue;
 using AutoScrewing.Lib;
 using AutoScrewing.Models;
 using System;
@@ -18,20 +19,28 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace AutoScrewing
 {
-    public partial class DashboardForm : Form
+    public partial class DashboardForm : Form, DashboardForm.IDashboardOngoingItems
     {
         private TransactionRepository TransactionRepository = new TransactionRepository();
         private KilewController kilewController = new KilewController();
         private PLCController plcController = new PLCController();
         private DashboardModel _dashboardmodel = new DashboardModel();
         private MESHController meshController = new MESHController();
-        Queue<TransactionModel> Items = new Queue<TransactionModel>();
-        Barrier barrier = new Barrier(2);
-        CancellationTokenSource cts = new CancellationTokenSource();
-        Queue<TransactionModel>
-            ScrewingQueue = new Queue<TransactionModel>(),
-            LaserQueue = new Queue<TransactionModel>(),
-            CameraQueue = new Queue<TransactionModel>();
+        SemaphoreSlim semaphore = new SemaphoreSlim(1);
+        Queue<OngoingItemModel>
+            ScrewingQueue = new Queue<OngoingItemModel>(),
+            LaserQueue = new Queue<OngoingItemModel>(),
+            CameraQueue = new Queue<OngoingItemModel>();
+
+        public async Task<List<OngoingItemModel>> GetOngoingItems()
+        {
+            await semaphore.WaitAsync();
+            List<Queue<OngoingItemModel>> a = [ScrewingQueue, LaserQueue, CameraQueue];
+            semaphore.Release();
+            return a.SelectMany(x => x).ToList();
+        }
+
+        private List<DashboardModel> listRunning = new List<DashboardModel>();
         private DashboardModel DashboardModel
         {
             get => _dashboardmodel; set
@@ -82,6 +91,7 @@ namespace AutoScrewing
         }
         private async Task<bool> ReadCamera()
         {
+            var startTime = DateTime.Now;
             PLCController.PLCItem[] cmd = [
                 new PLCController.PLCItem("RD", "MR310", -1, "Read For Reading Camera NG"),
                 new PLCController.PLCItem("RD", "MR311", -1, "Read For Reading Camera OK")
@@ -104,14 +114,18 @@ namespace AutoScrewing
             }
             if (CameraQueue.Count > 1)
             {
+                await semaphore.WaitAsync();
                 var item = CameraQueue.Dequeue();
-
+                item.CameraStartTime = startTime;
+                item.CameraEndTime = DateTime.Now;
                 if ((OK != "0" && OK != "0") && (NG != "0" && NG != "1"))
                 {
                     item.AddError("Camera");
                 }
                 item.CameraResult = result;
+                item.CurrentStatus = "Completed";
                 await TransactionRepository.CreateTransaction(item);
+                semaphore.Release();
             }
             return result;
         }
@@ -121,11 +135,6 @@ namespace AutoScrewing
             {
                 try
                 {
-                    if (cts.IsCancellationRequested)
-                    {
-                        barrier.SignalAndWait();
-                        continue;
-                    }
                     Task<DashboardModel> screwingTask = Task.Run(async () => await ReadingScrewing());
                     Task<bool> laserTask = Task.Run(async () => await ReadingLaser());
                     Task<bool> cameraTask = Task.Run(async () => await ReadCamera());
@@ -154,6 +163,7 @@ namespace AutoScrewing
                 Task.Run<string>(async () => await plcController.Send(cmd[0])),
                 Task.Run<string>(async () => await plcController.Send(cmd[1]))
             ];
+            var startTime = DateTime.Now;
             await Task.WhenAll(task);
             string OK = await task[1], NG = await task[0];
             bool result = false;
@@ -168,19 +178,25 @@ namespace AutoScrewing
             }
             if (LaserQueue.Count > 1)
             {
-                var item = LaserQueue.Dequeue();
 
+                await semaphore.WaitAsync();
+                var item = LaserQueue.Dequeue();
                 if ((OK != "0" && OK != "0") && (NG != "0" && NG != "1"))
                 {
                     item.AddError("Laser");
                 }
                 item.LaserResult = result;
+                item.LaserStartTime = startTime;
+                item.LaserEndTime = DateTime.Now;
+                item.CurrentStatus = "Camera";
                 CameraQueue.Enqueue(item);
+                semaphore.Release();
             }
             return result;
         }
         private async Task<DashboardModel> ReadingScrewing()
         {
+            var startTime = DateTime.Now;
             string res = await kilewController.Send("DATA100");
             string[] data = res.Split(",");
             if (data.Length < 28)
@@ -205,13 +221,18 @@ namespace AutoScrewing
 
                 if (ScrewingQueue.Count > 0)
                 {
+
+                    await semaphore.WaitAsync();
                     var item = ScrewingQueue.Dequeue();
                     item.Torque = model.Torque;
                     item.ScrewingResult = model.TighteningStatus.Contains("OK");
                     item.ScrewingTime = model.Time;
                     item.ThreadCount = model.Thread;
-                    await Task.Delay(1000);
+                    item.ScrewStartTime = startTime;
+                    item.ScrewEndTime = DateTime.Now;
+                    item.CurrentStatus = "Lasering";
                     LaserQueue.Enqueue(item);
+                    semaphore.Release();
                 }
             }
             else if (data[0].Replace("{", "").Contains("REQ100"))
@@ -226,12 +247,8 @@ namespace AutoScrewing
             }
             return model;
         }
-        private async void textBox1_TextChanged(object sender, EventArgs e)
+        private  void textBox1_TextChanged(object sender, EventArgs e)
         {
-            textBox1.Text = textBox1.Text.Replace("SCAN", "");
-            await Task.Delay(1000);
-            await meshController.Tracking(textBox1.Text);
-            ScrewingQueue.Enqueue(new TransactionModel() { Scan_ID = textBox1.Text });
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -247,6 +264,29 @@ namespace AutoScrewing
         private void textBox1_Leave(object sender, EventArgs e)
         {
             textBox1.Text = "Scan...";
+        }
+
+        private async void textBox1_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar != '\r')
+                return;
+            if (textBox1.Text == "") return;
+            else if (textBox1.Text == "OPENRUN")
+            {
+                new RunningQueue(this).Show();
+                return;
+            }
+            textBox1.Text = textBox1.Text.Replace("SCAN", "");
+            await Task.Delay(1000);
+            await meshController.Tracking(textBox1.Text);
+            ScrewingQueue.Enqueue(new OngoingItemModel() { Scan_ID = textBox1.Text, StartTime = DateTime.Now,CurrentStatus="Screwing" });
+            textBox1.Clear();
+
+        }
+
+        public interface IDashboardOngoingItems
+        {
+            Task<List<OngoingItemModel>> GetOngoingItems();
         }
     }
 }
