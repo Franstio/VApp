@@ -61,26 +61,28 @@ namespace AutoScrewing.Lib
                 LogModel log = new LogModel("HTTP", source, source, "SEND");
                 log.Payload = $"{request.Method} - {(request.Content is not null ? await request.Content.ReadAsStringAsync() : string.Empty)}";
                 LogRepository logrepo = new LogRepository();
-                HttpResponseMessage res;
-                try
+                HttpResponseMessage res = new HttpResponseMessage(System.Net.HttpStatusCode.InternalServerError);
+                for (int i = 0; i < 3;i++)
                 {
-                    res = await base.SendAsync(request, cancellationToken);
-                    res.EnsureSuccessStatusCode();
-                    log.Status += "-Success";
-                    log.Result = await res.Content.ReadAsStringAsync();
-                }
-                catch (HttpRequestException ex)
-                {
-                    log.Status += $"-Failed - {ex.StatusCode}";
-                    log.Result = $"{ex.Message} {ex.HttpRequestError}";
-                    res = new HttpResponseMessage(ex.StatusCode ?? System.Net.HttpStatusCode.InternalServerError);
-                }
-                catch (Exception ex)
-                {
-                    log.Status += "-Failed";
-                    log.Result = $"{ex.Message} {ex.StackTrace}";
-
-                    res = new HttpResponseMessage(System.Net.HttpStatusCode.InternalServerError);
+                    try
+                    {
+                        res = await base.SendAsync(request, cancellationToken);
+                        res.EnsureSuccessStatusCode();
+                        log.Status += "-Success";
+                        log.Result = await res.Content.ReadAsStringAsync();
+                        break;
+                    }
+                    catch (HttpRequestException ex)
+                    {
+                        log.Status += $"-Failed - {ex.StatusCode}";
+                        log.Result = $"{ex.Message} {ex.HttpRequestError}";
+                        res = new HttpResponseMessage(ex.StatusCode ?? System.Net.HttpStatusCode.InternalServerError);
+                    }
+                    catch (Exception ex)
+                    {
+                        log.Status += "-Failed";
+                        log.Result = $"{ex.Message} {ex.StackTrace}";
+                    }
                 }
                 await logrepo.RecordLog(log);
                 return res;
