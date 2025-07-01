@@ -234,7 +234,7 @@ namespace AutoScrewing
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            timeLabel.Text = DateTime.Now.ToString("dd-MMM-yy");
+            timeLabel.Text = DateTime.Now.ToString("dd-MMM-yy HH:mm:ss");
         }
     }
 }
