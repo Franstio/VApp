@@ -247,7 +247,7 @@ namespace AutoScrewing
             }
             return model;
         }
-        private  void textBox1_TextChanged(object sender, EventArgs e)
+        private void textBox1_TextChanged(object sender, EventArgs e)
         {
         }
 
@@ -258,30 +258,100 @@ namespace AutoScrewing
 
         private void textBox1_Enter(object sender, EventArgs e)
         {
-            textBox1.Text = string.Empty;
+            if (scan1Box.Text == "Scan 1")
+                scan1Box.Text = string.Empty;
         }
 
         private void textBox1_Leave(object sender, EventArgs e)
         {
-            textBox1.Text = "Scan...";
+            if (string.IsNullOrEmpty(scan1Box.Text))
+                scan1Box.Text = "Scan 1";
         }
 
         private async void textBox1_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar != '\r')
                 return;
-            string scan = textBox1.Text;
-            textBox1.Clear();
+            string scan = scan1Box.Text;
+            string scan2 = scan2Box.Text;
             if (scan == "") return;
             else if (scan == Settings1.Default.RunningPass)
             {
                 new RunningQueue(this).Show();
+                scan1Box.Clear();
                 return;
             }
-            scan = scan.Replace("SCAN", "");
-            await meshController.Tracking(scan);
-            await Task.Delay(1000);
-            ScrewingQueue.Enqueue(new OngoingItemModel() { Scan_ID = scan, StartTime = DateTime.Now,CurrentStatus="Screwing" });
+            if (string.IsNullOrEmpty(scan2Box.Text) || scan2 == "Scan 2")
+            {
+                scan2Box.Focus();
+            }
+            else
+            {
+                scan1Box.Clear();
+                scan2Box.Clear();
+                scan = scan.Replace("SCAN 1", "");
+                scan2 = scan2.Replace("SCAN 2", "");
+                await meshController.Tracking(scan);
+                await Task.Delay(1000);
+                ScrewingQueue.Enqueue(new OngoingItemModel() { Scan_ID = scan, Scan_ID2 = scan2, StartTime = DateTime.Now, CurrentStatus = "Screwing" });
+            }
+        }
+
+        private  void configToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (var frm = new LoginForm())
+            {
+                var result = frm.ShowDialog();
+                var usr = frm.GetLogin();
+                if (result == DialogResult.OK && usr != null)
+                {
+                    using (var cfg = new ConfigForm(usr))
+                    {
+                        cfg.ShowDialog();
+                    }
+                }
+            }
+        }
+
+        private async void scan2Box_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar != '\r')
+                return;
+            string scan = scan1Box.Text;
+            string scan2 = scan2Box.Text;
+            if (scan == "") return;
+            else if (scan2 == Settings1.Default.RunningPass)
+            {
+                new RunningQueue(this).Show();
+                scan2Box.Clear();
+                return;
+            }
+            if (string.IsNullOrEmpty(scan1Box.Text) || scan == "Scan 1")
+            {
+                scan1Box.Focus();
+            }
+            else
+            {
+                scan1Box.Clear();
+                scan2Box.Clear();
+                scan = scan.Replace("SCAN 1", "");
+                scan2 = scan2.Replace("SCAN 2", "");
+                await meshController.Tracking(scan);
+                await Task.Delay(1000);
+                ScrewingQueue.Enqueue(new OngoingItemModel() { Scan_ID = scan, Scan_ID2 = scan2, StartTime = DateTime.Now, CurrentStatus = "Screwing" });
+            }
+        }
+
+        private void scan2Box_Enter(object sender, EventArgs e)
+        {
+            if (scan2Box.Text == "Scan 2")
+                scan2Box.Text = string.Empty;
+        }
+
+        private void scan2Box_Leave(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(scan2Box.Text))
+                scan2Box.Text = "Scan 2";
         }
 
         public interface IDashboardOngoingItems

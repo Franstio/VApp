@@ -37,8 +37,8 @@ namespace AutoScrewing.Database.Repository
                 using (var conn = await GetConnection())
                 {
                     var transaction = await conn.ExecuteAsync(
-                        $@"Insert into {Table_Name}(scan_id,torque,screwingResult,screwingtime,threadcount,laserresult,cameraresult,result,iserror,transactiontime,errordesc)
-                    Values (@Scan_ID,@Torque,@ScrewingResult,@LasertResult,@ScrewingTime,@ThreadCount,@CameraResult,@Result,@IsError,@TransactionTime,@ErrorDesc)", model);
+                        $@"Insert into {Table_Name}(scan_id,scan_id2,torque,screwingResult,screwingtime,threadcount,laserresult,cameraresult,result,iserror,transactiontime,errordesc)
+                    Values (@Scan_ID,@Scan_ID2,@Torque,@ScrewingResult,@LasertResult,@ScrewingTime,@ThreadCount,@CameraResult,@Result,@IsError,@TransactionTime,@ErrorDesc)", model);
                     log.Result = JsonSerializer.Serialize (transaction);
                     log.Status += "-Success";
                 }
@@ -60,7 +60,7 @@ namespace AutoScrewing.Database.Repository
             {
                 using (var conn = await GetConnection())
                 {
-                    var list = await conn.QueryAsync<TransactionModel>($"Select scan_id,torque,screwingresult,screwingtime,threadcount,laserresult,cameraresult,result,iserror,transactiontime,errordesc From {Table_Name} order by TransactionTime Desc");
+                    var list = await conn.QueryAsync<TransactionModel>($"Select scan_id,scan_id2,torque,screwingresult,screwingtime,threadcount,laserresult,cameraresult,result,iserror,transactiontime,errordesc From {Table_Name} order by TransactionTime Desc");
                     log.Result = JsonSerializer.Serialize(list);
                     log.Status += "-Success";
                     await logRepository.RecordLog(log);

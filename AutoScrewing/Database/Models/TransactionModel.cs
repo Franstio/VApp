@@ -9,6 +9,7 @@ namespace AutoScrewing.Database.Models
     public class TransactionModel
     {
         public string Scan_ID { get; set; } = string.Empty;
+        public string Scan_ID2 { get; set; } = string.Empty;
         public decimal Torque { get; set; } = 0;
         public bool ScrewingResult { get; set; } = false;
         public bool LaserResult { get; set; } = false;

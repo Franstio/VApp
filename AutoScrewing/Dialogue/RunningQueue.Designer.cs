@@ -30,6 +30,7 @@
         {
             dataGridView1 = new DataGridView();
             Scan_ID = new DataGridViewTextBoxColumn();
+            Scan_ID2 = new DataGridViewTextBoxColumn();
             Status = new DataGridViewTextBoxColumn();
             StartTime = new DataGridViewTextBoxColumn();
             ScrewingStartTime = new DataGridViewTextBoxColumn();
@@ -48,12 +49,12 @@
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Columns.AddRange(new DataGridViewColumn[] { Scan_ID, Status, StartTime, ScrewingStartTime, ScrewingEndTime, LaserStartTime, LaserEndTime, CameraStartTime, CameraEndTime });
+            dataGridView1.Columns.AddRange(new DataGridViewColumn[] { Scan_ID, Scan_ID2, Status, StartTime, ScrewingStartTime, ScrewingEndTime, LaserStartTime, LaserEndTime, CameraStartTime, CameraEndTime });
             dataGridView1.Dock = DockStyle.Fill;
             dataGridView1.Location = new Point(0, 0);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.ReadOnly = true;
-            dataGridView1.Size = new Size(1319, 590);
+            dataGridView1.Size = new Size(1388, 590);
             dataGridView1.TabIndex = 0;
             // 
             // Scan_ID
@@ -61,6 +62,12 @@
             Scan_ID.HeaderText = "Scan_ID";
             Scan_ID.Name = "Scan_ID";
             Scan_ID.ReadOnly = true;
+            // 
+            // Scan_ID2
+            // 
+            Scan_ID2.HeaderText = "Scan ID 2";
+            Scan_ID2.Name = "Scan_ID2";
+            Scan_ID2.ReadOnly = true;
             // 
             // Status
             // 
@@ -114,7 +121,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1319, 590);
+            ClientSize = new Size(1388, 590);
             Controls.Add(dataGridView1);
             Name = "RunningQueue";
             Text = "RunningQueue";
@@ -127,6 +134,7 @@
 
         private DataGridView dataGridView1;
         private DataGridViewTextBoxColumn Scan_ID;
+        private DataGridViewTextBoxColumn Scan_ID2;
         private DataGridViewTextBoxColumn Status;
         private DataGridViewTextBoxColumn StartTime;
         private DataGridViewTextBoxColumn ScrewingStartTime;

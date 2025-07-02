@@ -35,7 +35,7 @@ namespace AutoScrewing.Dialogue
                     foreach (var item in ongoingItems)
                     {
                         await dataGridView1.InvokeAsync(() =>
-                        dataGridView1.Rows.Add([item.Scan_ID, item.CurrentStatus, item.StartTime, item.ScrewStartTime, item.ScrewEndTime, item.LaserStartTime, item.LaserEndTime, item.CameraStartTime, item.CameraEndTime])
+                        dataGridView1.Rows.Add([item.Scan_ID,item.Scan_ID2, item.CurrentStatus, item.StartTime, item.ScrewStartTime, item.ScrewEndTime, item.LaserStartTime, item.LaserEndTime, item.CameraStartTime, item.CameraEndTime])
                         );
                     }
                     await Task.Delay(500);
