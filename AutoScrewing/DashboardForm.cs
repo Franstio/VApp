@@ -33,6 +33,7 @@ namespace AutoScrewing
         private DashboardModel _dashboardmodel = new DashboardModel();
         private MESHController meshController = new MESHController();
         private LogRepository logRepository = new LogRepository();
+        private string CHECKSUM_SCREWING = "";
         SemaphoreSlim semaphore = new SemaphoreSlim(1);
         Queue<OngoingItemModel>
             ScrewingQueue = new Queue<OngoingItemModel>(),
@@ -260,9 +261,9 @@ namespace AutoScrewing
                 model.Torque = decimal.Parse(data[19]);
                 model.TorqueType = data[18].Replace("_", "");
 
-                if (ScrewingQueue.Count > 0)
+                if (ScrewingQueue.Count > 0 && data[7] != CHECKSUM_SCREWING)
                 {
-
+                    CHECKSUM_SCREWING = data[7];
                     await semaphore.WaitAsync();
                     var item = ScrewingQueue.Dequeue();
                     item.Torque = model.Torque;
