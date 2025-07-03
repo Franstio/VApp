@@ -342,7 +342,7 @@ namespace AutoScrewing
         private void runningQueueToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var frm = new RunningQueue(this);
-                frm.Show();
+            frm.Show();
         }
 
         public Task<IOStatusForm.IOStatus> GetStatus()
@@ -353,7 +353,13 @@ namespace AutoScrewing
         private void statusToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var frm = new IOStatusForm(this);
-                frm.Show();
+            frm.Show();
+        }
+
+        private void sampleToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (var frm = new SampleForm())
+                frm.ShowDialog();
         }
 
         public interface IDashboardOngoingItems

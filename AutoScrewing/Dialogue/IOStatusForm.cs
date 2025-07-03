@@ -32,15 +32,25 @@ namespace AutoScrewing.Dialogue
         {
             while (true)
             {
-                IOStatus status = await _api.GetStatus();
-                await InvokeAsync(() =>
+                try
                 {
-                    screwingstatus.ForeColor = status.screwing ? Color.Green : Color.Red;
-                    plcStatus.ForeColor = status.plc ? Color.Green : Color.Red;
-                    screwingstatus.Text = status.screwing ? "Active" : "Inactive";
-                    plcStatus.Text = status.plc ? "Active" : "Inactive";
-                });
-                await Task.Delay(1000);
+                    IOStatus status = await _api.GetStatus();
+                    await InvokeAsync(() =>
+                    {
+                        screwingstatus.ForeColor = status.screwing ? Color.Green : Color.Red;
+                        plcStatus.ForeColor = status.plc ? Color.Green : Color.Red;
+                        screwingstatus.Text = status.screwing ? "Active" : "Inactive";
+                        plcStatus.Text = status.plc ? "Active" : "Inactive";
+                    });
+                }
+                catch
+                {
+
+                }
+                finally
+                {
+                    await Task.Delay(1000);
+                }
             }
         }
     }

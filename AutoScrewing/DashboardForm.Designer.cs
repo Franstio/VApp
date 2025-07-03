@@ -51,8 +51,9 @@
             menuStrip1 = new MenuStrip();
             configToolStripMenuItem = new ToolStripMenuItem();
             runningQueueToolStripMenuItem = new ToolStripMenuItem();
-            inputFileWatcher = new FileSystemWatcher();
             statusToolStripMenuItem = new ToolStripMenuItem();
+            inputFileWatcher = new FileSystemWatcher();
+            sampleToolStripMenuItem = new ToolStripMenuItem();
             groupBox1.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
             groupBox2.SuspendLayout();
@@ -264,7 +265,7 @@
             // 
             // menuStrip1
             // 
-            menuStrip1.Items.AddRange(new ToolStripItem[] { configToolStripMenuItem, runningQueueToolStripMenuItem, statusToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { configToolStripMenuItem, runningQueueToolStripMenuItem, statusToolStripMenuItem, sampleToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(1350, 24);
@@ -285,6 +286,13 @@
             runningQueueToolStripMenuItem.Text = "Running Queue";
             runningQueueToolStripMenuItem.Click += runningQueueToolStripMenuItem_Click;
             // 
+            // statusToolStripMenuItem
+            // 
+            statusToolStripMenuItem.Name = "statusToolStripMenuItem";
+            statusToolStripMenuItem.Size = new Size(51, 20);
+            statusToolStripMenuItem.Text = "Status";
+            statusToolStripMenuItem.Click += statusToolStripMenuItem_Click;
+            // 
             // inputFileWatcher
             // 
             inputFileWatcher.EnableRaisingEvents = true;
@@ -292,12 +300,12 @@
             inputFileWatcher.SynchronizingObject = this;
             inputFileWatcher.Changed += inputFileWatcher_Changed;
             // 
-            // statusToolStripMenuItem
+            // sampleToolStripMenuItem
             // 
-            statusToolStripMenuItem.Name = "statusToolStripMenuItem";
-            statusToolStripMenuItem.Size = new Size(51, 20);
-            statusToolStripMenuItem.Text = "Status";
-            statusToolStripMenuItem.Click += statusToolStripMenuItem_Click;
+            sampleToolStripMenuItem.Name = "sampleToolStripMenuItem";
+            sampleToolStripMenuItem.Size = new Size(58, 20);
+            sampleToolStripMenuItem.Text = "Sample";
+            sampleToolStripMenuItem.Click += sampleToolStripMenuItem_Click;
             // 
             // DashboardForm
             // 
@@ -351,5 +359,6 @@
         private FileSystemWatcher inputFileWatcher;
         private ToolStripMenuItem runningQueueToolStripMenuItem;
         private ToolStripMenuItem statusToolStripMenuItem;
+        private ToolStripMenuItem sampleToolStripMenuItem;
     }
 }
