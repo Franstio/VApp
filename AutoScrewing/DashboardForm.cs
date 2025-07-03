@@ -103,28 +103,24 @@ namespace AutoScrewing
             await Task.WhenAll(task);
             string OK = await task[1], NG = await task[0];
             bool result = false;
-            if (NG == "0")
-            {
-                result = (OK == "1");
-
-            }
-            else if (OK == "0")
-            {
-                result = !(NG == "1");
-            }
-            if (CameraQueue.Count > 1)
+            bool check = OK == "0" && NG == "0";
+            result = !check && (OK == "1" && NG == "0");
+            if (CameraQueue.Count > 1 && !check)
             {
                 await semaphore.WaitAsync();
                 var item = CameraQueue.Dequeue();
                 item.CameraStartTime = startTime;
                 item.CameraEndTime = DateTime.Now;
-                if ((OK != "0" && OK != "0") && (NG != "0" && NG != "1"))
+                if ((OK != "0" && OK != "1") && (NG != "0" && NG != "1"))
                 {
                     item.AddError("Camera");
                 }
                 item.CameraResult = result;
                 item.CurrentStatus = "Completed";
                 await TransactionRepository.CreateTransaction(item);
+                await plcController.Send(new PLCController.PLCItem("WR", "MR1000", 1, "After Camera Read 0 ON"));
+                await Task.Delay(1000);
+                await plcController.Send(new PLCController.PLCItem("WR", "MR1000", 0, "After Camera Read - OFF"));
                 semaphore.Release();
             }
             return result;
@@ -166,17 +162,9 @@ namespace AutoScrewing
             var startTime = DateTime.Now;
             await Task.WhenAll(task);
             string OK = await task[1], NG = await task[0];
-            bool result = false;
-            if (NG == "0")
-            {
-                result = (OK == "1");
-
-            }
-            else if (OK == "0")
-            {
-                result = !(NG == "1");
-            }
-            if (LaserQueue.Count > 1)
+            bool check = OK == "0" && NG == "0";
+            bool result = !check && (OK == "1" && NG == "0");
+            if (LaserQueue.Count > 1 && !check)
             {
 
                 await semaphore.WaitAsync();
