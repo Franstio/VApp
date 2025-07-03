@@ -45,7 +45,7 @@ namespace AutoScrewing
             await semaphore.WaitAsync();
             List<Queue<OngoingItemModel>> a = [ScrewingQueue, LaserQueue, CameraQueue, FinalQueue];
             semaphore.Release();
-            return a.SelectMany(x => x).ToList();
+            return a.SelectMany(x => x).OrderByDescending(x=>x.TransactionTime).ToList();
         }
         private async Task LoadData()
         {
