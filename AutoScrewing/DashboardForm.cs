@@ -152,6 +152,8 @@ namespace AutoScrewing
             {
                 try
                 {
+                    inputFileWatcher.Path = Settings1.Default.Input_Path;
+                    inputFileWatcher.NotifyFilter = NotifyFilters.FileName;
                     bool check = FinalQueue.TryDequeue(out OngoingItemModel? item);
                     if (!check || item is null) continue;
                     string path = Settings1.Default.Output_Path;
