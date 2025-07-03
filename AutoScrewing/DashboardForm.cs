@@ -11,33 +11,52 @@ using System.Drawing;
 using System.IO.Ports;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Intrinsics.X86;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Nodes;
+using System.Text.Json.Serialization;
+using System.Text.Json.Serialization.Metadata;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
+using static System.Net.Mime.MediaTypeNames;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace AutoScrewing
 {
-    public partial class DashboardForm : Form, DashboardForm.IDashboardOngoingItems
+    public partial class DashboardForm : Form, DashboardForm.IDashboardOngoingItems, IOStatusForm.IOStatusAPI
     {
         private TransactionRepository TransactionRepository = new TransactionRepository();
         private KilewController kilewController = new KilewController();
         private PLCController plcController = new PLCController();
         private DashboardModel _dashboardmodel = new DashboardModel();
         private MESHController meshController = new MESHController();
+        private LogRepository logRepository = new LogRepository();
         SemaphoreSlim semaphore = new SemaphoreSlim(1);
         Queue<OngoingItemModel>
             ScrewingQueue = new Queue<OngoingItemModel>(),
             LaserQueue = new Queue<OngoingItemModel>(),
-            CameraQueue = new Queue<OngoingItemModel>();
+            CameraQueue = new Queue<OngoingItemModel>(),
+            FinalQueue = new Queue<OngoingItemModel>();
 
         public async Task<List<OngoingItemModel>> GetOngoingItems()
         {
             await semaphore.WaitAsync();
-            List<Queue<OngoingItemModel>> a = [ScrewingQueue, LaserQueue, CameraQueue];
+            List<Queue<OngoingItemModel>> a = [ScrewingQueue, LaserQueue, CameraQueue, FinalQueue];
             semaphore.Release();
             return a.SelectMany(x => x).ToList();
+        }
+        private async Task LoadData()
+        {
+            var list = await GetOngoingItems();
+            var data = list.Select(x => new object[] { x.Scan_ID, $"{x.TighteningStatus} {x.Torque}", x.LaserResult ? "OK" : "NG", x.CameraResult ? "OK" : "NG", x.FinalResult }).ToArray();
+            await InvokeAsync(() =>
+            {
+                dataGridView1.Rows.Clear();
+                foreach (var item in data)
+                    dataGridView1.Rows.Add(item);
+            });
         }
 
         private List<DashboardModel> listRunning = new List<DashboardModel>();
@@ -75,6 +94,7 @@ namespace AutoScrewing
             //};
             //DashboardModel = data;
             Task.Run(() => ReadIncomingData());
+            Task.Run(() => OutputTransaction());
             //            textBox1.Text = "test";
         }
 
@@ -116,14 +136,47 @@ namespace AutoScrewing
                     item.AddError("Camera");
                 }
                 item.CameraResult = result;
-                item.CurrentStatus = "Completed";
-                await TransactionRepository.CreateTransaction(item);
+                item.CurrentStatus = "Write output file";
+                FinalQueue.Enqueue(item);
                 await plcController.Send(new PLCController.PLCItem("WR", "MR1000", 1, "After Camera Read 0 ON"));
                 await Task.Delay(1000);
                 await plcController.Send(new PLCController.PLCItem("WR", "MR1000", 0, "After Camera Read - OFF"));
                 semaphore.Release();
             }
             return result;
+        }
+        private async Task OutputTransaction()
+        {
+            while (true)
+            {
+                try
+                {
+                    bool check = FinalQueue.TryDequeue(out OngoingItemModel? item);
+                    if (!check || item is null) continue;
+                    string path = Settings1.Default.Output_Path;
+                    DirectoryInfo directoryInfo = new DirectoryInfo(path);
+                    var files = directoryInfo.GetFiles();
+                    if (files.Length > 0)
+                    {
+                        LogModel log = new LogModel("Outputting Transaction", "Output Transaction function", "Folder not empty", "Failed");
+                        log.Result = $"File total: {files.Length} | {string.Join(",", files.Select(x => x.Name))}";
+                        await logRepository.RecordLog(log);
+                        continue;
+                    }
+                    item.FinalResult = item.ScrewingResult && item.LaserResult && item.CameraResult ? "OK" : "NG";
+                    item.CurrentStatus = "Completed";
+                    var payload = new { serialnumber = item.Scan_ID, status = item.FinalResult, data = (TransactionModel)item };
+                    await File.WriteAllTextAsync(Path.Combine(path, "OUTPUT.txt"), JsonSerializer.Serialize(payload));
+                    await TransactionRepository.CreateTransaction(item);
+
+                }
+                catch (Exception ex)
+                {
+                    LogModel log = new LogModel("Outputting Transaction", "Output Transaction function", "Exception handler for handling unexpected error in loop and continue the loop", "Failed");
+                    log.Result = $"{ex.Message} | {ex.StackTrace}";
+                    await logRepository.RecordLog(log);
+                }
+            }
         }
         private async Task ReadIncomingData()
         {
@@ -135,6 +188,7 @@ namespace AutoScrewing
                     Task<bool> laserTask = Task.Run(async () => await ReadingLaser());
                     Task<bool> cameraTask = Task.Run(async () => await ReadCamera());
                     await Task.WhenAll(screwingTask, laserTask);
+                    await LoadData();
                     DashboardModel model = await screwingTask;
                     model.LaserStatus = await laserTask;
                     model.CameraStatus = await cameraTask;
@@ -144,8 +198,7 @@ namespace AutoScrewing
                 {
                     LogModel log = new LogModel("Read Incoming Data", "ReadIncomingData function", "Exception handler for handling unexpected error in loop and continue the loop", "Failed");
                     log.Result = $"{ex.Message} | {ex.StackTrace}";
-                    LogRepository logrepo = new LogRepository();
-                    await logrepo.RecordLog(log);
+                    await logRepository.RecordLog(log);
                 }
             }
         }
@@ -213,6 +266,7 @@ namespace AutoScrewing
                     await semaphore.WaitAsync();
                     var item = ScrewingQueue.Dequeue();
                     item.Torque = model.Torque;
+                    item.TighteningStatus = model.TighteningStatus;
                     item.ScrewingResult = model.TighteningStatus.Contains("OK");
                     item.ScrewingTime = model.Time;
                     item.ThreadCount = model.Thread;
@@ -244,48 +298,8 @@ namespace AutoScrewing
             timeLabel.Text = DateTime.Now.ToString("dd-MMM-yy HH:mm:ss");
         }
 
-        private void textBox1_Enter(object sender, EventArgs e)
-        {
-            if (scan1Box.Text == "Scan 1")
-                scan1Box.Text = string.Empty;
-        }
 
-        private void textBox1_Leave(object sender, EventArgs e)
-        {
-            if (string.IsNullOrEmpty(scan1Box.Text))
-                scan1Box.Text = "Scan 1";
-        }
-
-        private async void textBox1_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (e.KeyChar != '\r')
-                return;
-            string scan = scan1Box.Text;
-            string scan2 = scan2Box.Text;
-            if (scan == "") return;
-            else if (scan == Settings1.Default.RunningPass)
-            {
-                new RunningQueue(this).Show();
-                scan1Box.Clear();
-                return;
-            }
-            if (string.IsNullOrEmpty(scan2Box.Text) || scan2 == "Scan 2")
-            {
-                scan2Box.Focus();
-            }
-            else
-            {
-                scan1Box.Clear();
-                scan2Box.Clear();
-                scan = scan.Replace("SCAN 1", "");
-                scan2 = scan2.Replace("SCAN 2", "");
-                await meshController.Tracking(scan);
-                await Task.Delay(1000);
-                ScrewingQueue.Enqueue(new OngoingItemModel() { Scan_ID = scan, Scan_ID2 = scan2, StartTime = DateTime.Now, CurrentStatus = "Screwing" });
-            }
-        }
-
-        private  void configToolStripMenuItem_Click(object sender, EventArgs e)
+        private void configToolStripMenuItem_Click(object sender, EventArgs e)
         {
             using (var frm = new LoginForm())
             {
@@ -301,45 +315,45 @@ namespace AutoScrewing
             }
         }
 
-        private async void scan2Box_KeyPress(object sender, KeyPressEventArgs e)
+
+
+
+        private async void inputFileWatcher_Changed(object sender, FileSystemEventArgs e)
         {
-            if (e.KeyChar != '\r')
-                return;
-            string scan = scan1Box.Text;
-            string scan2 = scan2Box.Text;
-            if (scan == "") return;
-            else if (scan2 == Settings1.Default.RunningPass)
+            try
             {
-                new RunningQueue(this).Show();
-                scan2Box.Clear();
-                return;
-            }
-            if (string.IsNullOrEmpty(scan1Box.Text) || scan == "Scan 1")
-            {
-                scan1Box.Focus();
-            }
-            else
-            {
-                scan1Box.Clear();
-                scan2Box.Clear();
-                scan = scan.Replace("SCAN 1", "");
-                scan2 = scan2.Replace("SCAN 2", "");
-                await meshController.Tracking(scan);
+                string text = File.ReadAllText(e.FullPath);
+                await logRepository.RecordLog(new LogModel("Input-File", "inputFileWatcher_Changed", "Reading input file from mesh", "Success") { Payload = e.FullPath, Result = text });
+                InputFileModel? input = JsonSerializer.Deserialize<InputFileModel>(text);
+                if (input is null)
+                    return;
+                string scan = input.serialnumber;
+                string scan2 = input.serialnumber;
+                File.Delete(e.FullPath);
                 await Task.Delay(1000);
                 ScrewingQueue.Enqueue(new OngoingItemModel() { Scan_ID = scan, Scan_ID2 = scan2, StartTime = DateTime.Now, CurrentStatus = "Screwing" });
             }
+            catch (Exception ex)
+            {
+                await logRepository.RecordLog(new LogModel("Input-File", "inputFileWatcher_Changed", "Reading input file from mesh", "Failed") { Payload = e.FullPath, Result = ex.Message + " | " + ex.StackTrace });
+            }
         }
 
-        private void scan2Box_Enter(object sender, EventArgs e)
+        private void runningQueueToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (scan2Box.Text == "Scan 2")
-                scan2Box.Text = string.Empty;
+            var frm = new RunningQueue(this);
+                frm.Show();
         }
 
-        private void scan2Box_Leave(object sender, EventArgs e)
+        public Task<IOStatusForm.IOStatus> GetStatus()
         {
-            if (string.IsNullOrEmpty(scan2Box.Text))
-                scan2Box.Text = "Scan 2";
+            return Task.FromResult(new IOStatusForm.IOStatus(kilewController.isActive, plcController.isActive));
+        }
+
+        private void statusToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var frm = new IOStatusForm(this);
+                frm.Show();
         }
 
         public interface IDashboardOngoingItems

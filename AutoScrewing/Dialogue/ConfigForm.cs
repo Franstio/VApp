@@ -29,9 +29,8 @@ namespace AutoScrewing.Dialogue
             await InvokeAsync(() =>
             {
                 plcBox.Text = Settings1.Default.PLC_TARGET;
-                meshUrlBox.Text = Settings1.Default.MESH_URL;
-                operationIDBox.Text = Settings1.Default.OPERATION_ID;
-                operationUserBox.Text = Settings1.Default.OPERATION_USER;
+                inputTextBox.Text = Settings1.Default.Input_Path;
+                outputBox.Text = Settings1.Default.Output_Path;
                 string[] ports = SerialPort.GetPortNames();
                 screwingBox.Items.AddRange(ports);
                 screwingBox.SelectedIndex = screwingBox.Items.IndexOf(Settings1.Default.Screwing_Port); ;
@@ -49,12 +48,29 @@ namespace AutoScrewing.Dialogue
 
         private async void button2_Click(object sender, EventArgs e)
         {
-            Settings1.Default.MESH_URL = meshUrlBox.Text;
-            Settings1.Default.OPERATION_ID = operationIDBox.Text;
-            Settings1.Default.OPERATION_USER = operationUserBox.Text;
+            Settings1.Default.Input_Path = inputTextBox.Text;
+            Settings1.Default.Output_Path= outputBox.Text;
             Settings1.Default.Save();
             Settings1.Default.Reload();
             await configRepository.LogLogin(_userConfigModel, "Mesh Config Updated");
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            var rst = inputfolderdialogue.ShowDialog();
+            if (rst == DialogResult.OK)
+            {
+                inputTextBox.Text = inputfolderdialogue.SelectedPath;
+            }
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            var rst = outputfolderdialogue.ShowDialog();
+            if (rst == DialogResult.OK)
+            {
+                outputBox.Text = outputfolderdialogue.SelectedPath;
+            }
         }
     }
 }

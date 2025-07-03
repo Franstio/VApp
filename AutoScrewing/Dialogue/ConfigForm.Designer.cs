@@ -35,14 +35,16 @@
             screwingBox = new ComboBox();
             label1 = new Label();
             groupBox2 = new GroupBox();
+            button4 = new Button();
+            button3 = new Button();
             button2 = new Button();
-            operationUserBox = new TextBox();
+            outputBox = new TextBox();
             label5 = new Label();
-            operationIDBox = new TextBox();
+            inputTextBox = new TextBox();
             label4 = new Label();
-            meshUrlBox = new TextBox();
-            label3 = new Label();
             tableLayoutPanel1 = new TableLayoutPanel();
+            inputfolderdialogue = new FolderBrowserDialog();
+            outputfolderdialogue = new FolderBrowserDialog();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
@@ -58,7 +60,7 @@
             groupBox1.Dock = DockStyle.Fill;
             groupBox1.Location = new Point(3, 3);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(397, 143);
+            groupBox1.Size = new Size(397, 144);
             groupBox1.TabIndex = 0;
             groupBox1.TabStop = false;
             groupBox1.Text = "I/O Configuration";
@@ -109,24 +111,44 @@
             // 
             // groupBox2
             // 
+            groupBox2.Controls.Add(button4);
+            groupBox2.Controls.Add(button3);
             groupBox2.Controls.Add(button2);
-            groupBox2.Controls.Add(operationUserBox);
+            groupBox2.Controls.Add(outputBox);
             groupBox2.Controls.Add(label5);
-            groupBox2.Controls.Add(operationIDBox);
+            groupBox2.Controls.Add(inputTextBox);
             groupBox2.Controls.Add(label4);
-            groupBox2.Controls.Add(meshUrlBox);
-            groupBox2.Controls.Add(label3);
             groupBox2.Dock = DockStyle.Fill;
-            groupBox2.Location = new Point(3, 152);
+            groupBox2.Location = new Point(3, 153);
             groupBox2.Name = "groupBox2";
             groupBox2.Size = new Size(397, 144);
             groupBox2.TabIndex = 1;
             groupBox2.TabStop = false;
             groupBox2.Text = "MESH Config";
             // 
+            // button4
+            // 
+            button4.Location = new Point(315, 61);
+            button4.Name = "button4";
+            button4.Size = new Size(53, 23);
+            button4.TabIndex = 11;
+            button4.Text = "...";
+            button4.UseVisualStyleBackColor = true;
+            button4.Click += button4_Click;
+            // 
+            // button3
+            // 
+            button3.Location = new Point(315, 28);
+            button3.Name = "button3";
+            button3.Size = new Size(53, 23);
+            button3.TabIndex = 10;
+            button3.Text = "...";
+            button3.UseVisualStyleBackColor = true;
+            button3.Click += button3_Click;
+            // 
             // button2
             // 
-            button2.Location = new Point(103, 109);
+            button2.Location = new Point(103, 87);
             button2.Name = "button2";
             button2.Size = new Size(75, 23);
             button2.TabIndex = 5;
@@ -134,53 +156,39 @@
             button2.UseVisualStyleBackColor = true;
             button2.Click += button2_Click;
             // 
-            // operationUserBox
+            // outputBox
             // 
-            operationUserBox.Location = new Point(103, 80);
-            operationUserBox.Name = "operationUserBox";
-            operationUserBox.Size = new Size(263, 23);
-            operationUserBox.TabIndex = 9;
+            outputBox.Location = new Point(103, 58);
+            outputBox.Name = "outputBox";
+            outputBox.ReadOnly = true;
+            outputBox.Size = new Size(206, 23);
+            outputBox.TabIndex = 9;
             // 
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(6, 83);
+            label5.Location = new Point(6, 61);
             label5.Name = "label5";
-            label5.Size = new Size(86, 15);
+            label5.Size = new Size(72, 15);
             label5.TabIndex = 8;
-            label5.Text = "Operation User";
+            label5.Text = "Output Path";
             // 
-            // operationIDBox
+            // inputTextBox
             // 
-            operationIDBox.Location = new Point(103, 51);
-            operationIDBox.Name = "operationIDBox";
-            operationIDBox.Size = new Size(263, 23);
-            operationIDBox.TabIndex = 7;
+            inputTextBox.Location = new Point(103, 29);
+            inputTextBox.Name = "inputTextBox";
+            inputTextBox.ReadOnly = true;
+            inputTextBox.Size = new Size(206, 23);
+            inputTextBox.TabIndex = 7;
             // 
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(6, 54);
+            label4.Location = new Point(9, 32);
             label4.Name = "label4";
-            label4.Size = new Size(74, 15);
+            label4.Size = new Size(62, 15);
             label4.TabIndex = 6;
-            label4.Text = "Operation ID";
-            // 
-            // meshUrlBox
-            // 
-            meshUrlBox.Location = new Point(103, 22);
-            meshUrlBox.Name = "meshUrlBox";
-            meshUrlBox.Size = new Size(263, 23);
-            meshUrlBox.TabIndex = 5;
-            // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.Location = new Point(6, 25);
-            label3.Name = "label3";
-            label3.Size = new Size(90, 15);
-            label3.TabIndex = 4;
-            label3.Text = "MESH Base URL";
+            label4.Text = "Input Path";
             // 
             // tableLayoutPanel1
             // 
@@ -194,14 +202,14 @@
             tableLayoutPanel1.RowCount = 2;
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel1.Size = new Size(403, 299);
+            tableLayoutPanel1.Size = new Size(403, 300);
             tableLayoutPanel1.TabIndex = 2;
             // 
             // ConfigForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(403, 299);
+            ClientSize = new Size(403, 300);
             Controls.Add(tableLayoutPanel1);
             Name = "ConfigForm";
             Text = "Config Form";
@@ -226,10 +234,14 @@
         private Label label4;
         private TextBox meshUrlBox;
         private Label label3;
-        private TextBox operationIDBox;
-        private TextBox operationUserBox;
+        private TextBox inputTextBox;
+        private TextBox outputBox;
         private Label label5;
         private Button button2;
         private TableLayoutPanel tableLayoutPanel1;
+        private Button button4;
+        private Button button3;
+        private FolderBrowserDialog inputfolderdialogue;
+        private FolderBrowserDialog outputfolderdialogue;
     }
 }

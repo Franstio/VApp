@@ -107,5 +107,29 @@ namespace AutoScrewing {
                 this["RunningPass"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Input_Path {
+            get {
+                return ((string)(this["Input_Path"]));
+            }
+            set {
+                this["Input_Path"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Output_Path {
+            get {
+                return ((string)(this["Output_Path"]));
+            }
+            set {
+                this["Output_Path"] = value;
+            }
+        }
     }
 }

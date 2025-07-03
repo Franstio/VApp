@@ -45,14 +45,14 @@
             Camera = new DataGridViewTextBoxColumn();
             Judgement = new DataGridViewTextBoxColumn();
             button1 = new Button();
-            scan1Box = new TextBox();
             timeLabel = new Label();
             tableLayoutPanel2 = new TableLayoutPanel();
             timer1 = new System.Windows.Forms.Timer(components);
             menuStrip1 = new MenuStrip();
             configToolStripMenuItem = new ToolStripMenuItem();
-            tableLayoutPanel3 = new TableLayoutPanel();
-            scan2Box = new TextBox();
+            runningQueueToolStripMenuItem = new ToolStripMenuItem();
+            inputFileWatcher = new FileSystemWatcher();
+            statusToolStripMenuItem = new ToolStripMenuItem();
             groupBox1.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
             groupBox2.SuspendLayout();
@@ -60,7 +60,7 @@
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             tableLayoutPanel2.SuspendLayout();
             menuStrip1.SuspendLayout();
-            tableLayoutPanel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)inputFileWatcher).BeginInit();
             SuspendLayout();
             // 
             // groupBox1
@@ -226,22 +226,6 @@
             button1.Text = "Home";
             button1.UseVisualStyleBackColor = true;
             // 
-            // scan1Box
-            // 
-            scan1Box.BorderStyle = BorderStyle.FixedSingle;
-            scan1Box.Dock = DockStyle.Fill;
-            scan1Box.Font = new Font("Segoe UI", 18F);
-            scan1Box.Location = new Point(3, 3);
-            scan1Box.Name = "scan1Box";
-            scan1Box.Size = new Size(395, 39);
-            scan1Box.TabIndex = 5;
-            scan1Box.Text = "Scan 1";
-            scan1Box.TextAlign = HorizontalAlignment.Center;
-            scan1Box.TextChanged += textBox1_TextChanged;
-            scan1Box.Enter += textBox1_Enter;
-            scan1Box.KeyPress += textBox1_KeyPress;
-            scan1Box.Leave += textBox1_Leave;
-            // 
             // timeLabel
             // 
             timeLabel.Anchor = AnchorStyles.Top | AnchorStyles.Right;
@@ -280,7 +264,7 @@
             // 
             // menuStrip1
             // 
-            menuStrip1.Items.AddRange(new ToolStripItem[] { configToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { configToolStripMenuItem, runningQueueToolStripMenuItem, statusToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(1350, 24);
@@ -294,41 +278,32 @@
             configToolStripMenuItem.Text = "Config";
             configToolStripMenuItem.Click += configToolStripMenuItem_Click;
             // 
-            // tableLayoutPanel3
+            // runningQueueToolStripMenuItem
             // 
-            tableLayoutPanel3.ColumnCount = 2;
-            tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tableLayoutPanel3.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tableLayoutPanel3.Controls.Add(scan2Box, 1, 0);
-            tableLayoutPanel3.Controls.Add(scan1Box, 0, 0);
-            tableLayoutPanel3.Location = new Point(12, 27);
-            tableLayoutPanel3.Name = "tableLayoutPanel3";
-            tableLayoutPanel3.RowCount = 1;
-            tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel3.Size = new Size(802, 44);
-            tableLayoutPanel3.TabIndex = 9;
+            runningQueueToolStripMenuItem.Name = "runningQueueToolStripMenuItem";
+            runningQueueToolStripMenuItem.Size = new Size(102, 20);
+            runningQueueToolStripMenuItem.Text = "Running Queue";
+            runningQueueToolStripMenuItem.Click += runningQueueToolStripMenuItem_Click;
             // 
-            // scan2Box
+            // inputFileWatcher
             // 
-            scan2Box.BorderStyle = BorderStyle.FixedSingle;
-            scan2Box.Dock = DockStyle.Fill;
-            scan2Box.Font = new Font("Segoe UI", 18F);
-            scan2Box.Location = new Point(404, 3);
-            scan2Box.Name = "scan2Box";
-            scan2Box.Size = new Size(395, 39);
-            scan2Box.TabIndex = 6;
-            scan2Box.Text = "Scan 2";
-            scan2Box.TextAlign = HorizontalAlignment.Center;
-            scan2Box.Enter += scan2Box_Enter;
-            scan2Box.KeyPress += scan2Box_KeyPress;
-            scan2Box.Leave += scan2Box_Leave;
+            inputFileWatcher.EnableRaisingEvents = true;
+            inputFileWatcher.NotifyFilter = NotifyFilters.FileName;
+            inputFileWatcher.SynchronizingObject = this;
+            inputFileWatcher.Changed += inputFileWatcher_Changed;
+            // 
+            // statusToolStripMenuItem
+            // 
+            statusToolStripMenuItem.Name = "statusToolStripMenuItem";
+            statusToolStripMenuItem.Size = new Size(51, 20);
+            statusToolStripMenuItem.Text = "Status";
+            statusToolStripMenuItem.Click += statusToolStripMenuItem_Click;
             // 
             // DashboardForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1350, 689);
-            Controls.Add(tableLayoutPanel3);
             Controls.Add(tableLayoutPanel2);
             Controls.Add(timeLabel);
             Controls.Add(button1);
@@ -345,8 +320,7 @@
             tableLayoutPanel2.ResumeLayout(false);
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
-            tableLayoutPanel3.ResumeLayout(false);
-            tableLayoutPanel3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)inputFileWatcher).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -368,14 +342,14 @@
         private DataGridViewTextBoxColumn Camera;
         private DataGridViewTextBoxColumn Judgement;
         private Button button1;
-        private TextBox scan1Box;
         private TableLayoutPanel tableLayoutPanel2;
         private Label timeLabel;
         private System.Windows.Forms.Timer timer1;
         private Label screwingResultLabel;
         private MenuStrip menuStrip1;
         private ToolStripMenuItem configToolStripMenuItem;
-        private TableLayoutPanel tableLayoutPanel3;
-        private TextBox scan2Box;
+        private FileSystemWatcher inputFileWatcher;
+        private ToolStripMenuItem runningQueueToolStripMenuItem;
+        private ToolStripMenuItem statusToolStripMenuItem;
     }
 }

@@ -21,7 +21,7 @@ namespace AutoScrewing.Lib
         private LogRepository logRepository = new LogRepository();
         public record PLCItem(string type,string command,int value,string description);
         private CancellationTokenSource cancelToken = new CancellationTokenSource();
-
+        public bool isActive { get; private set; } = false;
         private static SemaphoreSlim SemaphoreSlim = new SemaphoreSlim(1);
         public PLCController()
         {
@@ -64,6 +64,7 @@ namespace AutoScrewing.Lib
                     Log.Result = res;
                     Log.Status = $"{Log.Status}-Success";
                     await logRepository.RecordLog(Log);
+                    isActive = true;
                     SemaphoreSlim.Release();
                     return res;
                 }
@@ -75,6 +76,7 @@ namespace AutoScrewing.Lib
                 await logRepository.RecordLog(Log);
                 Console.Error.WriteLine(e.StackTrace);
                 Console.Error.WriteLine(e.Message);
+                isActive = false;   
                 SemaphoreSlim.Release();
                 return string.Empty;
             }

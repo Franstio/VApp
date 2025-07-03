@@ -16,6 +16,7 @@ namespace AutoScrewing.Lib
         SerialPort _client = new SerialPort();
         string baseAddress = "COM4";
         SemaphoreSlim semaphoreSlim = new SemaphoreSlim(1);
+        public bool isActive { get; private set; } = false;
         private LogRepository logRepository  = new LogRepository();
         public KilewController()
         {
@@ -63,6 +64,7 @@ namespace AutoScrewing.Lib
                     log.Result = text;
                     log.Status += "-Success";
                     await logRepository.RecordLog(log);
+                    isActive = true;
                     semaphoreSlim.Release();
                     return text;
                 }
@@ -71,6 +73,7 @@ namespace AutoScrewing.Lib
                     log.Result = e.Message + " | " + e.StackTrace;
                     log.Status += "-Failed";
                     await logRepository.RecordLog(log);
+                    isActive = false;
                     semaphoreSlim.Release();
                     return string.Empty;
                 }
@@ -79,6 +82,7 @@ namespace AutoScrewing.Lib
                     log.Result = e.Message + " | " + e.StackTrace;
                     log.Status += "-Failed";
                     await logRepository.RecordLog(log);
+                    isActive = false;
                     semaphoreSlim.Release();
                     return string.Empty;
                 }
