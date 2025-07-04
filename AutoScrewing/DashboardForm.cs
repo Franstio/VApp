@@ -138,9 +138,6 @@ namespace AutoScrewing
                 item.CameraResult = result;
                 item.CurrentStatus = "Write output file";
                 FinalQueue.Enqueue(item);
-                await plcController.Send(new PLCController.PLCItem("WR", "MR1000", 1, "After Camera Read 0 ON"));
-                await Task.Delay(1000);
-                await plcController.Send(new PLCController.PLCItem("WR", "MR1000", 0, "After Camera Read - OFF"));
                 semaphore.Release();
             }
             return result;
@@ -167,6 +164,9 @@ namespace AutoScrewing
                     }
                     item.FinalResult = item.ScrewingResult && item.LaserResult && item.CameraResult ? "OK" : "NG";
                     item.CurrentStatus = "Completed";
+                    await plcController.Send(new PLCController.PLCItem("WR", "MR1000", 1, "After Camera Read 0 ON"));
+                    await Task.Delay(1000);
+                    await plcController.Send(new PLCController.PLCItem("WR", "MR1000", 0, "After Camera Read - OFF"));
                     var payload = new { serialnumber = item.Scan_ID, status = item.FinalResult, data = (TransactionModel)item };
                     await File.WriteAllTextAsync(Path.Combine(path, "OUTPUT.txt"), JsonSerializer.Serialize(payload));
                     await TransactionRepository.CreateTransaction(item);
@@ -333,10 +333,11 @@ namespace AutoScrewing
                 string scan = input.serialnumber;
                 string scan2 = input.serialnumber;
                 File.Delete(e.FullPath);
-                await Task.Delay(1000);
                 if (input.status == "OK")
                 {
-                    await plcController.Send(new PLCController.PLCItem("WR", "MR810", 1, "Starting Transaction"));
+                    await plcController.Send(new PLCController.PLCItem("WR", "MR810", 1, "Starting Transaction - ON"));
+                    await Task.Delay(3000);
+                    await plcController.Send(new PLCController.PLCItem("WR", "MR810", 0, "Starting Transaction - OFF"));
                     ScrewingQueue.Enqueue(new OngoingItemModel() { Scan_ID = scan, Scan_ID2 = scan2, StartTime = DateTime.Now, CurrentStatus = "Screwing" });
                 }
             }
