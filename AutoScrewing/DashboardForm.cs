@@ -341,7 +341,7 @@ namespace AutoScrewing
                 string scan = input.serialnumber;
                 string scan2 = data[1];
                 File.Delete(e.FullPath);
-                if (input.status == "OK" || input.status == "PASS")
+                if (input.status == "OK" || input.status.Contains( "PASS"))
                 {
                     await plcController.Send(new PLCController.PLCItem("WR", "MR811", 1, "Starting Transaction - ON"));
                     await Task.Delay(3000);
