@@ -336,7 +336,7 @@ namespace AutoScrewing
                 await Task.Delay(1000);
                 if (input.status == "OK")
                 {
-                    await plcController.Send(new PLCController.PLCItem("WR", "MR900", 1, "Starting Transaction"));
+                    await plcController.Send(new PLCController.PLCItem("WR", "MR810", 1, "Starting Transaction"));
                     ScrewingQueue.Enqueue(new OngoingItemModel() { Scan_ID = scan, Scan_ID2 = scan2, StartTime = DateTime.Now, CurrentStatus = "Screwing" });
                 }
             }
