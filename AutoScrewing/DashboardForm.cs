@@ -328,6 +328,7 @@ namespace AutoScrewing
 
         private async void inputFileWatcher_Changed(object sender, FileSystemEventArgs e)
         {
+            await Task.Delay(1000);
             string text = File.ReadAllText(e.FullPath);
             try
             {
