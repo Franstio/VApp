@@ -137,6 +137,13 @@ namespace AutoScrewing
                 }
                 item.CameraResult = result;
                 item.CurrentStatus = "Write output file";
+                item.FinalResult = item.ScrewingResult && item.LaserResult && item.CameraResult ? "OK" : "NG";
+                if (item.FinalResult == "NG")
+                {
+                    await plcController.Send(new PLCController.PLCItem("WR", "MR1000", 1, "After Camera Read 0 ON"));
+                    await Task.Delay(1000);
+                    await plcController.Send(new PLCController.PLCItem("WR", "MR1000", 0, "After Camera Read - OFF"));
+                }
                 FinalQueue.Enqueue(item);
                 semaphore.Release();
             }
@@ -164,9 +171,6 @@ namespace AutoScrewing
                     }
                     item.FinalResult = item.ScrewingResult && item.LaserResult && item.CameraResult ? "OK" : "NG";
                     item.CurrentStatus = "Completed";
-                    await plcController.Send(new PLCController.PLCItem("WR", "MR1000", 1, "After Camera Read 0 ON"));
-                    await Task.Delay(1000);
-                    await plcController.Send(new PLCController.PLCItem("WR", "MR1000", 0, "After Camera Read - OFF"));
                     var payload = new { serialnumber = item.Scan_ID, status = item.FinalResult, data = (TransactionModel)item };
                     await File.WriteAllTextAsync(Path.Combine(path, "OUTPUT.txt"), JsonSerializer.Serialize(payload));
                     await TransactionRepository.CreateTransaction(item);
