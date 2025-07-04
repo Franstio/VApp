@@ -332,13 +332,15 @@ namespace AutoScrewing
             try
             {
                 await logRepository.RecordLog(new LogModel("Input-File", "inputFileWatcher_Changed", "Reading input file from mesh", "Success") { payload = e.FullPath, result = text });
-                InputFileModel? input = JsonSerializer.Deserialize<InputFileModel>(text);
+                //                InputFileModel? input = JsonSerializer.Deserialize<InputFileModel>(text);
+                string[] data = text.Split(':');
+                InputFileModel input = new InputFileModel(data[0], data[1]);
                 if (input is null)
                     return;
                 string scan = input.serialnumber;
                 string scan2 = input.serialnumber;
                 File.Delete(e.FullPath);
-                if (input.status == "OK")
+                if (input.status == "OK" || input.status == "PASS")
                 {
                     await plcController.Send(new PLCController.PLCItem("WR", "MR811", 1, "Starting Transaction - ON"));
                     await Task.Delay(3000);
