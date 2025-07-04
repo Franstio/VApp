@@ -333,9 +333,12 @@ namespace AutoScrewing
                 string scan = input.serialnumber;
                 string scan2 = input.serialnumber;
                 File.Delete(e.FullPath);
-//                await plcController.Send(new PLCController.PLCItem("WR", "MR900", 1, "Starting Transaction"));
                 await Task.Delay(1000);
-                ScrewingQueue.Enqueue(new OngoingItemModel() { Scan_ID = scan, Scan_ID2 = scan2, StartTime = DateTime.Now, CurrentStatus = "Screwing" });
+                if (input.status == "OK")
+                {
+                    await plcController.Send(new PLCController.PLCItem("WR", "MR900", 1, "Starting Transaction"));
+                    ScrewingQueue.Enqueue(new OngoingItemModel() { Scan_ID = scan, Scan_ID2 = scan2, StartTime = DateTime.Now, CurrentStatus = "Screwing" });
+                }
             }
             catch (Exception ex)
             {
