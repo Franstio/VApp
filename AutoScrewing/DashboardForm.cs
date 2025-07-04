@@ -340,9 +340,9 @@ namespace AutoScrewing
                 File.Delete(e.FullPath);
                 if (input.status == "OK")
                 {
-                    await plcController.Send(new PLCController.PLCItem("WR", "MR810", 1, "Starting Transaction - ON"));
+                    await plcController.Send(new PLCController.PLCItem("WR", "MR811", 1, "Starting Transaction - ON"));
                     await Task.Delay(3000);
-                    await plcController.Send(new PLCController.PLCItem("WR", "MR810", 0, "Starting Transaction - OFF"));
+                    await plcController.Send(new PLCController.PLCItem("WR", "MR811", 0, "Starting Transaction - OFF"));
                     ScrewingQueue.Enqueue(new OngoingItemModel() { Scan_ID = scan, Scan_ID2 = scan2, StartTime = DateTime.Now, CurrentStatus = "Screwing" });
                 }
             }
