@@ -335,11 +335,11 @@ namespace AutoScrewing
                 await logRepository.RecordLog(new LogModel("Input-File", "inputFileWatcher_Changed", "Reading input file from mesh", "Success") { payload = e.FullPath, result = text });
                 //                InputFileModel? input = JsonSerializer.Deserialize<InputFileModel>(text);
                 string[] data = text.Split(':');
-                InputFileModel input = new InputFileModel(data[0], data[1]);
+                InputFileModel input = new InputFileModel(data[0], data[2]);
                 if (input is null)
                     return;
                 string scan = input.serialnumber;
-                string scan2 = input.serialnumber;
+                string scan2 = data[1];
                 File.Delete(e.FullPath);
                 if (input.status == "OK" || input.status == "PASS")
                 {
