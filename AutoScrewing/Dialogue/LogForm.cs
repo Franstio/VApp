@@ -29,7 +29,10 @@ namespace AutoScrewing.Dialogue
             {
                 var logtype = await logRepository.GetLogType();
                 await InvokeAsync(() =>
-                    logTypeBox.Items.AddRange(logtype.ToArray()));
+                {
+                    logTypeBox.Items.Clear();
+                    logTypeBox.Items.AddRange(logtype.ToArray());
+                });
             }
             catch { }
         }
