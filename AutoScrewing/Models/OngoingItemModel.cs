@@ -16,6 +16,7 @@ namespace AutoScrewing.Models
         public DateTime? LaserEndTime { get; set; }
         public DateTime? CameraStartTime { get; set; }
         public DateTime? CameraEndTime { get; set; }
+        public string CHECKSUM { get; set; } = string.Empty;
         public string CurrentStatus { get; set; } = string.Empty;
     }
 }

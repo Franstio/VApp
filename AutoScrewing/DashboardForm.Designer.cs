@@ -53,8 +53,8 @@
             runningQueueToolStripMenuItem = new ToolStripMenuItem();
             statusToolStripMenuItem = new ToolStripMenuItem();
             sampleToolStripMenuItem = new ToolStripMenuItem();
-            inputFileWatcher = new FileSystemWatcher();
             logToolStripMenuItem = new ToolStripMenuItem();
+            inputFileWatcher = new FileSystemWatcher();
             groupBox1.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
             groupBox2.SuspendLayout();
@@ -301,19 +301,19 @@
             sampleToolStripMenuItem.Text = "Sample";
             sampleToolStripMenuItem.Click += sampleToolStripMenuItem_Click;
             // 
-            // inputFileWatcher
-            // 
-            inputFileWatcher.EnableRaisingEvents = true;
-            inputFileWatcher.NotifyFilter = NotifyFilters.FileName;
-            inputFileWatcher.SynchronizingObject = this;
-            inputFileWatcher.Changed += inputFileWatcher_Changed;
-            // 
             // logToolStripMenuItem
             // 
             logToolStripMenuItem.Name = "logToolStripMenuItem";
             logToolStripMenuItem.Size = new Size(39, 20);
             logToolStripMenuItem.Text = "Log";
             logToolStripMenuItem.Click += logToolStripMenuItem_Click;
+            // 
+            // inputFileWatcher
+            // 
+            inputFileWatcher.EnableRaisingEvents = true;
+            inputFileWatcher.NotifyFilter = NotifyFilters.FileName;
+            inputFileWatcher.SynchronizingObject = this;
+            inputFileWatcher.Created += inputFileWatcher_Changed;
             // 
             // DashboardForm
             // 

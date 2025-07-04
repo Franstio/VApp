@@ -39,6 +39,7 @@
             LaserEndTime = new DataGridViewTextBoxColumn();
             CameraStartTime = new DataGridViewTextBoxColumn();
             CameraEndTime = new DataGridViewTextBoxColumn();
+            CHECKSUM = new DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             SuspendLayout();
             // 
@@ -49,12 +50,12 @@
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Columns.AddRange(new DataGridViewColumn[] { Scan_ID, Scan_ID2, Status, StartTime, ScrewingStartTime, ScrewingEndTime, LaserStartTime, LaserEndTime, CameraStartTime, CameraEndTime });
+            dataGridView1.Columns.AddRange(new DataGridViewColumn[] { Scan_ID, Scan_ID2, Status, StartTime, ScrewingStartTime, ScrewingEndTime, LaserStartTime, LaserEndTime, CameraStartTime, CameraEndTime, CHECKSUM });
             dataGridView1.Dock = DockStyle.Fill;
             dataGridView1.Location = new Point(0, 0);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.ReadOnly = true;
-            dataGridView1.Size = new Size(1388, 590);
+            dataGridView1.Size = new Size(1401, 590);
             dataGridView1.TabIndex = 0;
             // 
             // Scan_ID
@@ -117,11 +118,17 @@
             CameraEndTime.Name = "CameraEndTime";
             CameraEndTime.ReadOnly = true;
             // 
+            // CHECKSUM
+            // 
+            CHECKSUM.HeaderText = "Checksum";
+            CHECKSUM.Name = "CHECKSUM";
+            CHECKSUM.ReadOnly = true;
+            // 
             // RunningQueue
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1388, 590);
+            ClientSize = new Size(1401, 590);
             Controls.Add(dataGridView1);
             Name = "RunningQueue";
             Text = "RunningQueue";
@@ -143,5 +150,6 @@
         private DataGridViewTextBoxColumn LaserEndTime;
         private DataGridViewTextBoxColumn CameraStartTime;
         private DataGridViewTextBoxColumn CameraEndTime;
+        private DataGridViewTextBoxColumn CHECKSUM;
     }
 }

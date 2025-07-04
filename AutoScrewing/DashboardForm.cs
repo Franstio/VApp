@@ -275,6 +275,7 @@ namespace AutoScrewing
                     item.ScrewStartTime = startTime;
                     item.ScrewEndTime = DateTime.Now;
                     item.CurrentStatus = "Lasering";
+                    item.CHECKSUM = CHECKSUM_SCREWING;
                     LaserQueue.Enqueue(item);
                     semaphore.Release();
                 }
@@ -322,9 +323,9 @@ namespace AutoScrewing
 
         private async void inputFileWatcher_Changed(object sender, FileSystemEventArgs e)
         {
+            string text = File.ReadAllText(e.FullPath);
             try
             {
-                string text = File.ReadAllText(e.FullPath);
                 await logRepository.RecordLog(new LogModel("Input-File", "inputFileWatcher_Changed", "Reading input file from mesh", "Success") { payload = e.FullPath, result = text });
                 InputFileModel? input = JsonSerializer.Deserialize<InputFileModel>(text);
                 if (input is null)
@@ -332,7 +333,7 @@ namespace AutoScrewing
                 string scan = input.serialnumber;
                 string scan2 = input.serialnumber;
                 File.Delete(e.FullPath);
-                await plcController.Send(new PLCController.PLCItem("WR", "MR900", 1, "Starting Transaction"));
+//                await plcController.Send(new PLCController.PLCItem("WR", "MR900", 1, "Starting Transaction"));
                 await Task.Delay(1000);
                 ScrewingQueue.Enqueue(new OngoingItemModel() { Scan_ID = scan, Scan_ID2 = scan2, StartTime = DateTime.Now, CurrentStatus = "Screwing" });
             }
