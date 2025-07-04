@@ -25,21 +25,32 @@ namespace AutoScrewing.Dialogue
         async Task LoadLogType()
         {
 
-            var logtype = await logRepository.GetLogType();
-            await InvokeAsync(() =>
-                logTypeBox.Items.AddRange(logtype.ToArray()));
+            try
+            {
+                var logtype = await logRepository.GetLogType();
+                await InvokeAsync(() =>
+                    logTypeBox.Items.AddRange(logtype.ToArray()));
+            }
         }
         private async Task LoadData()
         {
             await LoadLogType();
             var data = await logRepository.GetLog(logTypeBox.Text, searchBox.Text, fromBox.Value, toBox.Value);
             logData = data.ToList();
-            await InvokeAsync(() =>
+            try
             {
-                dataGridView1.DataSource = null;
-                dataGridView1.DataSource = data;
-                dataGridView1.Refresh();
-            });
+
+                await InvokeAsync(() =>
+                {
+                    dataGridView1.DataSource = null;
+                    dataGridView1.DataSource = data;
+                    dataGridView1.Refresh();
+                });
+            }
+            catch
+            {
+                
+            }
         }
 
         private async void LogForm_Load(object sender, EventArgs e)
