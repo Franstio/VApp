@@ -31,6 +31,7 @@ namespace AutoScrewing.Dialogue
                 await InvokeAsync(() =>
                     logTypeBox.Items.AddRange(logtype.ToArray()));
             }
+            catch { }
         }
         private async Task LoadData()
         {
