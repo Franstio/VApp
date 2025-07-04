@@ -22,14 +22,20 @@ namespace AutoScrewing.Dialogue
         {
             InitializeComponent();
         }
+        async Task LoadLogType()
+        {
+
+            var logtype = await logRepository.GetLogType();
+            await InvokeAsync(() =>
+                logTypeBox.Items.AddRange(logtype.ToArray()));
+        }
         private async Task LoadData()
         {
-            var logtype = await logRepository.GetLogType();
+            await LoadLogType();
             var data = await logRepository.GetLog(logTypeBox.Text, searchBox.Text, fromBox.Value, toBox.Value);
             logData = data.ToList();
             await InvokeAsync(() =>
             {
-                logTypeBox.Items.AddRange(logtype.ToArray());
                 dataGridView1.DataSource = null;
                 dataGridView1.DataSource = data;
                 dataGridView1.Refresh();
@@ -38,7 +44,7 @@ namespace AutoScrewing.Dialogue
 
         private async void LogForm_Load(object sender, EventArgs e)
         {
-            await LoadData();
+            await LoadLogType();
         }
 
         private async void logTypeBox_SelectedValueChanged(object sender, EventArgs e)
