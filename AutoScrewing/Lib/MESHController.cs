@@ -59,7 +59,7 @@ namespace AutoScrewing.Lib
                     request.Headers.Remove("X-SOURCE");
                 }
                 LogModel log = new LogModel("HTTP", source, source, "SEND");
-                log.Payload = $"{request.Method} - {(request.Content is not null ? await request.Content.ReadAsStringAsync() : string.Empty)}";
+                log.payload = $"{request.Method} - {(request.Content is not null ? await request.Content.ReadAsStringAsync() : string.Empty)}";
                 LogRepository logrepo = new LogRepository();
                 HttpResponseMessage res = new HttpResponseMessage(System.Net.HttpStatusCode.InternalServerError);
                 for (int i = 0; i < 3;i++)
@@ -68,20 +68,20 @@ namespace AutoScrewing.Lib
                     {
                         res = await base.SendAsync(request, cancellationToken);
                         res.EnsureSuccessStatusCode();
-                        log.Status += "-Success";
-                        log.Result = await res.Content.ReadAsStringAsync();
+                        log.status += "-Success";
+                        log.result = await res.Content.ReadAsStringAsync();
                         break;
                     }
                     catch (HttpRequestException ex)
                     {
-                        log.Status += $"-Failed - {ex.StatusCode}";
-                        log.Result = $"{ex.Message} {ex.HttpRequestError}";
+                        log.status += $"-Failed - {ex.StatusCode}";
+                        log.result = $"{ex.Message} {ex.HttpRequestError}";
                         res = new HttpResponseMessage(ex.StatusCode ?? System.Net.HttpStatusCode.InternalServerError);
                     }
                     catch (Exception ex)
                     {
-                        log.Status += "-Failed";
-                        log.Result = $"{ex.Message} {ex.StackTrace}";
+                        log.status += "-Failed";
+                        log.result = $"{ex.Message} {ex.StackTrace}";
                     }
                 }
                 await logrepo.RecordLog(log);

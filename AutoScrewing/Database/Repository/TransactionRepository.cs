@@ -31,7 +31,7 @@ namespace AutoScrewing.Database.Repository
         public async Task CreateTransaction(TransactionModel model, [CallerMemberName] string? methodName = null, [CallerFilePath] string? filePath = null, [CallerLineNumber] int lineNumber = 0)
         {
             LogModel log = new LogModel("SQL", "Transaction Repository", $"Called by `{methodName}` in `{System.IO.Path.GetFileName(filePath)}` at line `{lineNumber}`", "Send");
-            log.Payload = JsonSerializer.Serialize(model);
+            log.payload = JsonSerializer.Serialize(model);
             try
             {
                 using (var conn = await GetConnection())
@@ -39,14 +39,14 @@ namespace AutoScrewing.Database.Repository
                     var transaction = await conn.ExecuteAsync(
                         $@"Insert into {Table_Name}(scan_id,scan_id2,torque,screwingResult,screwingtime,threadcount,laserresult,cameraresult,result,iserror,transactiontime,errordesc,finalresult,tighteningstatus)
                     Values (@Scan_ID,@Scan_ID2,@Torque,@ScrewingResult,@LasertResult,@ScrewingTime,@ThreadCount,@CameraResult,@Result,@IsError,@TransactionTime,@ErrorDesc,@FinalResult,@TighteningStatus)", model);
-                    log.Result = JsonSerializer.Serialize (transaction);
-                    log.Status += "-Success";
+                    log.result = JsonSerializer.Serialize (transaction);
+                    log.status += "-Success";
                 }
             }
             catch (Exception e)
             {
-                log.Result = JsonSerializer.Serialize($"{e.Message} - {e.StackTrace}");
-                log.Status += "-Failed";
+                log.result = JsonSerializer.Serialize($"{e.Message} - {e.StackTrace}");
+                log.status += "-Failed";
             }
             finally
             {
@@ -61,8 +61,8 @@ namespace AutoScrewing.Database.Repository
                 using (var conn = await GetConnection())
                 {
                     var list = await conn.QueryAsync<TransactionModel>($"Select scan_id,scan_id2,torque,screwingresult,screwingtime,threadcount,laserresult,cameraresult,result,iserror,transactiontime,errordesc,finalresult,tighteningstatus From {Table_Name} order by TransactionTime Desc");
-                    log.Result = JsonSerializer.Serialize(list);
-                    log.Status += "-Success";
+                    log.result = JsonSerializer.Serialize(list);
+                    log.status += "-Success";
                     await logRepository.RecordLog(log);
                     return list.ToList();
                 }
@@ -70,8 +70,8 @@ namespace AutoScrewing.Database.Repository
             catch (Exception e)
             {
 
-                log.Result = JsonSerializer.Serialize($"{e.Message} - {e.StackTrace}");
-                log.Status += "-Failed";
+                log.result = JsonSerializer.Serialize($"{e.Message} - {e.StackTrace}");
+                log.status += "-Failed";
                 await logRepository.RecordLog(log);
                 return [];
             }

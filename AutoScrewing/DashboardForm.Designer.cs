@@ -52,8 +52,9 @@
             configToolStripMenuItem = new ToolStripMenuItem();
             runningQueueToolStripMenuItem = new ToolStripMenuItem();
             statusToolStripMenuItem = new ToolStripMenuItem();
-            inputFileWatcher = new FileSystemWatcher();
             sampleToolStripMenuItem = new ToolStripMenuItem();
+            inputFileWatcher = new FileSystemWatcher();
+            logToolStripMenuItem = new ToolStripMenuItem();
             groupBox1.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
             groupBox2.SuspendLayout();
@@ -265,7 +266,7 @@
             // 
             // menuStrip1
             // 
-            menuStrip1.Items.AddRange(new ToolStripItem[] { configToolStripMenuItem, runningQueueToolStripMenuItem, statusToolStripMenuItem, sampleToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { configToolStripMenuItem, runningQueueToolStripMenuItem, statusToolStripMenuItem, sampleToolStripMenuItem, logToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(1350, 24);
@@ -293,6 +294,13 @@
             statusToolStripMenuItem.Text = "Status";
             statusToolStripMenuItem.Click += statusToolStripMenuItem_Click;
             // 
+            // sampleToolStripMenuItem
+            // 
+            sampleToolStripMenuItem.Name = "sampleToolStripMenuItem";
+            sampleToolStripMenuItem.Size = new Size(58, 20);
+            sampleToolStripMenuItem.Text = "Sample";
+            sampleToolStripMenuItem.Click += sampleToolStripMenuItem_Click;
+            // 
             // inputFileWatcher
             // 
             inputFileWatcher.EnableRaisingEvents = true;
@@ -300,12 +308,12 @@
             inputFileWatcher.SynchronizingObject = this;
             inputFileWatcher.Changed += inputFileWatcher_Changed;
             // 
-            // sampleToolStripMenuItem
+            // logToolStripMenuItem
             // 
-            sampleToolStripMenuItem.Name = "sampleToolStripMenuItem";
-            sampleToolStripMenuItem.Size = new Size(58, 20);
-            sampleToolStripMenuItem.Text = "Sample";
-            sampleToolStripMenuItem.Click += sampleToolStripMenuItem_Click;
+            logToolStripMenuItem.Name = "logToolStripMenuItem";
+            logToolStripMenuItem.Size = new Size(39, 20);
+            logToolStripMenuItem.Text = "Log";
+            logToolStripMenuItem.Click += logToolStripMenuItem_Click;
             // 
             // DashboardForm
             // 
@@ -360,5 +368,6 @@
         private ToolStripMenuItem runningQueueToolStripMenuItem;
         private ToolStripMenuItem statusToolStripMenuItem;
         private ToolStripMenuItem sampleToolStripMenuItem;
+        private ToolStripMenuItem logToolStripMenuItem;
     }
 }

@@ -45,7 +45,7 @@ namespace AutoScrewing.Lib
         {
             LogModel log = new LogModel("Kilew", "Kilew Controller", $"Called by `{methodName}` in `{System.IO.Path.GetFileName(filePath)}` at line `{lineNumber}`", "Send");
             cmd = GetCommand(cmd);
-            log.Payload = cmd;
+            log.payload = cmd;
             await semaphoreSlim.WaitAsync();
                 if (_client == null || _client.PortName != baseAddress)
                     _client = BuildPort();
@@ -61,8 +61,8 @@ namespace AutoScrewing.Lib
                     await Task.Delay(1000);
                     byte[] rd = new byte[8];
                     string text = _client.ReadLine();
-                    log.Result = text;
-                    log.Status += "-Success";
+                    log.result = text;
+                    log.status += "-Success";
                     await logRepository.RecordLog(log);
                     isActive = true;
                     semaphoreSlim.Release();
@@ -70,8 +70,8 @@ namespace AutoScrewing.Lib
                 }
                 catch (FileNotFoundException e)
                 {
-                    log.Result = e.Message + " | " + e.StackTrace;
-                    log.Status += "-Failed";
+                    log.result = e.Message + " | " + e.StackTrace;
+                    log.status += "-Failed";
                     await logRepository.RecordLog(log);
                     isActive = false;
                     semaphoreSlim.Release();
@@ -79,8 +79,8 @@ namespace AutoScrewing.Lib
                 }
                 catch (Exception e)
                 {
-                    log.Result = e.Message + " | " + e.StackTrace;
-                    log.Status += "-Failed";
+                    log.result = e.Message + " | " + e.StackTrace;
+                    log.status += "-Failed";
                     await logRepository.RecordLog(log);
                     isActive = false;
                     semaphoreSlim.Release();

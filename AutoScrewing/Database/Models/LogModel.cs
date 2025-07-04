@@ -8,30 +8,34 @@ namespace AutoScrewing.Database.Models
 {
     public class LogModel
     {
-        public int Log_Id { get; set; }
-        public DateTime Record_Time { get; set; }
-        public string Log_Type { get; set; } = string.Empty;
-        public string Source { get; set; } = string.Empty;
-        public string Description { get; set; } = string.Empty;
-        public string Status { get;set; } = string.Empty;
-        public string Payload { get; set; } = string.Empty; 
-        public string Result { get; set; } = string.Empty;
+        
+        public int log_id { get; set; }
+        public DateTime record_time { get; set; }
+        public string log_type { get; set; } = string.Empty;
+        public string source { get; set; } = string.Empty;
+        public string description { get; set; } = string.Empty;
+        public string status { get;set; } = string.Empty;
+        public string payload { get; set; } = string.Empty; 
+        public string result { get; set; } = string.Empty;
+        public LogModel()
+        {
 
+        }
         public LogModel(DateTime RecordDate,string LogType,string Source,string Description,string Status)
         {
-            Record_Time = RecordDate;
-            Log_Type = LogType;
-            this.Source = Source;
-            this.Description = Description;
-            this.Status = Status;
+            record_time = RecordDate;
+            log_type = LogType;
+            this.source = Source;
+            this.description = Description;
+            this.status = Status;
         }
         public LogModel( string LogType, string Source, string Description, string Status)
         {
-            Record_Time = DateTime.Now;
-            Log_Type = LogType;
-            this.Source = Source;
-            this.Description = Description;
-            this.Status = Status;
+            record_time = DateTime.Now;
+            log_type = LogType;
+            this.source = Source;
+            this.description = Description;
+            this.status = Status;
         }
     }
 }

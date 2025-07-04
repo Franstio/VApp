@@ -45,7 +45,7 @@ namespace AutoScrewing.Lib
         {
             await SemaphoreSlim.WaitAsync();
             LogModel Log = new LogModel(DateTime.Now, "PLC-Send", "PLC Controller Send", item.description, "SEND");
-            Log.Payload = JsonSerializer.Serialize(item);
+            Log.payload = JsonSerializer.Serialize(item);
             try
             {
                 using (var tcpClient = BuildTcpClient())
@@ -61,8 +61,8 @@ namespace AutoScrewing.Lib
 
                     string res = await GetMessage(tcpClient.GetStream());
                     Console.WriteLine($"Writing {item.command} with value {item.value} and result {res} {DateTime.Now.ToLongDateString()} | {item.description}");
-                    Log.Result = res;
-                    Log.Status = $"{Log.Status}-Success";
+                    Log.result = res;
+                    Log.status = $"{Log.status}-Success";
                     await logRepository.RecordLog(Log);
                     isActive = true;
                     SemaphoreSlim.Release();
@@ -71,8 +71,8 @@ namespace AutoScrewing.Lib
             }
             catch (Exception e )
             {
-                Log.Result = e.Message + " | " + e.StackTrace;
-                Log.Status = $"{Log.Status}-Failed";
+                Log.result = e.Message + " | " + e.StackTrace;
+                Log.status = $"{Log.status}-Failed";
                 await logRepository.RecordLog(Log);
                 Console.Error.WriteLine(e.StackTrace);
                 Console.Error.WriteLine(e.Message);

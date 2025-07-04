@@ -43,7 +43,7 @@ namespace AutoScrewing.Database.Repository
         public async Task<UserConfigModel?> LoginAsync(string username,string password, [CallerMemberName] string? methodName = null, [CallerFilePath] string? filePath = null, [CallerLineNumber] int lineNumber = 0)
         {
             LogModel log = new LogModel("SQL", "Config Repository", $"Called by `{methodName}` in `{System.IO.Path.GetFileName(filePath)}` at line `{lineNumber}`", "Send");
-            log.Payload = JsonSerializer.Serialize(new {username=username,password=password});
+            log.payload = JsonSerializer.Serialize(new {username=username,password=password});
             try
             {
                 using (var conn = await GetConnection())
@@ -51,16 +51,16 @@ namespace AutoScrewing.Database.Repository
                     string query = "Select uid,username,password,createdat from as_userconfig where username=@username and password=@password";
                     password = HashPassword(password);
                     var data = await conn.QueryAsync<UserConfigModel>(query,new {username,password});
-                    log.Result = JsonSerializer.Serialize(data);
-                    log.Status += "-Success";
+                    log.result = JsonSerializer.Serialize(data);
+                    log.status += "-Success";
                     await logRepository.RecordLog(log);
                     return data.FirstOrDefault();
                 }
             }
             catch (Exception e)
             {
-                log.Result = JsonSerializer.Serialize($"{e.Message} - {e.StackTrace}");
-                log.Status += "-Failed";
+                log.result = JsonSerializer.Serialize($"{e.Message} - {e.StackTrace}");
+                log.status += "-Failed";
                 await logRepository.RecordLog(log);
                 return null;
             }
@@ -68,23 +68,23 @@ namespace AutoScrewing.Database.Repository
         public async Task<int> LogLogin(UserConfigModel user,string action, [CallerMemberName] string? methodName = null, [CallerFilePath] string? filePath = null, [CallerLineNumber] int lineNumber = 0)
         {
             LogModel log = new LogModel("SQL", "Config Repository", $"Called by `{methodName}` in `{System.IO.Path.GetFileName(filePath)}` at line `{lineNumber}`", "Send");
-            log.Payload = JsonSerializer.Serialize(user);
+            log.payload = JsonSerializer.Serialize(user);
             try
             {
                 using (var conn = await GetConnection())
                 {
                     string query = "Insert into as_configlog(uid,log_time,action) values(@uid,now(),@action)";
                     var data = await conn.ExecuteAsync(query, new { uid=user.Uid,action});
-                    log.Result = JsonSerializer.Serialize(data);
-                    log.Status += "-Success";
+                    log.result = JsonSerializer.Serialize(data);
+                    log.status += "-Success";
                     await logRepository.RecordLog(log);
                     return data;
                 }
             }
             catch (Exception e)
             {
-                log.Result = JsonSerializer.Serialize($"{e.Message} - {e.StackTrace}");
-                log.Status += "-Failed";
+                log.result = JsonSerializer.Serialize($"{e.Message} - {e.StackTrace}");
+                log.status += "-Failed";
                 await logRepository.RecordLog(log);
                 return -1;
             }

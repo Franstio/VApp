@@ -46,7 +46,7 @@ namespace AutoScrewing
             await semaphore.WaitAsync();
             List<Queue<OngoingItemModel>> a = [ScrewingQueue, LaserQueue, CameraQueue, FinalQueue];
             semaphore.Release();
-            return a.SelectMany(x => x).OrderByDescending(x=>x.TransactionTime).ToList();
+            return a.SelectMany(x => x).OrderByDescending(x => x.TransactionTime).ToList();
         }
         private async Task LoadData()
         {
@@ -161,7 +161,7 @@ namespace AutoScrewing
                     if (files.Length > 0)
                     {
                         LogModel log = new LogModel("Outputting Transaction", "Output Transaction function", "Folder not empty", "Failed");
-                        log.Result = $"File total: {files.Length} | {string.Join(",", files.Select(x => x.Name))}";
+                        log.result = $"File total: {files.Length} | {string.Join(",", files.Select(x => x.Name))}";
                         await logRepository.RecordLog(log);
                         continue;
                     }
@@ -175,7 +175,7 @@ namespace AutoScrewing
                 catch (Exception ex)
                 {
                     LogModel log = new LogModel("Outputting Transaction", "Output Transaction function", "Exception handler for handling unexpected error in loop and continue the loop", "Failed");
-                    log.Result = $"{ex.Message} | {ex.StackTrace}";
+                    log.result = $"{ex.Message} | {ex.StackTrace}";
                     await logRepository.RecordLog(log);
                 }
             }
@@ -199,7 +199,7 @@ namespace AutoScrewing
                 catch (Exception ex)
                 {
                     LogModel log = new LogModel("Read Incoming Data", "ReadIncomingData function", "Exception handler for handling unexpected error in loop and continue the loop", "Failed");
-                    log.Result = $"{ex.Message} | {ex.StackTrace}";
+                    log.result = $"{ex.Message} | {ex.StackTrace}";
                     await logRepository.RecordLog(log);
                 }
             }
@@ -325,7 +325,7 @@ namespace AutoScrewing
             try
             {
                 string text = File.ReadAllText(e.FullPath);
-                await logRepository.RecordLog(new LogModel("Input-File", "inputFileWatcher_Changed", "Reading input file from mesh", "Success") { Payload = e.FullPath, Result = text });
+                await logRepository.RecordLog(new LogModel("Input-File", "inputFileWatcher_Changed", "Reading input file from mesh", "Success") { payload = e.FullPath, result = text });
                 InputFileModel? input = JsonSerializer.Deserialize<InputFileModel>(text);
                 if (input is null)
                     return;
@@ -338,7 +338,7 @@ namespace AutoScrewing
             }
             catch (Exception ex)
             {
-                await logRepository.RecordLog(new LogModel("Input-File", "inputFileWatcher_Changed", "Reading input file from mesh", "Failed") { Payload = e.FullPath, Result = ex.Message + " | " + ex.StackTrace });
+                await logRepository.RecordLog(new LogModel("Input-File", "inputFileWatcher_Changed", "Reading input file from mesh", "Failed") { payload = e.FullPath, result = ex.Message + " | " + ex.StackTrace });
             }
         }
 
@@ -363,6 +363,12 @@ namespace AutoScrewing
         {
             using (var frm = new SampleForm())
                 frm.ShowDialog();
+        }
+
+        private void logToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var frm = new LogForm();
+            frm.Show();
         }
 
         public interface IDashboardOngoingItems
