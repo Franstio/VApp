@@ -11,6 +11,7 @@ using System.Drawing;
 using System.IO.Ports;
 using System.Linq;
 using System.Reflection;
+using System.Reflection.Emit;
 using System.Runtime.Intrinsics.X86;
 using System.Text;
 using System.Text.Json;
@@ -22,6 +23,7 @@ using System.Windows.Forms;
 using System.Xml;
 using static System.Net.Mime.MediaTypeNames;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using Label = System.Windows.Forms.Label;
 
 namespace AutoScrewing
 {
@@ -95,6 +97,15 @@ namespace AutoScrewing
             //DashboardModel = data;
             Task.Run(() => ReadIncomingData());
             Task.Run(() => OutputTransaction());
+            //Task.Run(async () =>
+            //{
+            //    await Task.Delay(1000);
+            //    await InvokeAsync(() =>
+            //    {
+            //        screwingResultLabel.Text = "OK";
+            //        laserResultLabel.Text = "NG";
+            //    });
+            //});
             //            textBox1.Text = "test";
         }
 
@@ -341,7 +352,7 @@ namespace AutoScrewing
                 string scan = input.serialnumber;
                 string scan2 = data[1];
                 File.Delete(e.FullPath);
-                if (input.status == "OK" || input.status.Contains( "PASS"))
+                if (input.status == "OK" || input.status.Contains("PASS"))
                 {
                     await plcController.Send(new PLCController.PLCItem("WR", "MR811", 1, "Starting Transaction - ON"));
                     await Task.Delay(3000);
@@ -382,6 +393,26 @@ namespace AutoScrewing
         {
             var frm = new LogForm();
             frm.Show();
+        }
+
+        private void tableLayoutPanel2_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void screwingResultLabel_TextChanged(object sender, EventArgs e)
+        {
+            Label lbl = (Label)sender;
+            if (lbl.Text == "NG" || lbl.Text == "OK" || lbl.Text == "PASS")
+                lbl.ForeColor = lbl.Text == "NG" ? ColorTranslator.FromHtml("#EF4444") : ColorTranslator.FromHtml("#10B981");
+        }
+
+        private void screwingResultLabel_Paint(object sender, PaintEventArgs e)
+        {
+            Label lbl = (Label)sender;
+            if (lbl.Text == "NG" || lbl.Text == "OK" || lbl.Text == "PASS")
+                lbl.ForeColor = lbl.Text == "NG" ? ColorTranslator.FromHtml("#EF4444") : ColorTranslator.FromHtml("#10B981");
+
         }
 
         public interface IDashboardOngoingItems
