@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 namespace AutoScrewing.Models
 {
-    public record InputFileModel(string serialnumber,string status);
+    public record InputFileModel(string serialnumber,string serialnumber2,string status);
 }

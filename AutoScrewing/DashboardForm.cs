@@ -344,13 +344,21 @@ namespace AutoScrewing
             try
             {
                 await logRepository.RecordLog(new LogModel("Input-File", "inputFileWatcher_Changed", "Reading input file from mesh", "Success") { payload = e.FullPath, result = text });
-                //                InputFileModel? input = JsonSerializer.Deserialize<InputFileModel>(text);
-                string[] data = text.Split(':');
-                InputFileModel input = new InputFileModel(data[0], data[2]);
+
+                InputFileModel? input = null;
+                input = JsonSerializer.Deserialize<InputFileModel>(text);
                 if (input is null)
+                {
+                    string[] data = text.Split(':');
+                    input = new InputFileModel(data[0], data[1], data[2]);
+                }
+                if (input is null)
+                {
+                    await logRepository.RecordLog(new LogModel("Input-File", "inputFileWatcher_Changed", "Reading input file from mesh, format invalid", "Success") { payload = e.FullPath, result = text });
                     return;
+                }
                 string scan = input.serialnumber;
-                string scan2 = data[1];
+                string scan2 = input.serialnumber2;
                 File.Delete(e.FullPath);
                 if (input.status == "OK" || input.status.Contains("PASS"))
                 {

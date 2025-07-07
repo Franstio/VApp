@@ -95,7 +95,7 @@
             // screwingResultLabel
             // 
             screwingResultLabel.Dock = DockStyle.Fill;
-            screwingResultLabel.Font = new Font("Consolas", 24F, FontStyle.Bold);
+            screwingResultLabel.Font = new Font("Sans Serif Collection", 18F, FontStyle.Bold);
             screwingResultLabel.Location = new Point(376, 0);
             screwingResultLabel.Name = "screwingResultLabel";
             screwingResultLabel.Size = new Size(119, 176);
@@ -108,7 +108,7 @@
             // screwingTimeLabel
             // 
             screwingTimeLabel.Dock = DockStyle.Fill;
-            screwingTimeLabel.Font = new Font("Sans Serif Collection", 11.9999981F, FontStyle.Bold);
+            screwingTimeLabel.Font = new Font("Sans Serif Collection", 18F, FontStyle.Bold);
             screwingTimeLabel.ForeColor = Color.FromArgb(31, 41, 55);
             screwingTimeLabel.Location = new Point(227, 0);
             screwingTimeLabel.Name = "screwingTimeLabel";
@@ -120,7 +120,7 @@
             // torqueLabel
             // 
             torqueLabel.Dock = DockStyle.Fill;
-            torqueLabel.Font = new Font("Sans Serif Collection", 11.9999981F, FontStyle.Bold);
+            torqueLabel.Font = new Font("Sans Serif Collection", 18F, FontStyle.Bold);
             torqueLabel.ForeColor = Color.FromArgb(31, 41, 55);
             torqueLabel.Location = new Point(3, 0);
             torqueLabel.Name = "torqueLabel";
@@ -132,7 +132,7 @@
             // laserResultLabel
             // 
             laserResultLabel.Dock = DockStyle.Fill;
-            laserResultLabel.Font = new Font("Sans Serif Collection", 11.9999981F, FontStyle.Bold);
+            laserResultLabel.Font = new Font("Sans Serif Collection", 36F, FontStyle.Bold);
             laserResultLabel.Location = new Point(13, 41);
             laserResultLabel.Name = "laserResultLabel";
             laserResultLabel.Size = new Size(365, 182);
@@ -148,6 +148,7 @@
             dataGridView1.AllowUserToDeleteRows = false;
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCells;
+            dataGridView1.BackgroundColor = Color.White;
             dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = Color.FromArgb(229, 231, 235);
             dataGridViewCellStyle1.Font = new Font("Sans Serif Collection", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
@@ -160,6 +161,7 @@
             dataGridView1.Columns.AddRange(new DataGridViewColumn[] { Serial, Screwing, Laser, Camera, Judgement });
             tableLayoutPanel2.SetColumnSpan(dataGridView1, 3);
             dataGridView1.Dock = DockStyle.Fill;
+            dataGridView1.GridColor = Color.FromArgb(209, 213, 219);
             dataGridView1.Location = new Point(3, 242);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.ReadOnly = true;
@@ -343,7 +345,7 @@
             // cameraResultLabel
             // 
             cameraResultLabel.Dock = DockStyle.Fill;
-            cameraResultLabel.Font = new Font("Sans Serif Collection", 11.9999981F, FontStyle.Bold);
+            cameraResultLabel.Font = new Font("Sans Serif Collection", 36F, FontStyle.Bold);
             cameraResultLabel.Location = new Point(13, 41);
             cameraResultLabel.Name = "cameraResultLabel";
             cameraResultLabel.Size = new Size(367, 182);
@@ -439,6 +441,7 @@
             MainMenuStrip = menuStrip1;
             Name = "DashboardForm";
             Text = "Dashboard";
+            WindowState = FormWindowState.Maximized;
             Load += DashboardForm_Load;
             tableLayoutPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
