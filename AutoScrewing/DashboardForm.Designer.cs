@@ -61,6 +61,7 @@
             statusToolStripMenuItem = new ToolStripMenuItem();
             sampleToolStripMenuItem = new ToolStripMenuItem();
             logToolStripMenuItem = new ToolStripMenuItem();
+            manualToolStripMenuItem = new ToolStripMenuItem();
             inputFileWatcher = new FileSystemWatcher();
             tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
@@ -374,7 +375,7 @@
             // menuStrip1
             // 
             menuStrip1.BackColor = Color.FromArgb(30, 58, 138);
-            menuStrip1.Items.AddRange(new ToolStripItem[] { configToolStripMenuItem, runningQueueToolStripMenuItem, statusToolStripMenuItem, sampleToolStripMenuItem, logToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { configToolStripMenuItem, runningQueueToolStripMenuItem, statusToolStripMenuItem, sampleToolStripMenuItem, logToolStripMenuItem, manualToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(1347, 24);
@@ -420,6 +421,14 @@
             logToolStripMenuItem.Size = new Size(39, 20);
             logToolStripMenuItem.Text = "Log";
             logToolStripMenuItem.Click += logToolStripMenuItem_Click;
+            // 
+            // manualToolStripMenuItem
+            // 
+            manualToolStripMenuItem.ForeColor = Color.FromArgb(249, 250, 251);
+            manualToolStripMenuItem.Name = "manualToolStripMenuItem";
+            manualToolStripMenuItem.Size = new Size(59, 20);
+            manualToolStripMenuItem.Text = "Manual";
+            manualToolStripMenuItem.Click += manualToolStripMenuItem_Click;
             // 
             // inputFileWatcher
             // 
@@ -490,5 +499,6 @@
         private Label label3;
         private Label label2;
         private FlowLayoutPanel flowLayoutPanel1;
+        private ToolStripMenuItem manualToolStripMenuItem;
     }
 }

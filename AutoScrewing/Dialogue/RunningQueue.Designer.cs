@@ -96,13 +96,13 @@
             // 
             // LaserStartTime
             // 
-            LaserStartTime.HeaderText = "Lasert Start Time";
+            LaserStartTime.HeaderText = "Laser Start Time";
             LaserStartTime.Name = "LaserStartTime";
             LaserStartTime.ReadOnly = true;
             // 
             // LaserEndTime
             // 
-            LaserEndTime.HeaderText = "Lasert End Time";
+            LaserEndTime.HeaderText = "Laser End Time";
             LaserEndTime.Name = "LaserEndTime";
             LaserEndTime.ReadOnly = true;
             // 

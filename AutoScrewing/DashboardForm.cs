@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.IO.Ports;
 using System.Linq;
 using System.Reflection;
@@ -27,7 +28,7 @@ using Label = System.Windows.Forms.Label;
 
 namespace AutoScrewing
 {
-    public partial class DashboardForm : Form, DashboardForm.IDashboardOngoingItems, IOStatusForm.IOStatusAPI
+    public partial class DashboardForm : Form, DashboardForm.IDashboardOngoingItems, IOStatusForm.IOStatusAPI, QueueManual.IQueueManual
     {
         private TransactionRepository TransactionRepository = new TransactionRepository();
         private KilewController kilewController = new KilewController();
@@ -48,16 +49,26 @@ namespace AutoScrewing
             await semaphore.WaitAsync();
             List<Queue<OngoingItemModel>> a = [ScrewingQueue, LaserQueue, CameraQueue, FinalQueue];
             semaphore.Release();
-            return a.SelectMany(x => x).OrderByDescending(x => x.TransactionTime).ToList();
+            try
+            {
+                return a.SelectMany(x => x).OrderByDescending(x => x.TransactionTime).ToList();
+            }
+            catch
+            {
+                return [];
+            }
         }
         private async Task LoadData()
         {
             var list = await GetOngoingItems();
-            var data = list.Select(x => new object[] { x.Scan_ID, $"{x.TighteningStatus} {x.Torque}", x.LaserResult ? "OK" : "NG", x.CameraResult ? "OK" : "NG", x.FinalResult }).ToArray();
+            var transactionData = (await TransactionRepository.GetTransaction()).Select(x=>new object[] {x.Scan_ID,$"{x.TighteningStatus} {x.Torque}",x.LaserResult ? "OK" : "NG",x.CameraResult ? "OK" : "NG",x.FinalResult });
+            var data = list.Select(x => new object[] { x.Scan_ID, $"{(x.isScrewingCompleted ?  x.TighteningStatus : "-")} {x.Torque}", x.isLaseringCompleted ?  (x.LaserResult ? "OK" : "NG") : "-", x.isCameraCompleted ? (x.CameraResult ? "OK" : "NG") : "-", x.isScrewingCompleted && x.isLaseringCompleted  && x.isCameraCompleted ? x.FinalResult : "-"}).ToArray();
             await InvokeAsync(() =>
             {
                 dataGridView1.Rows.Clear();
                 foreach (var item in data)
+                    dataGridView1.Rows.Add(item);
+                foreach (var item in transactionData)
                     dataGridView1.Rows.Add(item);
             });
         }
@@ -76,7 +87,7 @@ namespace AutoScrewing
             InitializeComponent();
         }
 
-        private void DashboardForm_Load(object sender, EventArgs e)
+        private async void DashboardForm_Load(object sender, EventArgs e)
         {
             //DashboardModel data = new DashboardModel()
             //{
@@ -95,8 +106,9 @@ namespace AutoScrewing
             //    TighteningStatus = "3NG-F"
             //};
             //DashboardModel = data;
-            Task.Run(() => ReadIncomingData());
-            Task.Run(() => OutputTransaction());
+            _ =Task.Run(() => ReadIncomingData());
+            _ = Task.Run(() => OutputTransaction());
+            await LoadData();
             //Task.Run(async () =>
             //{
             //    await Task.Delay(1000);
@@ -124,8 +136,8 @@ namespace AutoScrewing
         {
             var startTime = DateTime.Now;
             PLCController.PLCItem[] cmd = [
-                new PLCController.PLCItem("RD", "MR310", -1, "Read For Reading Camera NG"),
-                new PLCController.PLCItem("RD", "MR311", -1, "Read For Reading Camera OK")
+                new PLCController.PLCItem("RD", "MR500", -1, "Read For Reading Camera NG"),
+                new PLCController.PLCItem("RD", "MR501", -1, "Read For Reading Camera OK")
             ];
             List<Task<string>> task = [
                 Task.Run<string>(async () => await plcController.Send(cmd[0])),
@@ -134,9 +146,10 @@ namespace AutoScrewing
             await Task.WhenAll(task);
             string OK = await task[1], NG = await task[0];
             bool result = false;
+            bool isValid = !string.IsNullOrEmpty(OK) && !string.IsNullOrEmpty(NG);
             bool check = OK == "0" && NG == "0";
             result = !check && (OK == "1" && NG == "0");
-            if (CameraQueue.Count > 1 && !check)
+            if (CameraQueue.Count > 1 && !check && isValid)
             {
                 await semaphore.WaitAsync();
                 var item = CameraQueue.Dequeue();
@@ -155,6 +168,7 @@ namespace AutoScrewing
                     await Task.Delay(1000);
                     await plcController.Send(new PLCController.PLCItem("WR", "MR1000", 0, "After Camera Read - OFF"));
                 }
+                item.isCameraCompleted = true;
                 FinalQueue.Enqueue(item);
                 semaphore.Release();
             }
@@ -223,8 +237,8 @@ namespace AutoScrewing
         private async Task<bool> ReadingLaser()
         {
             PLCController.PLCItem[] cmd = [
-                new PLCController.PLCItem("RD", "MR308", -1, "Read For Reading Laser NG"),
-                new PLCController.PLCItem("RD", "MR309", -1, "Read For Reading Laser OK")
+                new PLCController.PLCItem("RD", "MR502", -1, "Read For Reading Laser NG"),
+                new PLCController.PLCItem("RD", "MR503", -1, "Read For Reading Laser OK")
             ];
             List<Task<string>> task = [
                 Task.Run<string>(async () => await plcController.Send(cmd[0])),
@@ -233,9 +247,10 @@ namespace AutoScrewing
             var startTime = DateTime.Now;
             await Task.WhenAll(task);
             string OK = await task[1], NG = await task[0];
-            bool check = OK == "0" && NG == "0";
+            bool check = OK == "0" && NG == "0" ;
+            bool isValid = !string.IsNullOrEmpty(OK) && !string.IsNullOrEmpty(NG);
             bool result = !check && (OK == "1" && NG == "0");
-            if (LaserQueue.Count > 1 && !check)
+            if (LaserQueue.Count > 1 && !check && isValid)
             {
 
                 await semaphore.WaitAsync();
@@ -248,6 +263,7 @@ namespace AutoScrewing
                 item.LaserStartTime = startTime;
                 item.LaserEndTime = DateTime.Now;
                 item.CurrentStatus = "Camera";
+                item.isLaseringCompleted = true;
                 CameraQueue.Enqueue(item);
                 semaphore.Release();
             }
@@ -292,6 +308,7 @@ namespace AutoScrewing
                     item.ScrewEndTime = DateTime.Now;
                     item.CurrentStatus = "Lasering";
                     item.CHECKSUM = CHECKSUM_SCREWING;
+                    item.isScrewingCompleted = true;
                     LaserQueue.Enqueue(item);
                     semaphore.Release();
                 }
@@ -346,7 +363,11 @@ namespace AutoScrewing
                 await logRepository.RecordLog(new LogModel("Input-File", "inputFileWatcher_Changed", "Reading input file from mesh", "Success") { payload = e.FullPath, result = text });
 
                 InputFileModel? input = null;
-                input = JsonSerializer.Deserialize<InputFileModel>(text);
+                try
+                {
+                    input = JsonSerializer.Deserialize<InputFileModel>(text);
+                }
+                catch { }
                 if (input is null)
                 {
                     string[] data = text.Split(':');
@@ -376,8 +397,17 @@ namespace AutoScrewing
 
         private void runningQueueToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var frm = new RunningQueue(this);
-            frm.Show();
+
+            using (var frm = new LoginForm())
+            {
+                var result = frm.ShowDialog();
+                var usr = frm.GetLogin();
+                if (result == DialogResult.OK && usr != null)
+                {
+                    var frm2 = new RunningQueue(this);
+                    frm2.Show();
+                }
+            }
         }
 
         public Task<IOStatusForm.IOStatus> GetStatus()
@@ -421,6 +451,77 @@ namespace AutoScrewing
             if (lbl.Text == "NG" || lbl.Text == "OK" || lbl.Text == "PASS")
                 lbl.ForeColor = lbl.Text == "NG" ? ColorTranslator.FromHtml("#EF4444") : ColorTranslator.FromHtml("#10B981");
 
+        }
+
+        public async void DequeueScrewing(bool isOk)
+        {
+            Random rnd = new Random();
+            var item = ScrewingQueue.Dequeue();
+            item.Torque = Convert.ToDecimal(rnd.NextDouble() * 100);
+            item.TighteningStatus = isOk ? "OK" : "NG";
+            item.ScrewingResult = isOk;
+            item.ScrewingTime = Convert.ToDecimal(rnd.NextDouble() * 100).ToString("0.00");
+            item.ThreadCount = rnd.Next(0, 10);
+            item.ScrewStartTime = DateTime.Now.AddSeconds(rnd.Next(0, 10) * -1);
+            item.ScrewEndTime = DateTime.Now;
+            item.CurrentStatus = "Lasering";
+            item.CHECKSUM = "32242494";
+            item.isScrewingCompleted = true;
+            LaserQueue.Enqueue(item);
+            await LoadData();
+        }
+
+        public async void DequeueLaser(bool isOK)
+        {
+            Random rnd = new Random();
+            var item = LaserQueue.Dequeue();
+            item.LaserResult = isOK;
+            item.LaserStartTime = DateTime.Now.AddSeconds(rnd.Next(0, 10) * -1);
+            item.LaserEndTime = DateTime.Now;
+            item.CurrentStatus = "Camera";
+            item.isLaseringCompleted = true;
+            CameraQueue.Enqueue(item);
+            await LoadData();
+        }
+
+        public async  void DequeueCamera(bool isOk)
+        {
+            Random rnd = new Random();
+            var item = CameraQueue.Dequeue();
+            item.CameraStartTime = DateTime.Now.AddSeconds(rnd.Next(0, 10) * -1);
+            item.CameraEndTime = DateTime.Now;
+            item.CameraResult = isOk;
+            item.CurrentStatus = "Write output file";
+            item.FinalResult = item.ScrewingResult && item.LaserResult && item.CameraResult ? "OK" : "NG";
+            item.isCameraCompleted = true;
+            FinalQueue.Enqueue(item);
+            await LoadData();
+        }
+
+        public async void ResetOutput()
+        {
+            string path = Settings1.Default.Output_Path;
+            DirectoryInfo dirInfo = new DirectoryInfo(path);
+            if (dirInfo.GetFiles().Length > 0)
+            {
+                foreach (var file in dirInfo.GetFiles())
+                    File.Delete(file.FullName);
+            }
+            await LoadData();
+        }
+
+        private void manualToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (var frm = new LoginForm())
+            {
+                var result = frm.ShowDialog();
+                var usr = frm.GetLogin();
+                if (result == DialogResult.OK && usr != null)
+                {
+                    var frm2 = new QueueManual(this,this);
+                    frm2.Show();
+                }
+            }
         }
 
         public interface IDashboardOngoingItems

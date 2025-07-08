@@ -12,7 +12,6 @@ namespace AutoScrewing
         string baseAddress = "COM4";
         Barrier barrier = new Barrier(2);
         CancellationTokenSource cts = new CancellationTokenSource();
-        int port = 23;
         public CmdForm()
         {
             InitializeComponent();

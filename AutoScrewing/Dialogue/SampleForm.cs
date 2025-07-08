@@ -24,7 +24,7 @@ namespace AutoScrewing.Dialogue
         {
 
             var payload = new { serialnumber = "Test", status = "NG", data = new TransactionModel()};
-            richTextBox1.Text = "Input: \n"+JsonSerializer.Serialize( new InputFileModel("",""))+"\n Output: \n"+ JsonSerializer.Serialize(payload);
+            richTextBox1.Text = "Input: \n"+JsonSerializer.Serialize( new InputFileModel("","",""))+"\n Output: \n"+ JsonSerializer.Serialize(payload);
         }
     }
 }

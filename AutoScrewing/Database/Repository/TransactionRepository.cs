@@ -38,7 +38,7 @@ namespace AutoScrewing.Database.Repository
                 {
                     var transaction = await conn.ExecuteAsync(
                         $@"Insert into {Table_Name}(scan_id,scan_id2,torque,screwingResult,screwingtime,threadcount,laserresult,cameraresult,result,iserror,transactiontime,errordesc,finalresult,tighteningstatus)
-                    Values (@Scan_ID,@Scan_ID2,@Torque,@ScrewingResult,@LasertResult,@ScrewingTime,@ThreadCount,@CameraResult,@Result,@IsError,@TransactionTime,@ErrorDesc,@FinalResult,@TighteningStatus)", model);
+                    Values (@Scan_ID,@Scan_ID2,@Torque,@ScrewingResult,@ScrewingTime,@ThreadCount ,@LaserResult,@CameraResult,@Result,@IsError,@TransactionTime,@ErrorDesc,@FinalResult,@TighteningStatus)", model);
                     log.result = JsonSerializer.Serialize (transaction);
                     log.status += "-Success";
                 }

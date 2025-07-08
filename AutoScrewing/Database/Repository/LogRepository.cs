@@ -49,8 +49,8 @@ namespace AutoScrewing.Database.Repository
 
         public async Task<IList<LogModel>> GetLog(string type,string? search=null,DateTime? from=null,DateTime? to=null, [CallerMemberName] string? methodName = null, [CallerFilePath] string? filePath = null, [CallerLineNumber] int lineNumber = 0)
         {
-            LogModel log = new LogModel("SQL", "Log Repository", $"Called by `{methodName}` in `{System.IO.Path.GetFileName(filePath)}` at line `{lineNumber}`", "Send");
-            log.payload = JsonSerializer.Serialize(new { type,search,from,to});
+//            LogModel log = new LogModel("SQL", "Log Repository", $"Called by `{methodName}` in `{System.IO.Path.GetFileName(filePath)}` at line `{lineNumber}`", "Send");
+  //          log.payload = JsonSerializer.Serialize(new { type,search,from,to});
             try
             {
                 using (var conn = await GetConnection())
@@ -71,17 +71,17 @@ namespace AutoScrewing.Database.Repository
                         builder.Where("record_time between @from::timestamp and @to::timestamp", new { from = from.Value.ToString("yyyy-MM-dd HH:mm:ss"), to = to.Value.ToString("yyyy-MM-dd HH:mm:ss") });
                     var query = builder.AddTemplate($"select log_id,record_time,log_type,source,description,status,payload,result from {Table_Name} /**where**/ order by record_time desc");
                     var data = await conn.QueryAsync<LogModel>(query.RawSql, query.Parameters);
-                    log.result = JsonSerializer.Serialize(data);
-                    log.status += "-Success";
-                    await RecordLog(log);
+//                    log.result = JsonSerializer.Serialize(data);
+//                    log.status += "-Success";
+//                    await RecordLog(log);
                     return data.ToList();
                 }
             }
             catch (Exception e)
             {
-                log.result = JsonSerializer.Serialize($"{e.Message} - {e.StackTrace}");
-                log.status += "-Failed";
-                await RecordLog(log);
+  //              log.result = JsonSerializer.Serialize($"{e.Message} - {e.StackTrace}");
+    //            log.status += "-Failed";
+      //          await RecordLog(log);
                 return [];
             }
 
