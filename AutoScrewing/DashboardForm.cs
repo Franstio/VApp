@@ -294,9 +294,9 @@ namespace AutoScrewing
                 model.ScrewCount = int.Parse(data[23].Split('/')[0]);
                 model.DeviceID = data[10];
                 model.TighteningStatus = data[25];
-                model.Thread = decimal.Parse(data[22]);
+                model.Thread = Convert.ToDecimal(data[22]);
                 model.Time = data[21];
-                model.Torque = decimal.Parse(data[19]);
+                model.Torque = Convert.ToDecimal(data[19]);
                 model.TorqueType = "Nm";//data[18].Replace("_", "");
 
                 if (ScrewingQueue.Count > 0 && data[7] != CHECKSUM_SCREWING)
