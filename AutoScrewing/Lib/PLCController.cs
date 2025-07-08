@@ -66,7 +66,7 @@ namespace AutoScrewing.Lib
                     await logRepository.RecordLog(Log);
                     isActive = true;
                     SemaphoreSlim.Release();
-                    return res;
+                    return res.Replace("\0", "").Replace("\r", "").Replace("\n", "").Trim();
                 }
             }
             catch (Exception e )
