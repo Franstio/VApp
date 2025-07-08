@@ -125,9 +125,9 @@ namespace AutoScrewing
         {
             await InvokeAsync(() =>
             {
-                torqueLabel.Text = $"{model.Torque} {model.TorqueType}";
+                torqueLabel.Text = $"{model.Torque.ToString("0.0000")} {model.TorqueType}";
                 screwingResultLabel.Text = model.TighteningStatus;
-                screwingTimeLabel.Text = model.Time;
+                screwingTimeLabel.Text = $"{model.Time} Seconds";
                 laserResultLabel.Text = model.LaserStatus ? "OK" : "NG";
                 cameraResultLabel.Text = model.CameraStatus ? "OK" : "NG";
             });
@@ -232,6 +232,10 @@ namespace AutoScrewing
                     log.result = $"{ex.Message} | {ex.StackTrace}";
                     await logRepository.RecordLog(log);
                 }
+                finally
+                {
+                    await Task.Delay(4000);
+                }
             }
         }
         private async Task<bool> ReadingLaser()
@@ -285,6 +289,7 @@ namespace AutoScrewing
             //"{DATA100,2025,06,01,16,56,50,2154,7592,4,001,T02VE00007__________,C14Z-E00812_________,0000000017,01,01,01,4Nm___,01,000.00000,1,0021.4500,0139.6,01/01,1,3NG-F,9,}";//28
             if (data[0].Replace("{", "").Contains("DATA100"))
             {
+                //{DATA100,2025,07,08,16,06,39,2101,7539,4,001,T02VE00324__________,C14Z-E01595_________,0000000376,01,01,01,Sequn_,01,0004.0250,1,0001.4790,0008.6,00/01,1,OKALL,0,}
                 model.ScrewTotal = int.Parse(data[23].Split('/')[1]);
                 model.ScrewCount = int.Parse(data[23].Split('/')[0]);
                 model.DeviceID = data[10];
@@ -292,7 +297,7 @@ namespace AutoScrewing
                 model.Thread = decimal.Parse(data[22]);
                 model.Time = data[21];
                 model.Torque = decimal.Parse(data[19]);
-                model.TorqueType = data[18].Replace("_", "");
+                model.TorqueType = "Nm";//data[18].Replace("_", "");
 
                 if (ScrewingQueue.Count > 0 && data[7] != CHECKSUM_SCREWING)
                 {

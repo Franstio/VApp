@@ -109,13 +109,13 @@
             // screwingTimeLabel
             // 
             screwingTimeLabel.Dock = DockStyle.Fill;
-            screwingTimeLabel.Font = new Font("Sans Serif Collection", 18F, FontStyle.Bold);
+            screwingTimeLabel.Font = new Font("Sans Serif Collection", 6F, FontStyle.Bold);
             screwingTimeLabel.ForeColor = Color.FromArgb(31, 41, 55);
             screwingTimeLabel.Location = new Point(227, 0);
             screwingTimeLabel.Name = "screwingTimeLabel";
             screwingTimeLabel.Size = new Size(143, 176);
             screwingTimeLabel.TabIndex = 2;
-            screwingTimeLabel.Text = "0000.00";
+            screwingTimeLabel.Text = "000.00 Seconds";
             screwingTimeLabel.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // torqueLabel
