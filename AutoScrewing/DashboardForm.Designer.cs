@@ -109,7 +109,7 @@
             // screwingTimeLabel
             // 
             screwingTimeLabel.Dock = DockStyle.Fill;
-            screwingTimeLabel.Font = new Font("Sans Serif Collection", 6F, FontStyle.Bold);
+            screwingTimeLabel.Font = new Font("Sans Serif Collection", 14F, FontStyle.Bold);
             screwingTimeLabel.ForeColor = Color.FromArgb(31, 41, 55);
             screwingTimeLabel.Location = new Point(227, 0);
             screwingTimeLabel.Name = "screwingTimeLabel";

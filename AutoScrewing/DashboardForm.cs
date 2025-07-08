@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.IO.Ports;
 using System.Linq;
@@ -294,9 +295,9 @@ namespace AutoScrewing
                 model.ScrewCount = int.Parse(data[23].Split('/')[0]);
                 model.DeviceID = data[10];
                 model.TighteningStatus = data[25];
-                model.Thread = Convert.ToDecimal(data[22]);
+                model.Thread = Convert.ToDecimal(data[22],new CultureInfo("en-US"));
                 model.Time = data[21];
-                model.Torque = Convert.ToDecimal(data[19]);
+                model.Torque = Convert.ToDecimal(data[19], new CultureInfo("en-US"));
                 model.TorqueType = "Nm";//data[18].Replace("_", "");
 
                 if (ScrewingQueue.Count > 0 && data[7] != CHECKSUM_SCREWING)
