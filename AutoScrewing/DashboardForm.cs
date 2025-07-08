@@ -441,7 +441,7 @@ namespace AutoScrewing
         private void screwingResultLabel_TextChanged(object sender, EventArgs e)
         {
             Label lbl = (Label)sender;
-            if (lbl.Text == "NG" || lbl.Text == "OK" || lbl.Text == "PASS")
+            if (lbl.Text == "NG" || lbl.Text == "OK" || lbl.Text=="OKALL" || lbl.Text == "PASS")
                 lbl.ForeColor = lbl.Text == "NG" ? ColorTranslator.FromHtml("#EF4444") : ColorTranslator.FromHtml("#10B981");
         }
 
