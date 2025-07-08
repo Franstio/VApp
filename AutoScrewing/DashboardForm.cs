@@ -152,8 +152,8 @@ namespace AutoScrewing
             result = !check && (OK == "1" && NG == "0");
             if (CameraQueue.Count > 1 && !check && isValid)
             {
-                await semaphore.WaitAsync();
                 var item = CameraQueue.Dequeue();
+                await semaphore.WaitAsync();
                 item.CameraStartTime = startTime;
                 item.CameraEndTime = DateTime.Now;
                 if ((OK != "0" && OK != "1") && (NG != "0" && NG != "1"))
@@ -258,8 +258,8 @@ namespace AutoScrewing
             if (LaserQueue.Count > 1 && !check && isValid)
             {
 
-                await semaphore.WaitAsync();
                 var item = LaserQueue.Dequeue();
+                await semaphore.WaitAsync();
                 if ((OK != "0" && OK != "0") && (NG != "0" && NG != "1"))
                 {
                     item.AddError("Laser");
@@ -303,8 +303,8 @@ namespace AutoScrewing
                 if (ScrewingQueue.Count > 0 && data[7] != CHECKSUM_SCREWING)
                 {
                     CHECKSUM_SCREWING = data[7];
-                    await semaphore.WaitAsync();
                     var item = ScrewingQueue.Dequeue();
+                    await semaphore.WaitAsync();
                     item.Torque = model.Torque;
                     item.TighteningStatus = model.TighteningStatus;
                     item.ScrewingResult = model.TighteningStatus.Contains("OK");
