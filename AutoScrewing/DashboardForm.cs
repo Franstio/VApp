@@ -252,6 +252,8 @@ namespace AutoScrewing
                     DashboardModel model = await screwingTask;
                     model.LaserStatus = DashboardModel.LaserStatus;
                     model.CameraStatus = DashboardModel.CameraStatus;
+                    model.isCameraReady = DashboardModel.isCameraReady;
+                    model.isLaseringReady = DashboardModel.isLaseringReady;
                     DashboardModel = model;
                     await LoadData();
                 }
