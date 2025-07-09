@@ -217,9 +217,11 @@ namespace AutoScrewing
             {
                 try
                 {
+                    semaphore.Release();
                     Task<bool> laserTask = Task.Run(async () => await ReadingLaser());
                     Task<bool> cameraTask = Task.Run(async () => await ReadCamera());
                     await Task.WhenAll(laserTask, laserTask);
+                    await semaphore.WaitAsync();
                     DashboardModel model = DashboardModel;
                     model.LaserStatus = await laserTask;
                     model.CameraStatus = await cameraTask;
