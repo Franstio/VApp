@@ -264,7 +264,7 @@ namespace AutoScrewing
             while (true)
             {
                 
-                var cmd = new PLCController.PLCItem("RD", "MR810", -1, "Read For Check if ready");
+                var cmd = new PLCController.PLCItem("RD", "MR811", -1, "Read For Check if ready");
                 var rd = await plcController.Send(cmd);
                 if (string.IsNullOrEmpty(rd))
                     continue;
