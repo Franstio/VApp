@@ -263,8 +263,7 @@ namespace AutoScrewing
         {
             while (true)
             {
-                await semaphore.WaitAsync();
-
+                
                 var cmd = new PLCController.PLCItem("RD", "MR810", -1, "Read For Check if ready");
                 var rd = await plcController.Send(cmd);
                 if (string.IsNullOrEmpty(rd))
@@ -273,7 +272,6 @@ namespace AutoScrewing
                     continue;
                 if (rd == "1")
                     barrier.SignalAndWait();
-                semaphore.Release();
             }
         }
         private async Task<bool> ReadingLaser()
