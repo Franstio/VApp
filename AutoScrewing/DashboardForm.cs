@@ -244,7 +244,6 @@ namespace AutoScrewing
                 {
                     Task<DashboardModel> screwingTask = Task.Run(async () => await ReadingScrewing());
                     DashboardModel model = await screwingTask;
-                    await semaphore.WaitAsync();
                     DashboardModel = model;
                     await LoadData();
                 }
