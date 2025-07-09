@@ -217,9 +217,11 @@ namespace AutoScrewing
             {
                 try
                 {
+                    semaphore.Release();
                     Task<bool> laserTask = Task.Run(async () => await ReadingLaser());
                     Task<bool> cameraTask = Task.Run(async () => await ReadCamera());
                     await Task.WhenAll(laserTask, laserTask);
+                    await semaphore.WaitAsync();
                     DashboardModel model = DashboardModel;
                     model.LaserStatus = await laserTask;
                     model.CameraStatus = await cameraTask;
@@ -228,6 +230,7 @@ namespace AutoScrewing
                 }
                 catch (Exception ex)
                 {
+                    semaphore.Release();
                     LogModel log = new LogModel("Read PLC Loop Data", "ReadPLC function", "Exception handler for handling unexpected error in loop and continue the loop", "Failed");
                     log.result = $"{ex.Message} | {ex.StackTrace}";
                     await logRepository.RecordLog(log);
@@ -243,6 +246,8 @@ namespace AutoScrewing
                 {
                     Task<DashboardModel> screwingTask = Task.Run(async () => await ReadingScrewing());
                     DashboardModel model = await screwingTask;
+                    model.LaserStatus = DashboardModel.LaserStatus;
+                    model.CameraStatus = DashboardModel.CameraStatus;
                     DashboardModel = model;
                     await LoadData();
                 }
@@ -258,7 +263,8 @@ namespace AutoScrewing
         {
             while (true)
             {
-                
+                await semaphore.WaitAsync();
+
                 var cmd = new PLCController.PLCItem("RD", "MR810", -1, "Read For Check if ready");
                 var rd = await plcController.Send(cmd);
                 if (string.IsNullOrEmpty(rd))
@@ -267,7 +273,7 @@ namespace AutoScrewing
                     continue;
                 if (rd == "1")
                     barrier.SignalAndWait();
-                
+                semaphore.Release();
             }
         }
         private async Task<bool> ReadingLaser()
