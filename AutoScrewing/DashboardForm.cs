@@ -242,7 +242,6 @@ namespace AutoScrewing
             {
                 try
                 {
-                    semaphore.Release();
                     Task<DashboardModel> screwingTask = Task.Run(async () => await ReadingScrewing());
                     DashboardModel model = await screwingTask;
                     await semaphore.WaitAsync();
@@ -251,7 +250,6 @@ namespace AutoScrewing
                 }
                 catch (Exception ex)
                 {
-                    semaphore.Release();
                     LogModel log = new LogModel("Read Incoming Data", "ReadIncomingData function", "Exception handler for handling unexpected error in loop and continue the loop", "Failed");
                     log.result = $"{ex.Message} | {ex.StackTrace}";
                     await logRepository.RecordLog(log);
