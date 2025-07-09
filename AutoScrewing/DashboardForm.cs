@@ -78,7 +78,7 @@ namespace AutoScrewing
             get => _dashboardmodel; set
             {
                 _dashboardmodel = value;
-                SetDashbaordControl(_dashboardmodel);
+                SetDashboardControl(_dashboardmodel);
             }
         }
         public DashboardForm()
@@ -122,15 +122,19 @@ namespace AutoScrewing
             //            textBox1.Text = "test";
         }
 
-        private async void SetDashbaordControl(DashboardModel model)
+        private async void SetDashboardControl(DashboardModel model)
         {
             await InvokeAsync(() =>
             {
-                torqueLabel.Text = $"{model.Torque.ToString("0.0000")} {model.TorqueType}";
-                screwingResultLabel.Text = model.TighteningStatus;
-                screwingTimeLabel.Text = $"{model.Time} Seconds";
-                laserResultLabel.Text = model.LaserStatus ? "OK" : "NG";
-                cameraResultLabel.Text = model.CameraStatus ? "OK" : "NG";
+                try
+                {
+                    torqueLabel.Text = $"{model.Torque.ToString("0.0000")} {model.TorqueType}";
+                    screwingResultLabel.Text = model.TighteningStatus;
+                    screwingTimeLabel.Text = $"{model.Time} Seconds";
+                    laserResultLabel.Text = !model.isLaseringReady ? "Checking" : model.LaserStatus ? "OK" : "NG";
+                    cameraResultLabel.Text = !model.isCameraReady ? "Checking" : model.CameraStatus ? "OK" : "NG";
+                }
+                catch { }
             });
         }
         private async Task<bool> ReadCamera()
@@ -266,12 +270,19 @@ namespace AutoScrewing
                 
                 var cmd = new PLCController.PLCItem("RD", "MR812", -1, "Read For Check if ready");
                 var rd = await plcController.Send(cmd);
-                if (string.IsNullOrEmpty(rd))
-                    continue;
-                if (rd == "0")
-                    continue;
-                if (rd == "1")
+                var mdl = DashboardModel;
+                if (string.IsNullOrEmpty(rd) || rd == "0")
+                {
+                    mdl.isLaseringReady = false;
+                    mdl.isCameraReady = false;
+                }
+                else if (rd == "1")
+                {
+                    mdl.isLaseringReady = true;
+                    mdl.isCameraReady = true;
                     barrier.SignalAndWait();
+                }
+                DashboardModel = mdl;
             }
         }
         private async Task<bool> ReadingLaser()
@@ -490,6 +501,8 @@ namespace AutoScrewing
             Label lbl = (Label)sender;
             if (lbl.Text == "NG" || lbl.Text == "OK" || lbl.Text == "PASS")
                 lbl.ForeColor = lbl.Text == "NG" ? ColorTranslator.FromHtml("#EF4444") : ColorTranslator.FromHtml("#10B981");
+            else
+                lbl.ForeColor = label3.ForeColor;
 
         }
 

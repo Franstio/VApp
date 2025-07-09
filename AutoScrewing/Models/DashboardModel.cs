@@ -26,6 +26,10 @@ namespace AutoScrewing.Models
         public string SCAN_ID { get; set; } = string.Empty;
         public string SCAN_ID2 { get; set; } = string.Empty;
         public bool CameraStatus { get; set; } = false;
+
+        public bool isCameraReady { get; set; } = false;
+        public bool isLaseringReady { get; set; } = false;
+       // public bool isScrewingCompleted { get; set; } = false;
         public StatusCountModel StatusCount
         {
             get => new StatusCountModel()
