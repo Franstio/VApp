@@ -35,7 +35,7 @@ namespace AutoScrewing
         private KilewController kilewController = new KilewController();
         private PLCController plcController = new PLCController();
         private DashboardModel _dashboardmodel = new DashboardModel();
-        private MESHController meshController = new MESHController();
+        private Barrier barrier = new Barrier(3);
         private LogRepository logRepository = new LogRepository();
         private string CHECKSUM_SCREWING = "";
         SemaphoreSlim semaphore = new SemaphoreSlim(1);
@@ -45,18 +45,16 @@ namespace AutoScrewing
             CameraQueue = new Queue<OngoingItemModel>(),
             FinalQueue = new Queue<OngoingItemModel>();
 
-        public async Task<List<OngoingItemModel>> GetOngoingItems()
+        public  Task<List<OngoingItemModel>> GetOngoingItems()
         {
-            await semaphore.WaitAsync();
             List<Queue<OngoingItemModel>> a = [ScrewingQueue, LaserQueue, CameraQueue, FinalQueue];
-            semaphore.Release();
             try
             {
-                return a.SelectMany(x => x).OrderByDescending(x => x.TransactionTime).ToList();
+                return Task.FromResult(a.SelectMany(x => x).OrderByDescending(x => x.TransactionTime).ToList());
             }
             catch
             {
-                return [];
+                return Task.FromResult<List<OngoingItemModel>>([]);
             }
         }
         private async Task LoadData()
@@ -87,7 +85,7 @@ namespace AutoScrewing
         {
             InitializeComponent();
         }
-
+        
         private async void DashboardForm_Load(object sender, EventArgs e)
         {
             //DashboardModel data = new DashboardModel()
@@ -108,7 +106,9 @@ namespace AutoScrewing
             //};
             //DashboardModel = data;
             _ =Task.Run(() => ReadIncomingData());
+            _ = Task.Run(() => ReadPLC());
             _ = Task.Run(() => OutputTransaction());
+            _ = Task.Run(() => CheckReady());
             await LoadData();
             //Task.Run(async () =>
             //{
@@ -135,6 +135,7 @@ namespace AutoScrewing
         }
         private async Task<bool> ReadCamera()
         {
+            barrier.SignalAndWait();
             var startTime = DateTime.Now;
             PLCController.PLCItem[] cmd = [
                 new PLCController.PLCItem("RD", "MR500", -1, "Read For Reading Camera NG"),
@@ -153,7 +154,6 @@ namespace AutoScrewing
             if (CameraQueue.Count > 1 && !check && isValid)
             {
                 var item = CameraQueue.Dequeue();
-                await semaphore.WaitAsync();
                 item.CameraStartTime = startTime;
                 item.CameraEndTime = DateTime.Now;
                 if ((OK != "0" && OK != "1") && (NG != "0" && NG != "1"))
@@ -166,12 +166,11 @@ namespace AutoScrewing
                 if (item.FinalResult == "NG")
                 {
                     await plcController.Send(new PLCController.PLCItem("WR", "MR1000", 1, "After Camera Read 0 ON"));
-                    await Task.Delay(1000);
-                    await plcController.Send(new PLCController.PLCItem("WR", "MR1000", 0, "After Camera Read - OFF"));
+//                    await Task.Delay(1000);
+//                    await plcController.Send(new PLCController.PLCItem("WR", "MR1000", 0, "After Camera Read - OFF"));
                 }
                 item.isCameraCompleted = true;
                 FinalQueue.Enqueue(item);
-                semaphore.Release();
             }
             return result;
         }
@@ -211,36 +210,74 @@ namespace AutoScrewing
                 }
             }
         }
+        private async Task ReadPLC()
+        {
+
+            while (true)
+            {
+                try
+                {
+                    Task<bool> laserTask = Task.Run(async () => await ReadingLaser());
+                    Task<bool> cameraTask = Task.Run(async () => await ReadCamera());
+                    await Task.WhenAll(laserTask, laserTask);
+                    DashboardModel model = DashboardModel;
+                    model.LaserStatus = await laserTask;
+                    model.CameraStatus = await cameraTask;
+                    DashboardModel = model;
+                    await LoadData();
+                }
+                catch (Exception ex)
+                {
+                    semaphore.Release();
+                    LogModel log = new LogModel("Read PLC Loop Data", "ReadPLC function", "Exception handler for handling unexpected error in loop and continue the loop", "Failed");
+                    log.result = $"{ex.Message} | {ex.StackTrace}";
+                    await logRepository.RecordLog(log);
+                }
+            }
+        }
+
         private async Task ReadIncomingData()
         {
             while (true)
             {
                 try
                 {
+                    semaphore.Release();
                     Task<DashboardModel> screwingTask = Task.Run(async () => await ReadingScrewing());
-                    Task<bool> laserTask = Task.Run(async () => await ReadingLaser());
-                    Task<bool> cameraTask = Task.Run(async () => await ReadCamera());
-                    await Task.WhenAll(screwingTask, laserTask);
-                    await LoadData();
                     DashboardModel model = await screwingTask;
-                    model.LaserStatus = await laserTask;
-                    model.CameraStatus = await cameraTask;
+                    await semaphore.WaitAsync();
                     DashboardModel = model;
+                    await LoadData();
                 }
                 catch (Exception ex)
                 {
+                    semaphore.Release();
                     LogModel log = new LogModel("Read Incoming Data", "ReadIncomingData function", "Exception handler for handling unexpected error in loop and continue the loop", "Failed");
                     log.result = $"{ex.Message} | {ex.StackTrace}";
                     await logRepository.RecordLog(log);
                 }
-                finally
-                {
-                    await Task.Delay(4000);
-                }
+            }
+        }
+        private async Task CheckReady()
+        {
+            while (true)
+            {
+                await semaphore.WaitAsync();
+
+                var cmd = new PLCController.PLCItem("RD", "MR810", -1, "Read For Check if ready");
+                var rd = await plcController.Send(cmd);
+                if (string.IsNullOrEmpty(rd))
+                    continue;
+                if (rd == "0")
+                    continue;
+                if (rd == "1")
+                    barrier.SignalAndWait();
+                semaphore.Release();
             }
         }
         private async Task<bool> ReadingLaser()
         {
+            barrier.SignalAndWait();
             PLCController.PLCItem[] cmd = [
                 new PLCController.PLCItem("RD", "MR502", -1, "Read For Reading Laser NG"),
                 new PLCController.PLCItem("RD", "MR503", -1, "Read For Reading Laser OK")
@@ -259,7 +296,6 @@ namespace AutoScrewing
             {
 
                 var item = LaserQueue.Dequeue();
-                await semaphore.WaitAsync();
                 if ((OK != "0" && OK != "0") && (NG != "0" && NG != "1"))
                 {
                     item.AddError("Laser");
@@ -270,7 +306,6 @@ namespace AutoScrewing
                 item.CurrentStatus = "Camera";
                 item.isLaseringCompleted = true;
                 CameraQueue.Enqueue(item);
-                semaphore.Release();
             }
             return result;
         }
@@ -304,7 +339,6 @@ namespace AutoScrewing
                 {
                     CHECKSUM_SCREWING = data[7];
                     var item = ScrewingQueue.Dequeue();
-                    await semaphore.WaitAsync();
                     item.Torque = model.Torque;
                     item.TighteningStatus = model.TighteningStatus;
                     item.ScrewingResult = model.TighteningStatus.Contains("OK");
@@ -315,8 +349,9 @@ namespace AutoScrewing
                     item.CurrentStatus = "Lasering";
                     item.CHECKSUM = CHECKSUM_SCREWING;
                     item.isScrewingCompleted = true;
+                    await Task.Delay(4000);
                     LaserQueue.Enqueue(item);
-                    semaphore.Release();
+
                 }
             }
             else if (data[0].Replace("{", "").Contains("REQ100"))
@@ -390,8 +425,8 @@ namespace AutoScrewing
                 if (input.status == "OK" || input.status.Contains("PASS"))
                 {
                     await plcController.Send(new PLCController.PLCItem("WR", "MR811", 1, "Starting Transaction - ON"));
-                    await Task.Delay(3000);
-                    await plcController.Send(new PLCController.PLCItem("WR", "MR811", 0, "Starting Transaction - OFF"));
+//                    await Task.Delay(3000);
+//                    await plcController.Send(new PLCController.PLCItem("WR", "MR811", 0, "Starting Transaction - OFF"));
                     ScrewingQueue.Enqueue(new OngoingItemModel() { Scan_ID = scan, Scan_ID2 = scan2, StartTime = DateTime.Now, CurrentStatus = "Screwing" });
                 }
             }
