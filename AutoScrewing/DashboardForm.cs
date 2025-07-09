@@ -151,7 +151,7 @@ namespace AutoScrewing
             bool isValid = !string.IsNullOrEmpty(OK) && !string.IsNullOrEmpty(NG);
             bool check = OK == "0" && NG == "0";
             result = !check && (OK == "1" && NG == "0");
-            if (CameraQueue.Count > 1 && !check && isValid)
+            if (CameraQueue.Count > 0 && !check && isValid)
             {
                 var item = CameraQueue.Dequeue();
                 item.CameraStartTime = startTime;
@@ -291,7 +291,7 @@ namespace AutoScrewing
             bool check = OK == "0" && NG == "0" ;
             bool isValid = !string.IsNullOrEmpty(OK) && !string.IsNullOrEmpty(NG);
             bool result = !check && (OK == "1" && NG == "0");
-            if (LaserQueue.Count > 1 && !check && isValid)
+            if (LaserQueue.Count > 0 && !check && isValid)
             {
 
                 var item = LaserQueue.Dequeue();
