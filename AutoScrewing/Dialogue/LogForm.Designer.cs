@@ -30,6 +30,7 @@
         {
             components = new System.ComponentModel.Container();
             groupBox1 = new GroupBox();
+            button2 = new Button();
             label4 = new Label();
             label3 = new Label();
             label2 = new Label();
@@ -60,6 +61,7 @@
             // groupBox1
             // 
             groupBox1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            groupBox1.Controls.Add(button2);
             groupBox1.Controls.Add(label4);
             groupBox1.Controls.Add(label3);
             groupBox1.Controls.Add(label2);
@@ -75,6 +77,17 @@
             groupBox1.TabIndex = 0;
             groupBox1.TabStop = false;
             groupBox1.Text = "Filter";
+            // 
+            // button2
+            // 
+            button2.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            button2.Location = new Point(6, 147);
+            button2.Name = "button2";
+            button2.Size = new Size(371, 52);
+            button2.TabIndex = 9;
+            button2.Text = "Search";
+            button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click;
             // 
             // label4
             // 
@@ -115,7 +128,7 @@
             // button1
             // 
             button1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            button1.Location = new Point(6, 147);
+            button1.Location = new Point(6, 205);
             button1.Name = "button1";
             button1.Size = new Size(371, 52);
             button1.TabIndex = 4;
@@ -150,7 +163,6 @@
             searchBox.Name = "searchBox";
             searchBox.Size = new Size(315, 23);
             searchBox.TabIndex = 1;
-            searchBox.TextChanged += searchBox_TextChanged;
             // 
             // logTypeBox
             // 
@@ -300,5 +312,6 @@
         private DataGridViewTextBoxColumn recordtimeDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn logtypeDataGridViewTextBoxColumn;
         private SaveFileDialog saveFileDialog1;
+        private Button button2;
     }
 }

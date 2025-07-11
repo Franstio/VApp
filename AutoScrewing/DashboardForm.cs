@@ -418,7 +418,9 @@ namespace AutoScrewing
                 InputFileModel? input = null;
                 try
                 {
-                    input = JsonSerializer.Deserialize<InputFileModel>(text);
+                    var dict = JsonSerializer.Deserialize<Dictionary<string,string>>(text);
+                    var pair = dict.First();
+                    input = new InputFileModel(pair.Key.Split(":").First(), pair.Key.Split(":").Last(), pair.Value);
                 }
                 catch { }
                 if (input is null)

@@ -88,24 +88,18 @@ namespace AutoScrewing.Database.Repository
         }
         public async Task<IList<string>> GetLogType([CallerMemberName] string? methodName = null, [CallerFilePath] string? filePath = null, [CallerLineNumber] int lineNumber = 0)
         {
-            LogModel log = new LogModel("SQL", "Log Repository", $"Called by `{methodName}` in `{System.IO.Path.GetFileName(filePath)}` at line `{lineNumber}`", "Send");
+//            LogModel log = new LogModel("SQL", "Log Repository", $"Called by `{methodName}` in `{System.IO.Path.GetFileName(filePath)}` at line `{lineNumber}`", "Send");
             try
             {
                 using (var conn = await GetConnection())
                 {
                     var query = $"select log_type from {Table_Name} group by log_type";
                     var data = await conn.QueryAsync(query);
-                    log.result = JsonSerializer.Serialize(data);
-                    log.status += "-Success";
-                    await RecordLog(log);
                     return data.Select(x=>(string)x.log_type).ToList();
                 }
             }
             catch (Exception e)
             {
-                log.result = JsonSerializer.Serialize($"{e.Message} - {e.StackTrace}");
-                log.status += "-Failed";
-                await RecordLog(log);
                 return [];
             }
 

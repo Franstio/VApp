@@ -53,7 +53,7 @@ namespace AutoScrewing.Dialogue
             }
             catch
             {
-                
+
             }
         }
 
@@ -62,35 +62,37 @@ namespace AutoScrewing.Dialogue
             await LoadLogType();
         }
 
-        private async void logTypeBox_SelectedValueChanged(object sender, EventArgs e)
+        private void logTypeBox_SelectedValueChanged(object sender, EventArgs e)
         {
-            await LoadData();
         }
 
-        private async void fromBox_ValueChanged(object sender, EventArgs e)
+        private void fromBox_ValueChanged(object sender, EventArgs e)
         {
-            await LoadData();
         }
 
-        private async void searchBox_TextChanged(object sender, EventArgs e)
+        private void searchBox_TextChanged(object sender, EventArgs e)
         {
-            await LoadData();
         }
 
         private async void button1_Click(object sender, EventArgs e)
         {
             await InvokeAsync(() => button1.Enabled = false);
-            var rst =saveFileDialog1.ShowDialog();
-            if (rst==DialogResult.OK)
+            var rst = saveFileDialog1.ShowDialog();
+            if (rst == DialogResult.OK)
             {
                 try
                 {
                     await File.WriteAllTextAsync(saveFileDialog1.FileName, JsonSerializer.Serialize(logData));
                 }
-                catch  { }
+                catch { }
             }
             await InvokeAsync(() => button1.Enabled = true);
 
+        }
+
+        private async void button2_Click(object sender, EventArgs e)
+        {
+            await LoadData();
         }
     }
 }

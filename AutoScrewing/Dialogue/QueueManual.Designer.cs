@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(QueueManual));
             tableLayoutPanel1 = new TableLayoutPanel();
             tableLayoutPanel5 = new TableLayoutPanel();
             button7 = new Button();
@@ -49,14 +48,14 @@
             label3 = new Label();
             ScrewingLabel = new Label();
             label1 = new Label();
-            toolStrip1 = new ToolStrip();
-            toolStripButton1 = new ToolStripButton();
+            menuStrip1 = new MenuStrip();
+            startTransactionToolStripMenuItem = new ToolStripMenuItem();
             tableLayoutPanel1.SuspendLayout();
             tableLayoutPanel5.SuspendLayout();
             tableLayoutPanel4.SuspendLayout();
             tableLayoutPanel2.SuspendLayout();
             tableLayoutPanel3.SuspendLayout();
-            toolStrip1.SuspendLayout();
+            menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -78,14 +77,14 @@
             tableLayoutPanel1.Controls.Add(ScrewingLabel, 1, 0);
             tableLayoutPanel1.Controls.Add(label1, 0, 0);
             tableLayoutPanel1.Dock = DockStyle.Fill;
-            tableLayoutPanel1.Location = new Point(0, 0);
+            tableLayoutPanel1.Location = new Point(0, 24);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 4;
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
-            tableLayoutPanel1.Size = new Size(901, 440);
+            tableLayoutPanel1.Size = new Size(901, 416);
             tableLayoutPanel1.TabIndex = 0;
             // 
             // tableLayoutPanel5
@@ -98,14 +97,14 @@
             tableLayoutPanel5.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10F));
             tableLayoutPanel5.Controls.Add(button7, 1, 1);
             tableLayoutPanel5.Dock = DockStyle.Fill;
-            tableLayoutPanel5.Location = new Point(633, 333);
+            tableLayoutPanel5.Location = new Point(633, 315);
             tableLayoutPanel5.Name = "tableLayoutPanel5";
             tableLayoutPanel5.RowCount = 3;
             tableLayoutPanel5.RowStyles.Add(new RowStyle(SizeType.Percent, 40F));
             tableLayoutPanel5.RowStyles.Add(new RowStyle(SizeType.Percent, 30F));
             tableLayoutPanel5.RowStyles.Add(new RowStyle(SizeType.Percent, 30F));
             tableLayoutPanel5.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            tableLayoutPanel5.Size = new Size(265, 104);
+            tableLayoutPanel5.Size = new Size(265, 98);
             tableLayoutPanel5.TabIndex = 16;
             // 
             // button7
@@ -115,9 +114,9 @@
             button7.Dock = DockStyle.Fill;
             button7.FlatStyle = FlatStyle.Flat;
             button7.ForeColor = Color.White;
-            button7.Location = new Point(29, 44);
+            button7.Location = new Point(29, 42);
             button7.Name = "button7";
-            button7.Size = new Size(205, 25);
+            button7.Size = new Size(205, 23);
             button7.TabIndex = 1;
             button7.Text = "RESET";
             button7.UseVisualStyleBackColor = false;
@@ -134,13 +133,13 @@
             tableLayoutPanel4.Controls.Add(button5, 3, 1);
             tableLayoutPanel4.Controls.Add(button6, 1, 1);
             tableLayoutPanel4.Dock = DockStyle.Fill;
-            tableLayoutPanel4.Location = new Point(633, 223);
+            tableLayoutPanel4.Location = new Point(633, 211);
             tableLayoutPanel4.Name = "tableLayoutPanel4";
             tableLayoutPanel4.RowCount = 3;
             tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Percent, 40F));
             tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Percent, 30F));
             tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Percent, 30F));
-            tableLayoutPanel4.Size = new Size(265, 104);
+            tableLayoutPanel4.Size = new Size(265, 98);
             tableLayoutPanel4.TabIndex = 15;
             // 
             // button5
@@ -149,9 +148,9 @@
             button5.Dock = DockStyle.Fill;
             button5.FlatStyle = FlatStyle.Flat;
             button5.ForeColor = Color.White;
-            button5.Location = new Point(161, 44);
+            button5.Location = new Point(161, 42);
             button5.Name = "button5";
-            button5.Size = new Size(73, 25);
+            button5.Size = new Size(73, 23);
             button5.TabIndex = 1;
             button5.Tag = "0";
             button5.Text = "NG";
@@ -164,9 +163,9 @@
             button6.Dock = DockStyle.Fill;
             button6.FlatStyle = FlatStyle.Flat;
             button6.ForeColor = Color.White;
-            button6.Location = new Point(29, 44);
+            button6.Location = new Point(29, 42);
             button6.Name = "button6";
-            button6.Size = new Size(73, 25);
+            button6.Size = new Size(73, 23);
             button6.TabIndex = 0;
             button6.Tag = "1";
             button6.Text = "OK";
@@ -184,13 +183,13 @@
             tableLayoutPanel2.Controls.Add(button2, 3, 1);
             tableLayoutPanel2.Controls.Add(button1, 1, 1);
             tableLayoutPanel2.Dock = DockStyle.Fill;
-            tableLayoutPanel2.Location = new Point(633, 113);
+            tableLayoutPanel2.Location = new Point(633, 107);
             tableLayoutPanel2.Name = "tableLayoutPanel2";
             tableLayoutPanel2.RowCount = 3;
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 40F));
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 30F));
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 30F));
-            tableLayoutPanel2.Size = new Size(265, 104);
+            tableLayoutPanel2.Size = new Size(265, 98);
             tableLayoutPanel2.TabIndex = 14;
             // 
             // button2
@@ -199,9 +198,9 @@
             button2.Dock = DockStyle.Fill;
             button2.FlatStyle = FlatStyle.Flat;
             button2.ForeColor = Color.White;
-            button2.Location = new Point(161, 44);
+            button2.Location = new Point(161, 42);
             button2.Name = "button2";
-            button2.Size = new Size(73, 25);
+            button2.Size = new Size(73, 23);
             button2.TabIndex = 1;
             button2.Tag = "0";
             button2.Text = "NG";
@@ -214,9 +213,9 @@
             button1.Dock = DockStyle.Fill;
             button1.FlatStyle = FlatStyle.Flat;
             button1.ForeColor = Color.White;
-            button1.Location = new Point(29, 44);
+            button1.Location = new Point(29, 42);
             button1.Name = "button1";
-            button1.Size = new Size(73, 25);
+            button1.Size = new Size(73, 23);
             button1.TabIndex = 0;
             button1.Tag = "1";
             button1.Text = "OK";
@@ -240,7 +239,7 @@
             tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Percent, 40F));
             tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Percent, 30F));
             tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Percent, 30F));
-            tableLayoutPanel3.Size = new Size(265, 104);
+            tableLayoutPanel3.Size = new Size(265, 98);
             tableLayoutPanel3.TabIndex = 13;
             // 
             // button3
@@ -249,9 +248,9 @@
             button3.Dock = DockStyle.Fill;
             button3.FlatStyle = FlatStyle.Flat;
             button3.ForeColor = Color.White;
-            button3.Location = new Point(161, 44);
+            button3.Location = new Point(161, 42);
             button3.Name = "button3";
-            button3.Size = new Size(73, 25);
+            button3.Size = new Size(73, 23);
             button3.TabIndex = 1;
             button3.Tag = "0";
             button3.Text = "NG";
@@ -264,9 +263,9 @@
             button4.Dock = DockStyle.Fill;
             button4.FlatStyle = FlatStyle.Flat;
             button4.ForeColor = Color.White;
-            button4.Location = new Point(29, 44);
+            button4.Location = new Point(29, 42);
             button4.Name = "button4";
-            button4.Size = new Size(73, 25);
+            button4.Size = new Size(73, 23);
             button4.TabIndex = 0;
             button4.Tag = "1";
             button4.Text = "OK";
@@ -276,9 +275,9 @@
             // OutputLabel
             // 
             OutputLabel.Dock = DockStyle.Fill;
-            OutputLabel.Location = new Point(183, 330);
+            OutputLabel.Location = new Point(183, 312);
             OutputLabel.Name = "OutputLabel";
-            OutputLabel.Size = new Size(444, 110);
+            OutputLabel.Size = new Size(444, 104);
             OutputLabel.TabIndex = 7;
             OutputLabel.Text = "Output Status";
             OutputLabel.TextAlign = ContentAlignment.MiddleCenter;
@@ -286,9 +285,9 @@
             // CameraLabel
             // 
             CameraLabel.Dock = DockStyle.Fill;
-            CameraLabel.Location = new Point(183, 220);
+            CameraLabel.Location = new Point(183, 208);
             CameraLabel.Name = "CameraLabel";
-            CameraLabel.Size = new Size(444, 110);
+            CameraLabel.Size = new Size(444, 104);
             CameraLabel.TabIndex = 6;
             CameraLabel.Text = "Screwing Queue";
             CameraLabel.TextAlign = ContentAlignment.MiddleCenter;
@@ -296,9 +295,9 @@
             // LaserLabel
             // 
             LaserLabel.Dock = DockStyle.Fill;
-            LaserLabel.Location = new Point(183, 110);
+            LaserLabel.Location = new Point(183, 104);
             LaserLabel.Name = "LaserLabel";
-            LaserLabel.Size = new Size(444, 110);
+            LaserLabel.Size = new Size(444, 104);
             LaserLabel.TabIndex = 5;
             LaserLabel.Text = "Screwing Queue";
             LaserLabel.TextAlign = ContentAlignment.MiddleCenter;
@@ -306,9 +305,9 @@
             // label5
             // 
             label5.Dock = DockStyle.Fill;
-            label5.Location = new Point(3, 330);
+            label5.Location = new Point(3, 312);
             label5.Name = "label5";
-            label5.Size = new Size(174, 110);
+            label5.Size = new Size(174, 104);
             label5.TabIndex = 4;
             label5.Text = "Output Status";
             label5.TextAlign = ContentAlignment.MiddleCenter;
@@ -316,9 +315,9 @@
             // label4
             // 
             label4.Dock = DockStyle.Fill;
-            label4.Location = new Point(3, 220);
+            label4.Location = new Point(3, 208);
             label4.Name = "label4";
-            label4.Size = new Size(174, 110);
+            label4.Size = new Size(174, 104);
             label4.TabIndex = 3;
             label4.Text = "Camera Queue";
             label4.TextAlign = ContentAlignment.MiddleCenter;
@@ -326,9 +325,9 @@
             // label3
             // 
             label3.Dock = DockStyle.Fill;
-            label3.Location = new Point(3, 110);
+            label3.Location = new Point(3, 104);
             label3.Name = "label3";
-            label3.Size = new Size(174, 110);
+            label3.Size = new Size(174, 104);
             label3.TabIndex = 2;
             label3.Text = "Laser Queue";
             label3.TextAlign = ContentAlignment.MiddleCenter;
@@ -338,7 +337,7 @@
             ScrewingLabel.Dock = DockStyle.Fill;
             ScrewingLabel.Location = new Point(183, 0);
             ScrewingLabel.Name = "ScrewingLabel";
-            ScrewingLabel.Size = new Size(444, 110);
+            ScrewingLabel.Size = new Size(444, 104);
             ScrewingLabel.TabIndex = 1;
             ScrewingLabel.Text = "Screwing Queue";
             ScrewingLabel.TextAlign = ContentAlignment.MiddleCenter;
@@ -348,37 +347,36 @@
             label1.Dock = DockStyle.Fill;
             label1.Location = new Point(3, 0);
             label1.Name = "label1";
-            label1.Size = new Size(174, 110);
+            label1.Size = new Size(174, 104);
             label1.TabIndex = 0;
             label1.Text = "Screwing Queue";
             label1.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // toolStrip1
+            // menuStrip1
             // 
-            toolStrip1.Items.AddRange(new ToolStripItem[] { toolStripButton1 });
-            toolStrip1.Location = new Point(0, 0);
-            toolStrip1.Name = "toolStrip1";
-            toolStrip1.Size = new Size(901, 25);
-            toolStrip1.TabIndex = 1;
-            toolStrip1.Text = "toolStrip1";
+            menuStrip1.Items.AddRange(new ToolStripItem[] { startTransactionToolStripMenuItem });
+            menuStrip1.Location = new Point(0, 0);
+            menuStrip1.Name = "menuStrip1";
+            menuStrip1.Size = new Size(901, 24);
+            menuStrip1.TabIndex = 1;
+            menuStrip1.Text = "menuStrip1";
+            menuStrip1.ItemClicked += menuStrip1_ItemClicked;
             // 
-            // toolStripButton1
+            // startTransactionToolStripMenuItem
             // 
-            toolStripButton1.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            toolStripButton1.Image = (Image)resources.GetObject("toolStripButton1.Image");
-            toolStripButton1.ImageTransparentColor = Color.Magenta;
-            toolStripButton1.Name = "toolStripButton1";
-            toolStripButton1.Size = new Size(23, 22);
-            toolStripButton1.Text = "Start";
-            toolStripButton1.Click += toolStripButton1_Click;
+            startTransactionToolStripMenuItem.Name = "startTransactionToolStripMenuItem";
+            startTransactionToolStripMenuItem.Size = new Size(106, 20);
+            startTransactionToolStripMenuItem.Text = "Start Transaction";
+            startTransactionToolStripMenuItem.Click += toolStripButton1_Click;
             // 
             // QueueManual
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(901, 440);
-            Controls.Add(toolStrip1);
             Controls.Add(tableLayoutPanel1);
+            Controls.Add(menuStrip1);
+            MainMenuStrip = menuStrip1;
             Name = "QueueManual";
             Text = "QueueManual";
             tableLayoutPanel1.ResumeLayout(false);
@@ -386,8 +384,8 @@
             tableLayoutPanel4.ResumeLayout(false);
             tableLayoutPanel2.ResumeLayout(false);
             tableLayoutPanel3.ResumeLayout(false);
-            toolStrip1.ResumeLayout(false);
-            toolStrip1.PerformLayout();
+            menuStrip1.ResumeLayout(false);
+            menuStrip1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -414,7 +412,7 @@
         private TableLayoutPanel tableLayoutPanel3;
         private Button button3;
         private Button button4;
-        private ToolStrip toolStrip1;
-        private ToolStripButton toolStripButton1;
+        private MenuStrip menuStrip1;
+        private ToolStripMenuItem startTransactionToolStripMenuItem;
     }
 }
