@@ -45,7 +45,7 @@ namespace AutoScrewing
             CameraQueue = new Queue<OngoingItemModel>(),
             FinalQueue = new Queue<OngoingItemModel>();
 
-        public  Task<List<OngoingItemModel>> GetOngoingItems()
+        public Task<List<OngoingItemModel>> GetOngoingItems()
         {
             List<Queue<OngoingItemModel>> a = [ScrewingQueue, LaserQueue, CameraQueue, FinalQueue];
             try
@@ -60,8 +60,8 @@ namespace AutoScrewing
         private async Task LoadData()
         {
             var list = await GetOngoingItems();
-            var transactionData = (await TransactionRepository.GetTransaction()).Select(x=>new object[] {x.Scan_ID,$"{x.TighteningStatus} {x.Torque}",x.LaserResult ? "OK" : "NG",x.CameraResult ? "OK" : "NG",x.FinalResult });
-            var data = list.Select(x => new object[] { x.Scan_ID, $"{(x.isScrewingCompleted ?  x.TighteningStatus : "-")} {x.Torque}", x.isLaseringCompleted ?  (x.LaserResult ? "OK" : "NG") : "-", x.isCameraCompleted ? (x.CameraResult ? "OK" : "NG") : "-", x.isScrewingCompleted && x.isLaseringCompleted  && x.isCameraCompleted ? x.FinalResult : "-"}).ToArray();
+            var transactionData = (await TransactionRepository.GetTransaction()).Select(x => new object[] { x.Scan_ID, $"{x.TighteningStatus} {x.Torque}", x.LaserResult ? "OK" : "NG", x.CameraResult ? "OK" : "NG", x.FinalResult });
+            var data = list.Select(x => new object[] { x.Scan_ID, $"{(x.isScrewingCompleted ? x.TighteningStatus : "-")} {x.Torque}", x.isLaseringCompleted ? (x.LaserResult ? "OK" : "NG") : "-", x.isCameraCompleted ? (x.CameraResult ? "OK" : "NG") : "-", x.isScrewingCompleted && x.isLaseringCompleted && x.isCameraCompleted ? x.FinalResult : "-" }).ToArray();
             await InvokeAsync(() =>
             {
                 dataGridView1.Rows.Clear();
@@ -85,7 +85,7 @@ namespace AutoScrewing
         {
             InitializeComponent();
         }
-        
+
         private async void DashboardForm_Load(object sender, EventArgs e)
         {
             //DashboardModel data = new DashboardModel()
@@ -105,7 +105,7 @@ namespace AutoScrewing
             //    TighteningStatus = "3NG-F"
             //};
             //DashboardModel = data;
-            _ =Task.Run(() => ReadIncomingData());
+            _ = Task.Run(() => ReadIncomingData());
             _ = Task.Run(() => ReadPLC());
             _ = Task.Run(() => OutputTransaction());
             _ = Task.Run(() => CheckReady());
@@ -170,8 +170,8 @@ namespace AutoScrewing
                 if (item.FinalResult == "NG")
                 {
                     await plcController.Send(new PLCController.PLCItem("WR", "MR1000", 1, "After Camera Read 0 ON"));
-//                    await Task.Delay(1000);
-//                    await plcController.Send(new PLCController.PLCItem("WR", "MR1000", 0, "After Camera Read - OFF"));
+                    //                    await Task.Delay(1000);
+                    //                    await plcController.Send(new PLCController.PLCItem("WR", "MR1000", 0, "After Camera Read - OFF"));
                 }
                 item.isCameraCompleted = true;
                 FinalQueue.Enqueue(item);
@@ -269,7 +269,7 @@ namespace AutoScrewing
         {
             while (true)
             {
-                
+
                 var cmd = new PLCController.PLCItem("RD", "MR812", -1, "Read For Check if ready");
                 var rd = await plcController.Send(cmd);
                 var mdl = DashboardModel;
@@ -301,7 +301,7 @@ namespace AutoScrewing
             var startTime = DateTime.Now;
             await Task.WhenAll(task);
             string OK = await task[1], NG = await task[0];
-            bool check = OK == "0" && NG == "0" ;
+            bool check = OK == "0" && NG == "0";
             bool isValid = !string.IsNullOrEmpty(OK) && !string.IsNullOrEmpty(NG);
             bool result = !check && (OK == "1" && NG == "0");
             if (LaserQueue.Count > 0 && !check && isValid)
@@ -342,7 +342,7 @@ namespace AutoScrewing
                 model.ScrewCount = int.Parse(data[23].Split('/')[0]);
                 model.DeviceID = data[10];
                 model.TighteningStatus = data[25];
-                model.Thread = Convert.ToDecimal(data[22],new CultureInfo("en-US"));
+                model.Thread = Convert.ToDecimal(data[22], new CultureInfo("en-US"));
                 model.Time = data[21];
                 model.Torque = Convert.ToDecimal(data[19], new CultureInfo("en-US"));
                 model.TorqueType = "Nm";//data[18].Replace("_", "");
@@ -418,7 +418,7 @@ namespace AutoScrewing
                 InputFileModel? input = null;
                 try
                 {
-                    var dict = JsonSerializer.Deserialize<Dictionary<string,string>>(text);
+                    var dict = JsonSerializer.Deserialize<Dictionary<string, string>>(text);
                     var pair = dict.First();
                     input = new InputFileModel(pair.Key.Split(":").First(), pair.Key.Split(":").Last(), pair.Value);
                 }
@@ -439,8 +439,8 @@ namespace AutoScrewing
                 if (input.status == "OK" || input.status.Contains("PASS"))
                 {
                     await plcController.Send(new PLCController.PLCItem("WR", "MR811", 1, "Starting Transaction - ON"));
-//                    await Task.Delay(3000);
-//                    await plcController.Send(new PLCController.PLCItem("WR", "MR811", 0, "Starting Transaction - OFF"));
+                    //                    await Task.Delay(3000);
+                    //                    await plcController.Send(new PLCController.PLCItem("WR", "MR811", 0, "Starting Transaction - OFF"));
                     ScrewingQueue.Enqueue(new OngoingItemModel() { Scan_ID = scan, Scan_ID2 = scan2, StartTime = DateTime.Now, CurrentStatus = "Screwing" });
                 }
             }
@@ -449,7 +449,21 @@ namespace AutoScrewing
                 await logRepository.RecordLog(new LogModel("Input-File", "inputFileWatcher_Changed", "Reading input file from mesh", "Failed") { payload = e.FullPath, result = ex.Message + " | " + ex.StackTrace });
             }
         }
-
+        private async Task LoadScanToStart(string operationusersn, string scan, string scan2)
+        {
+            var item = new OngoingItemModel() { Scan_ID = scan, Scan_ID2 = scan2, OperationUserSN = operationusersn, OperationId = Settings1.Default.OPERATION_ID, StartTime = DateTime.Now, CurrentStatus = "Screwing" };
+            try
+            {
+                await plcController.Send(new PLCController.PLCItem("WR", "MR811", 1, "Starting Transaction - ON"));
+                //                    await Task.Delay(3000);
+                //                    await plcController.Send(new PLCController.PLCItem("WR", "MR811", 0, "Starting Transaction - OFF"));
+                ScrewingQueue.Enqueue(item);
+            }
+            catch (Exception ex)
+            {
+                await logRepository.RecordLog(new LogModel("Load Scan", "LoadScanToStart", "Reading user scan", "Failed") { payload =JsonSerializer.Serialize( item ), result = ex.Message + " | " + ex.StackTrace });
+            }
+        }
         private void runningQueueToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
@@ -496,7 +510,7 @@ namespace AutoScrewing
         private void screwingResultLabel_TextChanged(object sender, EventArgs e)
         {
             Label lbl = (Label)sender;
-            if (lbl.Text.Contains( "NG") || lbl.Text.Contains("OK") || lbl.Text=="OKALL" || lbl.Text.Contains("PASS"))
+            if (lbl.Text.Contains("NG") || lbl.Text.Contains("OK") || lbl.Text == "OKALL" || lbl.Text.Contains("PASS"))
                 lbl.ForeColor = lbl.Text.Contains("NG") ? ColorTranslator.FromHtml("#EF4444") : ColorTranslator.FromHtml("#10B981");
         }
 
@@ -541,7 +555,7 @@ namespace AutoScrewing
             await LoadData();
         }
 
-        public async  void DequeueCamera(bool isOk)
+        public async void DequeueCamera(bool isOk)
         {
             Random rnd = new Random();
             var item = CameraQueue.Dequeue();
@@ -575,8 +589,73 @@ namespace AutoScrewing
                 var usr = frm.GetLogin();
                 if (result == DialogResult.OK && usr != null)
                 {
-                    var frm2 = new QueueManual(this,this);
+                    var frm2 = new QueueManual(this, this);
                     frm2.Show();
+                }
+            }
+        }
+
+
+        private void scanBoxLeave(object sender, EventArgs e)
+        {
+            TextBox box = (TextBox)sender;
+
+            box.Text = string.IsNullOrEmpty(box.Text) ? box.Tag?.ToString() : box.Text;
+
+        }
+
+        private void ScanFocus(object sender, EventArgs e)
+        {
+            TextBox box = (TextBox)sender;
+
+            box.Text = box.Text == box.Tag?.ToString() ? string.Empty : box.Text;
+
+        }
+
+        private async void userIdBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == '\r')
+            {
+                if ((!string.IsNullOrEmpty(scan1Box.Text) && !string.IsNullOrEmpty(scan2Box.Text) && !string.IsNullOrEmpty(userIdBox.Text)) &&
+                    (scan1Box.Text != scan1Box.Tag?.ToString() && scan2Box.Text != scan2Box.Tag?.ToString() && userIdBox.Text != userIdBox.Tag?.ToString()))
+                {
+                    await LoadScanToStart(userIdBox.Text, scan1Box.Text, scan2Box.Text);
+                }
+                else
+                {
+                    scan1Box.Focus();
+                }
+            }
+        }
+
+        private async void scan1Box_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == '\r')
+            {
+                if ((!string.IsNullOrEmpty(scan1Box.Text) && !string.IsNullOrEmpty(scan2Box.Text) && !string.IsNullOrEmpty(userIdBox.Text)) &&
+                    (scan1Box.Text != scan1Box.Tag?.ToString() && scan2Box.Text != scan2Box.Tag?.ToString() && userIdBox.Text != userIdBox.Tag?.ToString()))
+                {
+                    await LoadScanToStart(userIdBox.Text, scan1Box.Text, scan2Box.Text);
+                }
+                else
+                {
+                    scan2Box.Focus();
+                }
+            }
+        }
+
+        private async void scan2Box_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == '\r')
+            {
+                if ((!string.IsNullOrEmpty(scan1Box.Text) && !string.IsNullOrEmpty(scan2Box.Text) && !string.IsNullOrEmpty(userIdBox.Text)) &&
+                    (scan1Box.Text != scan1Box.Tag?.ToString() && scan2Box.Text != scan2Box.Tag?.ToString() && userIdBox.Text != userIdBox.Tag?.ToString()))
+                {
+                    await LoadScanToStart(userIdBox.Text, scan1Box.Text, scan2Box.Text);
+                }
+                else
+                {
+                    userIdBox.Focus();
                 }
             }
         }

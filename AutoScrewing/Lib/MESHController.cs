@@ -1,5 +1,6 @@
 ﻿using AutoScrewing.Database.Models;
 using AutoScrewing.Database.Repository;
+using AutoScrewing.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,21 +31,23 @@ namespace AutoScrewing.Lib
             client.DefaultRequestHeaders.TryAddWithoutValidation("X-SOURCE", source);
             return client;
         }
-        public async Task Tracking(string Scan_ID)
+        public async Task Tracking(string operationusersn,string lotno,string matlotno)
         {
             using (var client = GetClient("Tracking"))
             {
-                var payload =new 
-                {
-                    operationId=OPERATION_ID,
-                    lotNo=Scan_ID,
-                    operationUserSN=OPERATION_USER
-                };
+                var payload =new  MESHPayload1Model(OPERATION_ID,operationusersn,lotno,matlotno);   
 
-                await client.PostAsJsonAsync("openapi/mes/tracking/check",payload);
+                await client.PostAsJsonAsync("openapi/mes/tracking",payload);
             }
         }
-
+        public async Task Checking(string operationusersn, string lotno, string matlotno,string result)
+        {
+            using (var client = GetClient("Tracking"))
+            {
+                var payload = new MESHPayload1Model(OPERATION_ID, operationusersn, lotno, matlotno);
+                await client.PostAsJsonAsync("openapi/mes/tracking/check", payload);
+            }
+        }
         public class MESH_HTTP_HANDLER : HttpClientHandler
         {
             protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)

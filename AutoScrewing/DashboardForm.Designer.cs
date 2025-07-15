@@ -63,6 +63,10 @@
             logToolStripMenuItem = new ToolStripMenuItem();
             manualToolStripMenuItem = new ToolStripMenuItem();
             inputFileWatcher = new FileSystemWatcher();
+            tableLayoutPanel6 = new TableLayoutPanel();
+            scan2Box = new TextBox();
+            scan1Box = new TextBox();
+            userIdBox = new TextBox();
             tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             tableLayoutPanel2.SuspendLayout();
@@ -73,6 +77,7 @@
             flowLayoutPanel1.SuspendLayout();
             menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)inputFileWatcher).BeginInit();
+            tableLayoutPanel6.SuspendLayout();
             SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -437,12 +442,75 @@
             inputFileWatcher.SynchronizingObject = this;
             inputFileWatcher.Created += inputFileWatcher_Changed;
             // 
+            // tableLayoutPanel6
+            // 
+            tableLayoutPanel6.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            tableLayoutPanel6.ColumnCount = 3;
+            tableLayoutPanel6.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33F));
+            tableLayoutPanel6.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33F));
+            tableLayoutPanel6.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 34F));
+            tableLayoutPanel6.Controls.Add(scan2Box, 2, 0);
+            tableLayoutPanel6.Controls.Add(scan1Box, 1, 0);
+            tableLayoutPanel6.Controls.Add(userIdBox, 0, 0);
+            tableLayoutPanel6.Location = new Point(12, 27);
+            tableLayoutPanel6.Name = "tableLayoutPanel6";
+            tableLayoutPanel6.RowCount = 1;
+            tableLayoutPanel6.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            tableLayoutPanel6.Size = new Size(911, 44);
+            tableLayoutPanel6.TabIndex = 9;
+            // 
+            // scan2Box
+            // 
+            scan2Box.Dock = DockStyle.Fill;
+            scan2Box.Font = new Font("Sans Serif Collection", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            scan2Box.Location = new Point(603, 3);
+            scan2Box.Name = "scan2Box";
+            scan2Box.Size = new Size(305, 39);
+            scan2Box.TabIndex = 12;
+            scan2Box.Tag = "Scan Operation MaterialLotNo";
+            scan2Box.Text = "Scan Operation MaterialLotNo";
+            scan2Box.TextAlign = HorizontalAlignment.Center;
+            scan2Box.Enter += ScanFocus;
+            scan2Box.KeyPress += scan2Box_KeyPress;
+            scan2Box.Leave += scanBoxLeave;
+            // 
+            // scan1Box
+            // 
+            scan1Box.Dock = DockStyle.Fill;
+            scan1Box.Font = new Font("Sans Serif Collection", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            scan1Box.Location = new Point(303, 3);
+            scan1Box.Name = "scan1Box";
+            scan1Box.Size = new Size(294, 39);
+            scan1Box.TabIndex = 11;
+            scan1Box.Tag = "Scan Operation LotNo...";
+            scan1Box.Text = "Scan Operation LotNo...";
+            scan1Box.TextAlign = HorizontalAlignment.Center;
+            scan1Box.Enter += ScanFocus;
+            scan1Box.KeyPress += scan1Box_KeyPress;
+            scan1Box.Leave += scanBoxLeave;
+            // 
+            // userIdBox
+            // 
+            userIdBox.Dock = DockStyle.Fill;
+            userIdBox.Font = new Font("Sans Serif Collection", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            userIdBox.Location = new Point(3, 3);
+            userIdBox.Name = "userIdBox";
+            userIdBox.Size = new Size(294, 39);
+            userIdBox.TabIndex = 10;
+            userIdBox.Tag = "Scan Operation User SN...";
+            userIdBox.Text = "Scan Operation User SN...";
+            userIdBox.TextAlign = HorizontalAlignment.Center;
+            userIdBox.Enter += ScanFocus;
+            userIdBox.KeyPress += userIdBox_KeyPress;
+            userIdBox.Leave += scanBoxLeave;
+            // 
             // DashboardForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(244, 246, 248);
             ClientSize = new Size(1347, 656);
+            Controls.Add(tableLayoutPanel6);
             Controls.Add(tableLayoutPanel2);
             Controls.Add(timeLabel);
             Controls.Add(menuStrip1);
@@ -463,6 +531,8 @@
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)inputFileWatcher).EndInit();
+            tableLayoutPanel6.ResumeLayout(false);
+            tableLayoutPanel6.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -500,5 +570,9 @@
         private Label label2;
         private FlowLayoutPanel flowLayoutPanel1;
         private ToolStripMenuItem manualToolStripMenuItem;
+        private TableLayoutPanel tableLayoutPanel6;
+        private TextBox userIdBox;
+        private TextBox scan2Box;
+        private TextBox scan1Box;
     }
 }
