@@ -48,6 +48,8 @@ namespace AutoScrewing.Dialogue
 
         private async void button2_Click(object sender, EventArgs e)
         {
+            Settings1.Default.MESH_URL = urlBox.Text;
+            Settings1.Default.OPERATION_ID = operationBox.Text;
             Settings1.Default.Input_Path = inputTextBox.Text;
             Settings1.Default.Output_Path= outputBox.Text;
             Settings1.Default.Save();
