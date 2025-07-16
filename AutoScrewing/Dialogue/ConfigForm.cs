@@ -31,6 +31,8 @@ namespace AutoScrewing.Dialogue
                 plcBox.Text = Settings1.Default.PLC_TARGET;
                 inputTextBox.Text = Settings1.Default.Input_Path;
                 outputBox.Text = Settings1.Default.Output_Path;
+                urlBox.Text = Settings1.Default.MESH_URL;
+                operationBox.Text = Settings1.Default.OPERATION_ID;
                 string[] ports = SerialPort.GetPortNames();
                 screwingBox.Items.AddRange(ports);
                 screwingBox.SelectedIndex = screwingBox.Items.IndexOf(Settings1.Default.Screwing_Port); ;
