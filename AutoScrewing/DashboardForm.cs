@@ -461,6 +461,7 @@ namespace AutoScrewing
                 //                    await Task.Delay(3000);
                 //                    await plcController.Send(new PLCController.PLCItem("WR", "MR811", 0, "Starting Transaction - OFF"));
                 ScrewingQueue.Enqueue(item);
+                await LoadData();
             }
             catch (Exception ex)
             {

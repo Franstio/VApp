@@ -4,6 +4,7 @@ using Microsoft.VisualBasic.Logging;
 using Npgsql;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -103,6 +104,20 @@ namespace AutoScrewing.Database.Repository
                 return [];
             }
 
+        }
+        public async Task ClearLog()
+        {
+            try
+            {
+                using (var conn = await GetConnection())
+                {
+                    await conn.ExecuteAsync("Delete from as_log where transaction")
+                }
+            }
+            catch(Exception e)
+            {
+                Trace.WriteLine(e.Message);
+            }
         }
     }
 }
