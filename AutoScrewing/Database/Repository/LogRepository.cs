@@ -111,7 +111,7 @@ namespace AutoScrewing.Database.Repository
             {
                 using (var conn = await GetConnection())
                 {
-                    await conn.ExecuteAsync("Delete from as_log where transaction")
+                    await conn.ExecuteAsync("Delete from as_log where transaction");
                 }
             }
             catch(Exception e)
