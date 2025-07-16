@@ -38,6 +38,7 @@ namespace AutoScrewing
         private Barrier barrier = new Barrier(3);
         private LogRepository logRepository = new LogRepository();
         private string CHECKSUM_SCREWING = "";
+        private MESHController meshController = new MESHController();
         SemaphoreSlim semaphore = new SemaphoreSlim(1);
         Queue<OngoingItemModel>
             ScrewingQueue = new Queue<OngoingItemModel>(),
@@ -186,25 +187,26 @@ namespace AutoScrewing
                 {
                     inputFileWatcher.Path = Settings1.Default.Input_Path;
                     inputFileWatcher.NotifyFilter = NotifyFilters.FileName;
-                    string path = Settings1.Default.Output_Path;
-                    DirectoryInfo directoryInfo = new DirectoryInfo(path);
-                    var files = directoryInfo.GetFiles();
-                    if (files.Length > 0)
-                    {
-                        LogModel log = new LogModel("Outputting Transaction", "Output Transaction function", "Folder not empty", "Failed");
-                        log.result = $"File total: {files.Length} | {string.Join(",", files.Select(x => x.Name))}";
-                        await logRepository.RecordLog(log);
-                        continue;
-                    }
+                    //string path = Settings1.Default.Output_Path;
+                    //DirectoryInfo directoryInfo = new DirectoryInfo(path);
+                    //var files = directoryInfo.GetFiles();
+                    //if (files.Length > 0)
+                    //{
+                    //    LogModel log = new LogModel("Outputting Transaction", "Output Transaction function", "Folder not empty", "Failed");
+                    //    log.result = $"File total: {files.Length} | {string.Join(",", files.Select(x => x.Name))}";
+                    //    await logRepository.RecordLog(log);
+                    //    continue;
+                    //}
 
                     bool check = FinalQueue.TryDequeue(out OngoingItemModel? item);
                     if (!check || item is null) continue;
                     item.FinalResult = item.ScrewingResult && item.LaserResult && item.CameraResult ? "OK" : "NG";
                     item.CurrentStatus = "Completed";
-                    var payload = new { serialnumber = item.Scan_ID, status = item.FinalResult, data = (TransactionModel)item };
-                    await File.WriteAllTextAsync(Path.Combine(path, "OUTPUT.txt"), JsonSerializer.Serialize(payload));
-                    await TransactionRepository.CreateTransaction(item);
 
+                    await meshController.Checking(item.OperationUserSN, item.Scan_ID, item.Scan_ID2, item.FinalResult); ;
+                    //                    var payload = new { serialnumber = item.Scan_ID, status = item.FinalResult, data = (TransactionModel)item };
+                    //                    await File.WriteAllTextAsync(Path.Combine(path, "OUTPUT.txt"), JsonSerializer.Serialize(payload));
+                    await TransactionRepository.CreateTransaction(item);
                 }
                 catch (Exception ex)
                 {
@@ -454,6 +456,7 @@ namespace AutoScrewing
             var item = new OngoingItemModel() { Scan_ID = scan, Scan_ID2 = scan2, OperationUserSN = operationusersn, OperationId = Settings1.Default.OPERATION_ID, StartTime = DateTime.Now, CurrentStatus = "Screwing" };
             try
             {
+                await meshController.Tracking(operationusersn,scan,scan2);
                 await plcController.Send(new PLCController.PLCItem("WR", "MR811", 1, "Starting Transaction - ON"));
                 //                    await Task.Delay(3000);
                 //                    await plcController.Send(new PLCController.PLCItem("WR", "MR811", 0, "Starting Transaction - OFF"));
