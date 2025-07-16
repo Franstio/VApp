@@ -214,6 +214,10 @@ namespace AutoScrewing
                     log.result = $"{ex.Message} | {ex.StackTrace}";
                     await logRepository.RecordLog(log);
                 }
+                finally
+                {
+                    await Task.Delay(1000);
+                }
             }
         }
         private async Task ReadPLC()
