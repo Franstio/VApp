@@ -27,11 +27,11 @@ namespace AutoScrewing.Dialogue
 
             try
             {
-                var logtype = await logRepository.GetLogType();
+//                var logtype = await logRepository.GetLogType();
                 await InvokeAsync(() =>
                 {
                     logTypeBox.Items.Clear();
-                    logTypeBox.Items.AddRange(logtype.ToArray());
+                    logTypeBox.Items.AddRange(new object[] { "PLC-Send", "Kilew Controller", "HTTP", "Outputting Transaction", "Read PLC Loop Data", "Read Incoming Data", "Input-File","Load Scan", "SQL"});
                 });
             }
             catch { }
