@@ -447,7 +447,7 @@ namespace AutoScrewing
                 }
             }
             catch (Exception ex)
-            {
+            { 
                 await logRepository.RecordLog(new LogModel("Input-File", "inputFileWatcher_Changed", "Reading input file from mesh", "Failed") { payload = e.FullPath, result = ex.Message + " | " + ex.StackTrace });
             }
         }
