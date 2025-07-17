@@ -27,11 +27,12 @@ namespace AutoScrewing.Dialogue
 
             try
             {
-//                var logtype = await logRepository.GetLogType();
+                var logtype = await logRepository.GetLogType();
                 await InvokeAsync(() =>
                 {
                     logTypeBox.Items.Clear();
-                    logTypeBox.Items.AddRange(new object[] { "PLC-Send", "Kilew Controller", "HTTP", "Outputting Transaction", "Read PLC Loop Data", "Read Incoming Data", "Input-File","Load Scan", "SQL"});
+                    logTypeBox.Items.AddRange(logtype.ToArray());
+                    //                    logTypeBox.Items.AddRange(new object[] { "PLC-Send", "Kilew Controller", "HTTP", "Outputting Transaction", "Read PLC Loop Data", "Read Incoming Data", "Input-File","Load Scan", "SQL"});
                 });
             }
             catch { }
@@ -57,9 +58,13 @@ namespace AutoScrewing.Dialogue
             }
         }
 
-        private async void LogForm_Load(object sender, EventArgs e)
+        private void LogForm_Load(object sender, EventArgs e)
         {
-            await LoadLogType();
+            Task.Run(async () =>
+            {
+                await Task.Delay(1000);
+                await LoadLogType();
+            });
         }
 
         private void logTypeBox_SelectedValueChanged(object sender, EventArgs e)
@@ -92,7 +97,16 @@ namespace AutoScrewing.Dialogue
 
         private async void button2_Click(object sender, EventArgs e)
         {
+            await InvokeAsync(() => button2.Enabled = false);
             await LoadData();
+            await InvokeAsync(() => button2.Enabled = true);
+        }
+
+        private async void button3_Click(object sender, EventArgs e)
+        {
+            await InvokeAsync(() => button3.Enabled = false);
+            await logRepository.ClearLog();
+            await InvokeAsync(() => button3.Enabled = true);
         }
     }
 }

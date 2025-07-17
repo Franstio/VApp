@@ -30,6 +30,7 @@
         {
             components = new System.ComponentModel.Container();
             groupBox1 = new GroupBox();
+            button3 = new Button();
             button2 = new Button();
             label4 = new Label();
             label3 = new Label();
@@ -42,14 +43,6 @@
             logTypeBox = new ComboBox();
             groupBox2 = new GroupBox();
             dataGridView1 = new DataGridView();
-            logidDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            recordtimeDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            logtypeDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            sourceDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            descriptionDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            statusDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            payloadDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
-            resultDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             logModelBindingSource = new BindingSource(components);
             saveFileDialog1 = new SaveFileDialog();
             groupBox1.SuspendLayout();
@@ -61,6 +54,7 @@
             // groupBox1
             // 
             groupBox1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            groupBox1.Controls.Add(button3);
             groupBox1.Controls.Add(button2);
             groupBox1.Controls.Add(label4);
             groupBox1.Controls.Add(label3);
@@ -77,6 +71,17 @@
             groupBox1.TabIndex = 0;
             groupBox1.TabStop = false;
             groupBox1.Text = "Filter";
+            // 
+            // button3
+            // 
+            button3.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            button3.Location = new Point(6, 638);
+            button3.Name = "button3";
+            button3.Size = new Size(371, 52);
+            button3.TabIndex = 10;
+            button3.Text = "Clear Log";
+            button3.UseVisualStyleBackColor = true;
+            button3.Click += button3_Click;
             // 
             // button2
             // 
@@ -189,74 +194,15 @@
             // 
             dataGridView1.AllowUserToAddRows = false;
             dataGridView1.AllowUserToDeleteRows = false;
-            dataGridView1.AutoGenerateColumns = false;
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Columns.AddRange(new DataGridViewColumn[] { logidDataGridViewTextBoxColumn, recordtimeDataGridViewTextBoxColumn, logtypeDataGridViewTextBoxColumn, sourceDataGridViewTextBoxColumn, descriptionDataGridViewTextBoxColumn, statusDataGridViewTextBoxColumn, payloadDataGridViewTextBoxColumn, resultDataGridViewTextBoxColumn });
-            dataGridView1.DataSource = logModelBindingSource;
             dataGridView1.Dock = DockStyle.Fill;
             dataGridView1.Location = new Point(3, 19);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.ReadOnly = true;
             dataGridView1.Size = new Size(1075, 674);
             dataGridView1.TabIndex = 0;
-            // 
-            // logidDataGridViewTextBoxColumn
-            // 
-            logidDataGridViewTextBoxColumn.DataPropertyName = "log_id";
-            logidDataGridViewTextBoxColumn.HeaderText = "log_id";
-            logidDataGridViewTextBoxColumn.Name = "logidDataGridViewTextBoxColumn";
-            logidDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // recordtimeDataGridViewTextBoxColumn
-            // 
-            recordtimeDataGridViewTextBoxColumn.DataPropertyName = "record_time";
-            recordtimeDataGridViewTextBoxColumn.HeaderText = "record_time";
-            recordtimeDataGridViewTextBoxColumn.Name = "recordtimeDataGridViewTextBoxColumn";
-            recordtimeDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // logtypeDataGridViewTextBoxColumn
-            // 
-            logtypeDataGridViewTextBoxColumn.DataPropertyName = "log_type";
-            logtypeDataGridViewTextBoxColumn.HeaderText = "log_type";
-            logtypeDataGridViewTextBoxColumn.Name = "logtypeDataGridViewTextBoxColumn";
-            logtypeDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // sourceDataGridViewTextBoxColumn
-            // 
-            sourceDataGridViewTextBoxColumn.DataPropertyName = "source";
-            sourceDataGridViewTextBoxColumn.HeaderText = "source";
-            sourceDataGridViewTextBoxColumn.Name = "sourceDataGridViewTextBoxColumn";
-            sourceDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // descriptionDataGridViewTextBoxColumn
-            // 
-            descriptionDataGridViewTextBoxColumn.DataPropertyName = "description";
-            descriptionDataGridViewTextBoxColumn.HeaderText = "description";
-            descriptionDataGridViewTextBoxColumn.Name = "descriptionDataGridViewTextBoxColumn";
-            descriptionDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // statusDataGridViewTextBoxColumn
-            // 
-            statusDataGridViewTextBoxColumn.DataPropertyName = "status";
-            statusDataGridViewTextBoxColumn.HeaderText = "status";
-            statusDataGridViewTextBoxColumn.Name = "statusDataGridViewTextBoxColumn";
-            statusDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // payloadDataGridViewTextBoxColumn
-            // 
-            payloadDataGridViewTextBoxColumn.DataPropertyName = "payload";
-            payloadDataGridViewTextBoxColumn.HeaderText = "payload";
-            payloadDataGridViewTextBoxColumn.Name = "payloadDataGridViewTextBoxColumn";
-            payloadDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // resultDataGridViewTextBoxColumn
-            // 
-            resultDataGridViewTextBoxColumn.DataPropertyName = "result";
-            resultDataGridViewTextBoxColumn.HeaderText = "result";
-            resultDataGridViewTextBoxColumn.Name = "resultDataGridViewTextBoxColumn";
-            resultDataGridViewTextBoxColumn.ReadOnly = true;
             // 
             // logModelBindingSource
             // 
@@ -302,16 +248,9 @@
         private DataGridViewTextBoxColumn logIdDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn recordTimeDataGridViewTextBoxColumn;
         private DataGridViewTextBoxColumn logTypeDataGridViewTextBoxColumn;
-        private DataGridViewTextBoxColumn sourceDataGridViewTextBoxColumn;
-        private DataGridViewTextBoxColumn descriptionDataGridViewTextBoxColumn;
-        private DataGridViewTextBoxColumn statusDataGridViewTextBoxColumn;
-        private DataGridViewTextBoxColumn payloadDataGridViewTextBoxColumn;
-        private DataGridViewTextBoxColumn resultDataGridViewTextBoxColumn;
         private BindingSource logModelBindingSource;
-        private DataGridViewTextBoxColumn logidDataGridViewTextBoxColumn;
-        private DataGridViewTextBoxColumn recordtimeDataGridViewTextBoxColumn;
-        private DataGridViewTextBoxColumn logtypeDataGridViewTextBoxColumn;
         private SaveFileDialog saveFileDialog1;
         private Button button2;
+        private Button button3;
     }
 }

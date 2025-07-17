@@ -31,8 +31,8 @@ namespace AutoScrewing.Lib
         {
             var client = new TcpClient();
             client.NoDelay  = true;
-            client.SendTimeout = 15000;
-            client.ReceiveTimeout = 15000;
+            client.SendTimeout = 3000;
+            client.ReceiveTimeout = 3000;
             return client;
         }
         private async Task<string> GetMessage(Stream stream)

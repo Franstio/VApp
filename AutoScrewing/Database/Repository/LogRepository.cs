@@ -94,7 +94,7 @@ namespace AutoScrewing.Database.Repository
             {
                 using (var conn = await GetConnection())
                 {
-                    var query = $"select log_type from {Table_Name} group by log_type";
+                    var query = $"select logtype as log_type from md_logtype";
                     var data = await conn.QueryAsync(query);
                     return data.Select(x=>(string)x.log_type).ToList();
                 }

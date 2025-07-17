@@ -29,23 +29,32 @@ namespace AutoScrewing.Lib
             HttpClient client = new HttpClient(new MESH_HTTP_HANDLER());
             client.BaseAddress = new Uri(BASE_ADDRESS);
             client.DefaultRequestHeaders.TryAddWithoutValidation("X-SOURCE", source);
+            client.Timeout = TimeSpan.FromSeconds(2);
             return client;
         }
         public async Task Tracking(string operationusersn,string lotno,string matlotno)
         {
             using (var client = GetClient("Tracking"))
             {
-                var payload =new  MESHPayload1Model(OPERATION_ID,operationusersn,lotno,matlotno);   
+                try
+                {
+                    var payload = new MESHPayload1Model(OPERATION_ID, operationusersn, lotno, matlotno);
 
-                await client.PostAsJsonAsync("openapi/mes/tracking",payload);
+                    var res = await client.PostAsJsonAsync("openapi/mes/tracking", payload);
+                }
+                catch { }
             }
         }
         public async Task Checking(string operationusersn, string lotno, string matlotno,string result)
         {
             using (var client = GetClient("Tracking"))
             {
-                var payload = new MESHPayload1Model(OPERATION_ID, operationusersn, lotno, matlotno);
-                await client.PostAsJsonAsync("openapi/mes/tracking/check", payload);
+                try
+                {
+                    var payload = new MESHPayload1Model(OPERATION_ID, operationusersn, lotno, matlotno);
+                    await client.PostAsJsonAsync("openapi/mes/tracking/check", payload);
+                }
+                catch { }
             }
         }
         public class MESH_HTTP_HANDLER : HttpClientHandler

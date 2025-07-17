@@ -125,18 +125,22 @@ namespace AutoScrewing
 
         private async void SetDashboardControl(DashboardModel model)
         {
-            await InvokeAsync(() =>
+            try
             {
-                try
+                await InvokeAsync(() =>
                 {
-                    torqueLabel.Text = $"{model.Torque.ToString("0.0000")} {model.TorqueType}";
-                    screwingResultLabel.Text = model.TighteningStatus;
-                    screwingTimeLabel.Text = $"{model.Time} Seconds";
-                    laserResultLabel.Text = !model.isLaseringReady ? "Checking" : model.LaserStatus ? "OK" : "NG";
-                    cameraResultLabel.Text = !model.isCameraReady ? "Checking" : model.CameraStatus ? "OK" : "NG";
-                }
-                catch { }
-            });
+                    try
+                    {
+                        torqueLabel.Text = $"{model.Torque.ToString("0.0000")} {model.TorqueType}";
+                        screwingResultLabel.Text = model.TighteningStatus;
+                        screwingTimeLabel.Text = $"{model.Time} Seconds";
+                        laserResultLabel.Text = !model.isLaseringReady ? "Checking" : model.LaserStatus ? "OK" : "NG";
+                        cameraResultLabel.Text = !model.isCameraReady ? "Checking" : model.CameraStatus ? "OK" : "NG";
+                    }
+                    catch { }
+                });
+            }
+            catch { }
         }
         private async Task<bool> ReadCamera()
         {
