@@ -35,6 +35,10 @@
             screwingBox = new ComboBox();
             label1 = new Label();
             groupBox2 = new GroupBox();
+            operationBox = new TextBox();
+            label6 = new Label();
+            urlBox = new TextBox();
+            label7 = new Label();
             button4 = new Button();
             button3 = new Button();
             button2 = new Button();
@@ -45,10 +49,8 @@
             tableLayoutPanel1 = new TableLayoutPanel();
             inputfolderdialogue = new FolderBrowserDialog();
             outputfolderdialogue = new FolderBrowserDialog();
-            operationBox = new TextBox();
-            label6 = new Label();
-            urlBox = new TextBox();
-            label7 = new Label();
+            workIdBox = new TextBox();
+            label8 = new Label();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
@@ -64,7 +66,7 @@
             groupBox1.Dock = DockStyle.Fill;
             groupBox1.Location = new Point(3, 3);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(397, 164);
+            groupBox1.Size = new Size(397, 203);
             groupBox1.TabIndex = 0;
             groupBox1.TabStop = false;
             groupBox1.Text = "I/O Configuration";
@@ -115,6 +117,8 @@
             // 
             // groupBox2
             // 
+            groupBox2.Controls.Add(workIdBox);
+            groupBox2.Controls.Add(label8);
             groupBox2.Controls.Add(operationBox);
             groupBox2.Controls.Add(label6);
             groupBox2.Controls.Add(urlBox);
@@ -127,16 +131,48 @@
             groupBox2.Controls.Add(inputTextBox);
             groupBox2.Controls.Add(label4);
             groupBox2.Dock = DockStyle.Fill;
-            groupBox2.Location = new Point(3, 173);
+            groupBox2.Location = new Point(3, 212);
             groupBox2.Name = "groupBox2";
-            groupBox2.Size = new Size(397, 164);
+            groupBox2.Size = new Size(397, 204);
             groupBox2.TabIndex = 1;
             groupBox2.TabStop = false;
             groupBox2.Text = "MESH Config";
             // 
+            // operationBox
+            // 
+            operationBox.Location = new Point(103, 84);
+            operationBox.Name = "operationBox";
+            operationBox.Size = new Size(206, 23);
+            operationBox.TabIndex = 15;
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Location = new Point(6, 87);
+            label6.Name = "label6";
+            label6.Size = new Size(74, 15);
+            label6.TabIndex = 14;
+            label6.Text = "Operation ID";
+            // 
+            // urlBox
+            // 
+            urlBox.Location = new Point(103, 26);
+            urlBox.Name = "urlBox";
+            urlBox.Size = new Size(206, 23);
+            urlBox.TabIndex = 13;
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Location = new Point(6, 29);
+            label7.Name = "label7";
+            label7.Size = new Size(63, 15);
+            label7.TabIndex = 12;
+            label7.Text = "MESH URL";
+            // 
             // button4
             // 
-            button4.Location = new Point(313, 107);
+            button4.Location = new Point(313, 140);
             button4.Name = "button4";
             button4.Size = new Size(53, 23);
             button4.TabIndex = 11;
@@ -146,7 +182,7 @@
             // 
             // button3
             // 
-            button3.Location = new Point(313, 74);
+            button3.Location = new Point(313, 107);
             button3.Name = "button3";
             button3.Size = new Size(53, 23);
             button3.TabIndex = 10;
@@ -156,7 +192,7 @@
             // 
             // button2
             // 
-            button2.Location = new Point(101, 133);
+            button2.Location = new Point(101, 166);
             button2.Name = "button2";
             button2.Size = new Size(75, 23);
             button2.TabIndex = 5;
@@ -166,7 +202,7 @@
             // 
             // outputBox
             // 
-            outputBox.Location = new Point(101, 104);
+            outputBox.Location = new Point(101, 137);
             outputBox.Name = "outputBox";
             outputBox.ReadOnly = true;
             outputBox.Size = new Size(206, 23);
@@ -175,7 +211,7 @@
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(4, 107);
+            label5.Location = new Point(4, 140);
             label5.Name = "label5";
             label5.Size = new Size(72, 15);
             label5.TabIndex = 8;
@@ -183,7 +219,7 @@
             // 
             // inputTextBox
             // 
-            inputTextBox.Location = new Point(101, 75);
+            inputTextBox.Location = new Point(101, 108);
             inputTextBox.Name = "inputTextBox";
             inputTextBox.ReadOnly = true;
             inputTextBox.Size = new Size(206, 23);
@@ -192,7 +228,7 @@
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(7, 78);
+            label4.Location = new Point(7, 111);
             label4.Name = "label4";
             label4.Size = new Size(62, 15);
             label4.TabIndex = 6;
@@ -210,46 +246,30 @@
             tableLayoutPanel1.RowCount = 2;
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel1.Size = new Size(403, 340);
+            tableLayoutPanel1.Size = new Size(403, 419);
             tableLayoutPanel1.TabIndex = 2;
             // 
-            // operationBox
+            // workIdBox
             // 
-            operationBox.Location = new Point(103, 51);
-            operationBox.Name = "operationBox";
-            operationBox.Size = new Size(206, 23);
-            operationBox.TabIndex = 15;
+            workIdBox.Location = new Point(103, 55);
+            workIdBox.Name = "workIdBox";
+            workIdBox.Size = new Size(206, 23);
+            workIdBox.TabIndex = 17;
             // 
-            // label6
+            // label8
             // 
-            label6.AutoSize = true;
-            label6.Location = new Point(6, 54);
-            label6.Name = "label6";
-            label6.Size = new Size(74, 15);
-            label6.TabIndex = 14;
-            label6.Text = "Operation ID";
-            // 
-            // urlBox
-            // 
-            urlBox.Location = new Point(103, 22);
-            urlBox.Name = "urlBox";
-            urlBox.Size = new Size(206, 23);
-            urlBox.TabIndex = 13;
-            // 
-            // label7
-            // 
-            label7.AutoSize = true;
-            label7.Location = new Point(9, 25);
-            label7.Name = "label7";
-            label7.Size = new Size(57, 15);
-            label7.TabIndex = 12;
-            label7.Text = "MESH Url";
+            label8.AutoSize = true;
+            label8.Location = new Point(6, 58);
+            label8.Name = "label8";
+            label8.Size = new Size(49, 15);
+            label8.TabIndex = 16;
+            label8.Text = "Work ID";
             // 
             // ConfigForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(403, 340);
+            ClientSize = new Size(403, 419);
             Controls.Add(tableLayoutPanel1);
             Name = "ConfigForm";
             Text = "Config Form";
@@ -287,5 +307,7 @@
         private Label label6;
         private TextBox urlBox;
         private Label label7;
+        private TextBox workIdBox;
+        private Label label8;
     }
 }

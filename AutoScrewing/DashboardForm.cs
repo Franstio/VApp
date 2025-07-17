@@ -61,15 +61,15 @@ namespace AutoScrewing
         private async Task LoadData()
         {
             var list = await GetOngoingItems();
-            var transactionData = (await TransactionRepository.GetTransaction()).Select(x => new object[] { x.Scan_ID, $"{x.TighteningStatus} {x.Torque}", x.LaserResult ? "OK" : "NG", x.CameraResult ? "OK" : "NG", x.FinalResult });
-            var data = list.Select(x => new object[] { x.Scan_ID, $"{(x.isScrewingCompleted ? x.TighteningStatus : "-")} {x.Torque}", x.isLaseringCompleted ? (x.LaserResult ? "OK" : "NG") : "-", x.isCameraCompleted ? (x.CameraResult ? "OK" : "NG") : "-", x.isScrewingCompleted && x.isLaseringCompleted && x.isCameraCompleted ? x.FinalResult : "-" }).ToArray();
+//            var transactionData = (await TransactionRepository.GetTransaction()).Select(x => new object[] { x.Scan_ID, $"{x.TighteningStatus} {x.Torque}", x.LaserResult ? "OK" : "NG", x.CameraResult ? "OK" : "NG", x.FinalResult });
+            var data = list.Where(x=>!(x.isScrewingCompleted && x.isLaseringCompleted && x.isCameraCompleted)).Select(x => new object[] { x.Scan_ID, $"{(x.isScrewingCompleted ? x.TighteningStatus : "-")} {x.Torque}", x.isLaseringCompleted ? (x.LaserResult ? "OK" : "NG") : "-", x.isCameraCompleted ? (x.CameraResult ? "OK" : "NG") : "-", x.isScrewingCompleted && x.isLaseringCompleted && x.isCameraCompleted ? x.FinalResult : "-" }).ToArray();
             await InvokeAsync(() =>
             {
                 dataGridView1.Rows.Clear();
                 foreach (var item in data)
                     dataGridView1.Rows.Add(item);
-                foreach (var item in transactionData)
-                    dataGridView1.Rows.Add(item);
+//                foreach (var item in transactionData)
+//                    dataGridView1.Rows.Add(item);
             });
         }
 
@@ -478,11 +478,12 @@ namespace AutoScrewing
             {
                 try
                 {
-                    await InvokeAsync(async () =>
+                    await InvokeAsync( () =>
                     {
-                        userIdBox.Clear();
-                        scan1Box.Clear();
-                        scan2Box.Clear();
+                        userIdBox.Text  =userIdBox.Tag?.ToString();
+                        scan1Box.Text = scan1Box.Tag?.ToString();
+                        scan2Box.Text = scan2Box.Tag?.ToString();
+                        userIdBox.Focus();
                     });
                 }
                 catch
@@ -627,7 +628,7 @@ namespace AutoScrewing
         {
             TextBox box = (TextBox)sender;
 
-            box.Text = string.IsNullOrEmpty(box.Text) ? box.Tag?.ToString() : box.Text;
+            box.Text = string.IsNullOrEmpty(box.Text) || string.IsNullOrWhiteSpace(box.Text) ? box.Tag?.ToString() : box.Text;
 
         }
 

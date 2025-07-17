@@ -31,6 +31,7 @@ namespace AutoScrewing.Dialogue
                 plcBox.Text = Settings1.Default.PLC_TARGET;
                 inputTextBox.Text = Settings1.Default.Input_Path;
                 outputBox.Text = Settings1.Default.Output_Path;
+                workIdBox.Text = Settings1.Default.WORK_ID;
                 urlBox.Text = Settings1.Default.MESH_URL;
                 operationBox.Text = Settings1.Default.OPERATION_ID;
                 string[] ports = SerialPort.GetPortNames();
@@ -54,6 +55,7 @@ namespace AutoScrewing.Dialogue
             Settings1.Default.OPERATION_ID = operationBox.Text;
             Settings1.Default.Input_Path = inputTextBox.Text;
             Settings1.Default.Output_Path= outputBox.Text;
+            Settings1.Default.WORK_ID = workIdBox.Text;
             Settings1.Default.Save();
             Settings1.Default.Reload();
             await configRepository.LogLogin(_userConfigModel, "Mesh Config Updated");

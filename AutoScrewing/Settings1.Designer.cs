@@ -131,5 +131,17 @@ namespace AutoScrewing {
                 this["Output_Path"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string WORK_ID {
+            get {
+                return ((string)(this["WORK_ID"]));
+            }
+            set {
+                this["WORK_ID"] = value;
+            }
+        }
     }
 }
