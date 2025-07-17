@@ -220,7 +220,7 @@ namespace AutoScrewing
                 }
                 finally
                 {
-                    await Task.Delay(1000);
+                    await Task.Delay(500);
                 }
             }
         }
@@ -371,7 +371,6 @@ namespace AutoScrewing
                     item.CurrentStatus = "Lasering";
                     item.CHECKSUM = CHECKSUM_SCREWING;
                     item.isScrewingCompleted = true;
-                    await Task.Delay(4000);
                     LaserQueue.Enqueue(item);
 
                 }
@@ -474,6 +473,22 @@ namespace AutoScrewing
             catch (Exception ex)
             {
                 await logRepository.RecordLog(new LogModel("Load Scan", "LoadScanToStart", "Reading user scan", "Failed") { payload =JsonSerializer.Serialize( item ), result = ex.Message + " | " + ex.StackTrace });
+            }
+            finally
+            {
+                try
+                {
+                    await InvokeAsync(async () =>
+                    {
+                        userIdBox.Clear();
+                        scan1Box.Clear();
+                        scan2Box.Clear();
+                    });
+                }
+                catch
+                {
+
+                }
             }
         }
         private void runningQueueToolStripMenuItem_Click(object sender, EventArgs e)
