@@ -13,7 +13,8 @@ namespace AutoScrewing.Models
         public int OK { get;set; } = 0 ;
         public int Job { get; set; } = 0 ;  
         public int Seq { get; set; } = 0 ;
-        public string OperationUserSN = string.Empty;
+        public string OperationUserSN { get; set; } = string.Empty;
+        public string WorkOrderNumber { get; set; } = string.Empty;
         public decimal Torque { get; set; } = 0;
         public string TorqueType { get; set; } = "N.m";
         public int ScrewCount { get; set; } = 0 ;

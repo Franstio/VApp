@@ -61,15 +61,15 @@ namespace AutoScrewing
         private async Task LoadData()
         {
             var list = await GetOngoingItems();
-//            var transactionData = (await TransactionRepository.GetTransaction()).Select(x => new object[] { x.Scan_ID, $"{x.TighteningStatus} {x.Torque}", x.LaserResult ? "OK" : "NG", x.CameraResult ? "OK" : "NG", x.FinalResult });
-            var data = list.Where(x=>!(x.isScrewingCompleted && x.isLaseringCompleted && x.isCameraCompleted)).Select(x => new object[] { x.Scan_ID, $"{(x.isScrewingCompleted ? x.TighteningStatus : "-")} {x.Torque}", x.isLaseringCompleted ? (x.LaserResult ? "OK" : "NG") : "-", x.isCameraCompleted ? (x.CameraResult ? "OK" : "NG") : "-", x.isScrewingCompleted && x.isLaseringCompleted && x.isCameraCompleted ? x.FinalResult : "-" }).ToArray();
+            //            var transactionData = (await TransactionRepository.GetTransaction()).Select(x => new object[] { x.Scan_ID, $"{x.TighteningStatus} {x.Torque}", x.LaserResult ? "OK" : "NG", x.CameraResult ? "OK" : "NG", x.FinalResult });
+            var data = list.Where(x => !(x.isScrewingCompleted && x.isLaseringCompleted && x.isCameraCompleted)).Select(x => new object[] { x.Scan_ID, $"{(x.isScrewingCompleted ? x.TighteningStatus : "-")} {x.Torque}", x.isLaseringCompleted ? (x.LaserResult ? "OK" : "NG") : "-", x.isCameraCompleted ? (x.CameraResult ? "OK" : "NG") : "-", x.isScrewingCompleted && x.isLaseringCompleted && x.isCameraCompleted ? x.FinalResult : "-" }).ToArray();
             await InvokeAsync(() =>
             {
                 dataGridView1.Rows.Clear();
                 foreach (var item in data)
                     dataGridView1.Rows.Add(item);
-//                foreach (var item in transactionData)
-//                    dataGridView1.Rows.Add(item);
+                //                foreach (var item in transactionData)
+                //                    dataGridView1.Rows.Add(item);
             });
         }
 
@@ -207,7 +207,7 @@ namespace AutoScrewing
                     item.FinalResult = item.ScrewingResult && item.LaserResult && item.CameraResult ? "OK" : "NG";
                     item.CurrentStatus = "Completed";
 
-                    await meshController.Checking(item.OperationUserSN, item.Scan_ID, item.Scan_ID2, item.FinalResult); ;
+                    await meshController.Checking(item.OperationUserSN,workNumberScanBox.Text, item.Scan_ID, item.Scan_ID2, item.FinalResult); ;
                     //                    var payload = new { serialnumber = item.Scan_ID, status = item.FinalResult, data = (TransactionModel)item };
                     //                    await File.WriteAllTextAsync(Path.Combine(path, "OUTPUT.txt"), JsonSerializer.Serialize(payload));
                     await TransactionRepository.CreateTransaction(item);
@@ -454,16 +454,16 @@ namespace AutoScrewing
                 }
             }
             catch (Exception ex)
-            { 
+            {
                 await logRepository.RecordLog(new LogModel("Input-File", "inputFileWatcher_Changed", "Reading input file from mesh", "Failed") { payload = e.FullPath, result = ex.Message + " | " + ex.StackTrace });
             }
         }
-        private async Task LoadScanToStart(string operationusersn, string scan, string scan2)
+        private async Task LoadScanToStart(string operationusersn, string scan, string scan2,string worknumberorer)
         {
             var item = new OngoingItemModel() { Scan_ID = scan, Scan_ID2 = scan2, OperationUserSN = operationusersn, OperationId = Settings1.Default.OPERATION_ID, StartTime = DateTime.Now, CurrentStatus = "Screwing" };
             try
             {
-                await meshController.Tracking(operationusersn,scan,scan2);
+                await meshController.Tracking(operationusersn,worknumberorer, scan, scan2);
                 await plcController.Send(new PLCController.PLCItem("WR", "MR811", 1, "Starting Transaction - ON"));
                 //                    await Task.Delay(3000);
                 //                    await plcController.Send(new PLCController.PLCItem("WR", "MR811", 0, "Starting Transaction - OFF"));
@@ -472,15 +472,15 @@ namespace AutoScrewing
             }
             catch (Exception ex)
             {
-                await logRepository.RecordLog(new LogModel("Load Scan", "LoadScanToStart", "Reading user scan", "Failed") { payload =JsonSerializer.Serialize( item ), result = ex.Message + " | " + ex.StackTrace });
+                await logRepository.RecordLog(new LogModel("Load Scan", "LoadScanToStart", "Reading user scan", "Failed") { payload = JsonSerializer.Serialize(item), result = ex.Message + " | " + ex.StackTrace });
             }
             finally
             {
                 try
                 {
-                    await InvokeAsync( () =>
+                    await InvokeAsync(() =>
                     {
-                        userIdBox.Text  =userIdBox.Tag?.ToString();
+                        userIdBox.Text = userIdBox.Tag?.ToString();
                         scan1Box.Text = scan1Box.Tag?.ToString();
                         scan2Box.Text = scan2Box.Tag?.ToString();
                         userIdBox.Focus();
@@ -647,7 +647,7 @@ namespace AutoScrewing
                 if ((!string.IsNullOrEmpty(scan1Box.Text) && !string.IsNullOrEmpty(scan2Box.Text) && !string.IsNullOrEmpty(userIdBox.Text)) &&
                     (scan1Box.Text != scan1Box.Tag?.ToString() && scan2Box.Text != scan2Box.Tag?.ToString() && userIdBox.Text != userIdBox.Tag?.ToString()))
                 {
-                    await LoadScanToStart(userIdBox.Text, scan1Box.Text, scan2Box.Text);
+                    await LoadScanToStart(userIdBox.Text, scan1Box.Text, scan2Box.Text,workNumberScanBox.Text);
                 }
                 else
                 {
@@ -663,7 +663,7 @@ namespace AutoScrewing
                 if ((!string.IsNullOrEmpty(scan1Box.Text) && !string.IsNullOrEmpty(scan2Box.Text) && !string.IsNullOrEmpty(userIdBox.Text)) &&
                     (scan1Box.Text != scan1Box.Tag?.ToString() && scan2Box.Text != scan2Box.Tag?.ToString() && userIdBox.Text != userIdBox.Tag?.ToString()))
                 {
-                    await LoadScanToStart(userIdBox.Text, scan1Box.Text, scan2Box.Text);
+                    await LoadScanToStart(userIdBox.Text, scan1Box.Text, scan2Box.Text,workNumberScanBox.Text);
                 }
                 else
                 {
@@ -679,7 +679,23 @@ namespace AutoScrewing
                 if ((!string.IsNullOrEmpty(scan1Box.Text) && !string.IsNullOrEmpty(scan2Box.Text) && !string.IsNullOrEmpty(userIdBox.Text)) &&
                     (scan1Box.Text != scan1Box.Tag?.ToString() && scan2Box.Text != scan2Box.Tag?.ToString() && userIdBox.Text != userIdBox.Tag?.ToString()))
                 {
-                    await LoadScanToStart(userIdBox.Text, scan1Box.Text, scan2Box.Text);
+                    await LoadScanToStart(userIdBox.Text, scan1Box.Text, scan2Box.Text, workNumberScanBox.Text);
+                }
+                else
+                {
+                    workNumberScanBox.Focus();
+                }
+            }
+        }
+
+        private async void textBox1_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == '\r')
+            {
+                if ((!string.IsNullOrEmpty(scan1Box.Text) && !string.IsNullOrEmpty(scan2Box.Text) && !string.IsNullOrEmpty(userIdBox.Text)) && !string.IsNullOrEmpty(workNumberScanBox.Text) &&
+                    (scan1Box.Text != scan1Box.Tag?.ToString() && scan2Box.Text != scan2Box.Tag?.ToString() && userIdBox.Text != userIdBox.Tag?.ToString()) && workNumberScanBox.Text != workNumberScanBox.Tag?.ToString())
+                {
+                    await LoadScanToStart(userIdBox.Text, scan1Box.Text, scan2Box.Text, workNumberScanBox.Text);
                 }
                 else
                 {

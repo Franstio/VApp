@@ -45,6 +45,14 @@
             dataGridView1 = new DataGridView();
             logModelBindingSource = new BindingSource(components);
             saveFileDialog1 = new SaveFileDialog();
+            dataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
+            dataGridViewTextBoxColumn2 = new DataGridViewTextBoxColumn();
+            dataGridViewTextBoxColumn3 = new DataGridViewTextBoxColumn();
+            sourceDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            descriptionDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            statusDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            payloadDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
+            resultDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
@@ -194,9 +202,12 @@
             // 
             dataGridView1.AllowUserToAddRows = false;
             dataGridView1.AllowUserToDeleteRows = false;
+            dataGridView1.AutoGenerateColumns = false;
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridView1.Columns.AddRange(new DataGridViewColumn[] { dataGridViewTextBoxColumn1, dataGridViewTextBoxColumn2, dataGridViewTextBoxColumn3, sourceDataGridViewTextBoxColumn, descriptionDataGridViewTextBoxColumn, statusDataGridViewTextBoxColumn, payloadDataGridViewTextBoxColumn, resultDataGridViewTextBoxColumn });
+            dataGridView1.DataSource = logModelBindingSource;
             dataGridView1.Dock = DockStyle.Fill;
             dataGridView1.Location = new Point(3, 19);
             dataGridView1.Name = "dataGridView1";
@@ -212,6 +223,62 @@
             // 
             saveFileDialog1.DefaultExt = "txt";
             saveFileDialog1.Title = "Download Log Data";
+            // 
+            // dataGridViewTextBoxColumn1
+            // 
+            dataGridViewTextBoxColumn1.DataPropertyName = "log_id";
+            dataGridViewTextBoxColumn1.HeaderText = "log_id";
+            dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            dataGridViewTextBoxColumn1.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn2
+            // 
+            dataGridViewTextBoxColumn2.DataPropertyName = "record_time";
+            dataGridViewTextBoxColumn2.HeaderText = "record_time";
+            dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            dataGridViewTextBoxColumn2.ReadOnly = true;
+            // 
+            // dataGridViewTextBoxColumn3
+            // 
+            dataGridViewTextBoxColumn3.DataPropertyName = "log_type";
+            dataGridViewTextBoxColumn3.HeaderText = "log_type";
+            dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
+            dataGridViewTextBoxColumn3.ReadOnly = true;
+            // 
+            // sourceDataGridViewTextBoxColumn
+            // 
+            sourceDataGridViewTextBoxColumn.DataPropertyName = "source";
+            sourceDataGridViewTextBoxColumn.HeaderText = "source";
+            sourceDataGridViewTextBoxColumn.Name = "sourceDataGridViewTextBoxColumn";
+            sourceDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // descriptionDataGridViewTextBoxColumn
+            // 
+            descriptionDataGridViewTextBoxColumn.DataPropertyName = "description";
+            descriptionDataGridViewTextBoxColumn.HeaderText = "description";
+            descriptionDataGridViewTextBoxColumn.Name = "descriptionDataGridViewTextBoxColumn";
+            descriptionDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // statusDataGridViewTextBoxColumn
+            // 
+            statusDataGridViewTextBoxColumn.DataPropertyName = "status";
+            statusDataGridViewTextBoxColumn.HeaderText = "status";
+            statusDataGridViewTextBoxColumn.Name = "statusDataGridViewTextBoxColumn";
+            statusDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // payloadDataGridViewTextBoxColumn
+            // 
+            payloadDataGridViewTextBoxColumn.DataPropertyName = "payload";
+            payloadDataGridViewTextBoxColumn.HeaderText = "payload";
+            payloadDataGridViewTextBoxColumn.Name = "payloadDataGridViewTextBoxColumn";
+            payloadDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // resultDataGridViewTextBoxColumn
+            // 
+            resultDataGridViewTextBoxColumn.DataPropertyName = "result";
+            resultDataGridViewTextBoxColumn.HeaderText = "result";
+            resultDataGridViewTextBoxColumn.Name = "resultDataGridViewTextBoxColumn";
+            resultDataGridViewTextBoxColumn.ReadOnly = true;
             // 
             // LogForm
             // 
@@ -252,5 +319,13 @@
         private SaveFileDialog saveFileDialog1;
         private Button button2;
         private Button button3;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
+        private DataGridViewTextBoxColumn sourceDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn descriptionDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn statusDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn payloadDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn resultDataGridViewTextBoxColumn;
     }
 }

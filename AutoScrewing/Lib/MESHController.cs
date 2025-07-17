@@ -23,7 +23,6 @@ namespace AutoScrewing.Lib
             BASE_ADDRESS = Settings1.Default.MESH_URL;
             OPERATION_ID = Settings1.Default.OPERATION_ID;
             OPERATION_USER = Settings1.Default.OPERATION_USER;
-            WORK_ID = Settings1.Default.WORK_ID;
         }
 
         private HttpClient GetClient(string source)
@@ -31,29 +30,29 @@ namespace AutoScrewing.Lib
             HttpClient client = new HttpClient(new MESH_HTTP_HANDLER());
             client.BaseAddress = new Uri(BASE_ADDRESS);
             client.DefaultRequestHeaders.TryAddWithoutValidation("X-SOURCE", source);
-            client.Timeout = TimeSpan.FromSeconds(2);
+            client.Timeout = TimeSpan.FromSeconds(10);
             return client;
         }
-        public async Task Tracking(string operationusersn,string lotno,string matlotno)
+        public async Task Tracking(string operationusersn,string workid,string lotno,string matlotno)
         {
             using (var client = GetClient("Tracking"))
             {
                 try
                 {
-                    var payload = new MESHPayload1Model(OPERATION_ID,WORK_ID, operationusersn, lotno, matlotno);
+                    var payload = new MESHPayload1Model(OPERATION_ID,workid, operationusersn, lotno, matlotno);
 
                     var res = await client.PostAsJsonAsync("openapi/mes/tracking", payload);
                 }
                 catch { }
             }
         }
-        public async Task Checking(string operationusersn, string lotno, string matlotno,string result)
+        public async Task Checking(string operationusersn,string workid, string lotno, string matlotno,string result)
         {
             using (var client = GetClient("Tracking"))
             {
                 try
                 {
-                    var payload = new MESHPayload1Model(OPERATION_ID,WORK_ID, operationusersn, lotno, matlotno);
+                    var payload = new MESHPayload1Model(OPERATION_ID,workid, operationusersn, lotno, matlotno);
                     await client.PostAsJsonAsync("openapi/mes/tracking/check", payload);
                 }
                 catch { }
