@@ -34,6 +34,9 @@ namespace AutoScrewing.Dialogue
                 workIdBox.Text = Settings1.Default.WORK_ID;
                 urlBox.Text = Settings1.Default.MESH_URL;
                 operationBox.Text = Settings1.Default.OPERATION_ID;
+                checkBox1.Checked = Settings1.Default.logKilew;
+                checkBox2.Checked = Settings1.Default.logMes;
+                checkBox3.Checked = Settings1.Default.logPlc;
                 string[] ports = SerialPort.GetPortNames();
                 screwingBox.Items.AddRange(ports);
                 screwingBox.SelectedIndex = screwingBox.Items.IndexOf(Settings1.Default.Screwing_Port); ;
@@ -54,7 +57,7 @@ namespace AutoScrewing.Dialogue
             Settings1.Default.MESH_URL = urlBox.Text;
             Settings1.Default.OPERATION_ID = operationBox.Text;
             Settings1.Default.Input_Path = inputTextBox.Text;
-            Settings1.Default.Output_Path= outputBox.Text;
+            Settings1.Default.Output_Path = outputBox.Text;
             Settings1.Default.WORK_ID = workIdBox.Text;
             Settings1.Default.Save();
             Settings1.Default.Reload();
@@ -77,6 +80,25 @@ namespace AutoScrewing.Dialogue
             {
                 outputBox.Text = outputfolderdialogue.SelectedPath;
             }
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings1.Default.logKilew = checkBox1.Checked;
+            Settings1.Default.Save();
+        }
+
+        private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings1.Default.logMes = checkBox2.Checked;
+            Settings1.Default.Save();
+
+        }
+
+        private void checkBox3_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings1.Default.logPlc = checkBox3.Checked;
+            Settings1.Default.Save();
         }
     }
 }

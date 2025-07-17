@@ -63,7 +63,8 @@ namespace AutoScrewing.Lib
                     Console.WriteLine($"Writing {item.command} with value {item.value} and result {res} {DateTime.Now.ToLongDateString()} | {item.description}");
                     Log.result = res;
                     Log.status = $"{Log.status}-Success";
-                    await logRepository.RecordLog(Log);
+                    if (Settings1.Default.logPlc)
+                        await logRepository.RecordLog(Log);
                     isActive = true;
                     SemaphoreSlim.Release();
                     return res.Replace("\0", "").Replace("\r", "").Replace("\n", "").Trim();
@@ -73,7 +74,8 @@ namespace AutoScrewing.Lib
             {
                 Log.result = e.Message + " | " + e.StackTrace;
                 Log.status = $"{Log.status}-Failed";
-                await logRepository.RecordLog(Log);
+                if (Settings1.Default.logPlc)
+                    await logRepository.RecordLog(Log);
                 Console.Error.WriteLine(e.StackTrace);
                 Console.Error.WriteLine(e.Message);
                 isActive = false;   

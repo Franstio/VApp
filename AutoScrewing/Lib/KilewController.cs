@@ -63,7 +63,8 @@ namespace AutoScrewing.Lib
                     string text = _client.ReadLine();
                     log.result = text;
                     log.status += "-Success";
-                    await logRepository.RecordLog(log);
+                    if (Settings1.Default.logKilew)
+                        await logRepository.RecordLog(log);
                     isActive = true;
                     semaphoreSlim.Release();
                     return text;
@@ -72,7 +73,8 @@ namespace AutoScrewing.Lib
                 {
                     log.result = e.Message + " | " + e.StackTrace;
                     log.status += "-Failed";
-                    await logRepository.RecordLog(log);
+                    if (Settings1.Default.logKilew)
+                        await logRepository.RecordLog(log);
                     isActive = false;
                     semaphoreSlim.Release();
                     return string.Empty;
@@ -81,7 +83,8 @@ namespace AutoScrewing.Lib
                 {
                     log.result = e.Message + " | " + e.StackTrace;
                     log.status += "-Failed";
-                    await logRepository.RecordLog(log);
+                    if (Settings1.Default.logKilew)
+                        await logRepository.RecordLog(log);
                     isActive = false;
                     semaphoreSlim.Release();
                     return string.Empty;

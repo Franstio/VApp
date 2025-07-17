@@ -35,6 +35,8 @@
             screwingBox = new ComboBox();
             label1 = new Label();
             groupBox2 = new GroupBox();
+            workIdBox = new TextBox();
+            label8 = new Label();
             operationBox = new TextBox();
             label6 = new Label();
             urlBox = new TextBox();
@@ -47,13 +49,16 @@
             inputTextBox = new TextBox();
             label4 = new Label();
             tableLayoutPanel1 = new TableLayoutPanel();
+            groupBox3 = new GroupBox();
+            checkBox3 = new CheckBox();
+            checkBox2 = new CheckBox();
+            checkBox1 = new CheckBox();
             inputfolderdialogue = new FolderBrowserDialog();
             outputfolderdialogue = new FolderBrowserDialog();
-            workIdBox = new TextBox();
-            label8 = new Label();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
+            groupBox3.SuspendLayout();
             SuspendLayout();
             // 
             // groupBox1
@@ -66,7 +71,7 @@
             groupBox1.Dock = DockStyle.Fill;
             groupBox1.Location = new Point(3, 3);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(397, 203);
+            groupBox1.Size = new Size(385, 203);
             groupBox1.TabIndex = 0;
             groupBox1.TabStop = false;
             groupBox1.Text = "I/O Configuration";
@@ -133,10 +138,26 @@
             groupBox2.Dock = DockStyle.Fill;
             groupBox2.Location = new Point(3, 212);
             groupBox2.Name = "groupBox2";
-            groupBox2.Size = new Size(397, 204);
+            groupBox2.Size = new Size(385, 204);
             groupBox2.TabIndex = 1;
             groupBox2.TabStop = false;
             groupBox2.Text = "MESH Config";
+            // 
+            // workIdBox
+            // 
+            workIdBox.Location = new Point(103, 55);
+            workIdBox.Name = "workIdBox";
+            workIdBox.Size = new Size(206, 23);
+            workIdBox.TabIndex = 17;
+            // 
+            // label8
+            // 
+            label8.AutoSize = true;
+            label8.Location = new Point(6, 58);
+            label8.Name = "label8";
+            label8.Size = new Size(49, 15);
+            label8.TabIndex = 16;
+            label8.Text = "Work ID";
             // 
             // operationBox
             // 
@@ -236,40 +257,73 @@
             // 
             // tableLayoutPanel1
             // 
-            tableLayoutPanel1.ColumnCount = 1;
+            tableLayoutPanel1.ColumnCount = 2;
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tableLayoutPanel1.Controls.Add(groupBox2, 0, 1);
             tableLayoutPanel1.Controls.Add(groupBox1, 0, 0);
+            tableLayoutPanel1.Controls.Add(groupBox3, 1, 0);
             tableLayoutPanel1.Dock = DockStyle.Fill;
             tableLayoutPanel1.Location = new Point(0, 0);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 2;
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel1.Size = new Size(403, 419);
+            tableLayoutPanel1.Size = new Size(783, 419);
             tableLayoutPanel1.TabIndex = 2;
             // 
-            // workIdBox
+            // groupBox3
             // 
-            workIdBox.Location = new Point(103, 55);
-            workIdBox.Name = "workIdBox";
-            workIdBox.Size = new Size(206, 23);
-            workIdBox.TabIndex = 17;
+            groupBox3.Controls.Add(checkBox3);
+            groupBox3.Controls.Add(checkBox2);
+            groupBox3.Controls.Add(checkBox1);
+            groupBox3.Dock = DockStyle.Fill;
+            groupBox3.Location = new Point(394, 3);
+            groupBox3.Name = "groupBox3";
+            tableLayoutPanel1.SetRowSpan(groupBox3, 2);
+            groupBox3.Size = new Size(386, 413);
+            groupBox3.TabIndex = 2;
+            groupBox3.TabStop = false;
+            groupBox3.Text = "Log Config";
             // 
-            // label8
+            // checkBox3
             // 
-            label8.AutoSize = true;
-            label8.Location = new Point(6, 58);
-            label8.Name = "label8";
-            label8.Size = new Size(49, 15);
-            label8.TabIndex = 16;
-            label8.Text = "Work ID";
+            checkBox3.AutoSize = true;
+            checkBox3.Location = new Point(6, 79);
+            checkBox3.Name = "checkBox3";
+            checkBox3.Size = new Size(94, 19);
+            checkBox3.TabIndex = 2;
+            checkBox3.Text = "Logging PLC";
+            checkBox3.UseVisualStyleBackColor = true;
+            checkBox3.CheckedChanged += checkBox3_CheckedChanged;
+            // 
+            // checkBox2
+            // 
+            checkBox2.AutoSize = true;
+            checkBox2.Location = new Point(6, 54);
+            checkBox2.Name = "checkBox2";
+            checkBox2.Size = new Size(127, 19);
+            checkBox2.TabIndex = 1;
+            checkBox2.Text = "Logging MES HTTP";
+            checkBox2.UseVisualStyleBackColor = true;
+            checkBox2.CheckedChanged += checkBox2_CheckedChanged;
+            // 
+            // checkBox1
+            // 
+            checkBox1.AutoSize = true;
+            checkBox1.Location = new Point(6, 29);
+            checkBox1.Name = "checkBox1";
+            checkBox1.Size = new Size(101, 19);
+            checkBox1.TabIndex = 0;
+            checkBox1.Text = "Logging Kilew";
+            checkBox1.UseVisualStyleBackColor = true;
+            checkBox1.CheckedChanged += checkBox1_CheckedChanged;
             // 
             // ConfigForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(403, 419);
+            ClientSize = new Size(783, 419);
             Controls.Add(tableLayoutPanel1);
             Name = "ConfigForm";
             Text = "Config Form";
@@ -279,6 +333,8 @@
             groupBox2.ResumeLayout(false);
             groupBox2.PerformLayout();
             tableLayoutPanel1.ResumeLayout(false);
+            groupBox3.ResumeLayout(false);
+            groupBox3.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -309,5 +365,9 @@
         private Label label7;
         private TextBox workIdBox;
         private Label label8;
+        private GroupBox groupBox3;
+        private CheckBox checkBox3;
+        private CheckBox checkBox2;
+        private CheckBox checkBox1;
     }
 }

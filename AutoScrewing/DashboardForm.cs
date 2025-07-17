@@ -3,11 +3,13 @@ using AutoScrewing.Database.Repository;
 using AutoScrewing.Dialogue;
 using AutoScrewing.Lib;
 using AutoScrewing.Models;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Text;
 using System.Globalization;
 using System.IO;
 using System.IO.Ports;
@@ -32,13 +34,13 @@ namespace AutoScrewing
     public partial class DashboardForm : Form, DashboardForm.IDashboardOngoingItems, IOStatusForm.IOStatusAPI, QueueManual.IQueueManual
     {
         private TransactionRepository TransactionRepository = new TransactionRepository();
-        private KilewController kilewController = new KilewController();
-        private PLCController plcController = new PLCController();
+        private MESHController meshController;
+        private KilewController kilewController ;
+        private PLCController plcController ;
         private DashboardModel _dashboardmodel = new DashboardModel();
         private Barrier barrier = new Barrier(3);
         private LogRepository logRepository = new LogRepository();
         private string CHECKSUM_SCREWING = "";
-        private MESHController meshController = new MESHController();
         SemaphoreSlim semaphore = new SemaphoreSlim(1);
         Queue<OngoingItemModel>
             ScrewingQueue = new Queue<OngoingItemModel>(),
@@ -85,6 +87,10 @@ namespace AutoScrewing
         public DashboardForm()
         {
             InitializeComponent();
+            meshController = Program.ServiceProvider.GetRequiredService<MESHController>();
+            plcController = Program.ServiceProvider.GetRequiredService<PLCController>();
+            kilewController = Program.ServiceProvider.GetRequiredService<KilewController>();
+
         }
 
         private async void DashboardForm_Load(object sender, EventArgs e)
@@ -644,8 +650,9 @@ namespace AutoScrewing
         {
             if (e.KeyChar == '\r')
             {
-                if ((!string.IsNullOrEmpty(scan1Box.Text) && !string.IsNullOrEmpty(scan2Box.Text) && !string.IsNullOrEmpty(userIdBox.Text)) &&
-                    (scan1Box.Text != scan1Box.Tag?.ToString() && scan2Box.Text != scan2Box.Tag?.ToString() && userIdBox.Text != userIdBox.Tag?.ToString()))
+
+                if ((!string.IsNullOrEmpty(scan1Box.Text) && !string.IsNullOrEmpty(scan2Box.Text) && !string.IsNullOrEmpty(userIdBox.Text)) && !string.IsNullOrEmpty(workNumberScanBox.Text) &&
+                    (scan1Box.Text != scan1Box.Tag?.ToString() && scan2Box.Text != scan2Box.Tag?.ToString() && userIdBox.Text != userIdBox.Tag?.ToString()) && workNumberScanBox.Text != workNumberScanBox.Tag?.ToString())
                 {
                     await LoadScanToStart(userIdBox.Text, scan1Box.Text, scan2Box.Text,workNumberScanBox.Text);
                 }
@@ -660,8 +667,8 @@ namespace AutoScrewing
         {
             if (e.KeyChar == '\r')
             {
-                if ((!string.IsNullOrEmpty(scan1Box.Text) && !string.IsNullOrEmpty(scan2Box.Text) && !string.IsNullOrEmpty(userIdBox.Text)) &&
-                    (scan1Box.Text != scan1Box.Tag?.ToString() && scan2Box.Text != scan2Box.Tag?.ToString() && userIdBox.Text != userIdBox.Tag?.ToString()))
+                if ((!string.IsNullOrEmpty(scan1Box.Text) && !string.IsNullOrEmpty(scan2Box.Text) && !string.IsNullOrEmpty(userIdBox.Text)) && !string.IsNullOrEmpty(workNumberScanBox.Text) &&
+                    (scan1Box.Text != scan1Box.Tag?.ToString() && scan2Box.Text != scan2Box.Tag?.ToString() && userIdBox.Text != userIdBox.Tag?.ToString()) && workNumberScanBox.Text != workNumberScanBox.Tag?.ToString())
                 {
                     await LoadScanToStart(userIdBox.Text, scan1Box.Text, scan2Box.Text,workNumberScanBox.Text);
                 }
@@ -676,8 +683,8 @@ namespace AutoScrewing
         {
             if (e.KeyChar == '\r')
             {
-                if ((!string.IsNullOrEmpty(scan1Box.Text) && !string.IsNullOrEmpty(scan2Box.Text) && !string.IsNullOrEmpty(userIdBox.Text)) &&
-                    (scan1Box.Text != scan1Box.Tag?.ToString() && scan2Box.Text != scan2Box.Tag?.ToString() && userIdBox.Text != userIdBox.Tag?.ToString()))
+                if ((!string.IsNullOrEmpty(scan1Box.Text) && !string.IsNullOrEmpty(scan2Box.Text) && !string.IsNullOrEmpty(userIdBox.Text)) && !string.IsNullOrEmpty(workNumberScanBox.Text) &&
+                    (scan1Box.Text != scan1Box.Tag?.ToString() && scan2Box.Text != scan2Box.Tag?.ToString() && userIdBox.Text != userIdBox.Tag?.ToString()) && workNumberScanBox.Text != workNumberScanBox.Tag?.ToString())
                 {
                     await LoadScanToStart(userIdBox.Text, scan1Box.Text, scan2Box.Text, workNumberScanBox.Text);
                 }

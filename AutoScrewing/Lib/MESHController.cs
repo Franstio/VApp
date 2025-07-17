@@ -33,30 +33,37 @@ namespace AutoScrewing.Lib
             client.Timeout = TimeSpan.FromSeconds(10);
             return client;
         }
-        public async Task Tracking(string operationusersn,string workid,string lotno,string matlotno)
+        public async Task<MesResponse?> Tracking(string operationusersn,string workid,string lotno,string matlotno)
         {
-            using (var client = GetClient("Tracking"))
+            try
             {
-                try
+                using (var client = GetClient("Tracking"))
                 {
-                    var payload = new MESHPayload1Model(OPERATION_ID,workid, operationusersn, lotno, matlotno);
-
+                    var payload = new MESHPayload1Model(OPERATION_ID, workid, operationusersn, lotno, matlotno);
                     var res = await client.PostAsJsonAsync("openapi/mes/tracking", payload);
+                    if (!res.IsSuccessStatusCode)
+                        return null;
+                    var data = await res.Content.ReadAsStringAsync();
+                    return JsonSerializer.Deserialize<MesResponse?>(data);
                 }
-                catch { }
             }
+            catch { return null; }
         }
-        public async Task Checking(string operationusersn,string workid, string lotno, string matlotno,string result)
+        public async Task<MesResponse?> Checking(string operationusersn,string workid, string lotno, string matlotno,string result)
         {
-            using (var client = GetClient("Tracking"))
+            try
             {
-                try
+                using (var client = GetClient("Tracking"))
                 {
-                    var payload = new MESHPayload1Model(OPERATION_ID,workid, operationusersn, lotno, matlotno);
-                    await client.PostAsJsonAsync("openapi/mes/tracking/check", payload);
+                    var payload = new MESHPayload1Model(OPERATION_ID, workid, operationusersn, lotno, matlotno);
+                    var res = await client.PostAsJsonAsync("openapi/mes/tracking/check", payload);
+                    if (!res.IsSuccessStatusCode)
+                        return null;
+                    var data = await res.Content.ReadAsStringAsync();
+                    return JsonSerializer.Deserialize<MesResponse?>(data);
                 }
-                catch { }
             }
+            catch { return null; }
         }
         public class MESH_HTTP_HANDLER : HttpClientHandler
         {
@@ -97,7 +104,8 @@ namespace AutoScrewing.Lib
                         log.result = $"{ex.Message} {ex.StackTrace}";
                     }
                 }
-                await logrepo.RecordLog(log);
+                if (Settings1.Default.logMes)
+                    await logrepo.RecordLog(log);
                 return res;
             }
         }

@@ -143,5 +143,41 @@ namespace AutoScrewing {
                 this["WORK_ID"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool logPlc {
+            get {
+                return ((bool)(this["logPlc"]));
+            }
+            set {
+                this["logPlc"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool logKilew {
+            get {
+                return ((bool)(this["logKilew"]));
+            }
+            set {
+                this["logKilew"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool logMes {
+            get {
+                return ((bool)(this["logMes"]));
+            }
+            set {
+                this["logMes"] = value;
+            }
+        }
     }
 }
