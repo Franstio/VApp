@@ -16,17 +16,19 @@ namespace AutoScrewing.Models
         public List<DataItem> DataItems { get; set; } = new();
         public string Result { get; set; } = string.Empty;
 
-        public MESHPayload1Model(string operationId, string operationUserSN,string lotNo,string materialLotNo)
+        public MESHPayload1Model(string operationId,string workId, string operationUserSN,string lotNo,string materialLotNo)
         {
             OperationId = operationId;
             OperationUserSN = operationUserSN;
+            WorkOrderNumber = workId;
             LotNo = lotNo;
             MaterialLotNo = materialLotNo;
         }
-        public MESHPayload1Model(string operationId, string operationUserSN, string lotNo, string materialLotNo,string result)
+        public MESHPayload1Model(string operationId,string workId, string operationUserSN, string lotNo, string materialLotNo,string result)
         {
             OperationId = operationId;
             OperationUserSN = operationUserSN;
+            WorkOrderNumber = workId;
             LotNo = lotNo;
             MaterialLotNo = materialLotNo;
             Result = result;

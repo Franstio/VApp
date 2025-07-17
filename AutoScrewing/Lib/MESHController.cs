@@ -17,11 +17,13 @@ namespace AutoScrewing.Lib
         private string BASE_ADDRESS = string.Empty;
         private string OPERATION_USER = string.Empty;
         private string OPERATION_ID = string.Empty;
+        private string WORK_ID = string.Empty;
         public MESHController()
         {
             BASE_ADDRESS = Settings1.Default.MESH_URL;
             OPERATION_ID = Settings1.Default.OPERATION_ID;
             OPERATION_USER = Settings1.Default.OPERATION_USER;
+            WORK_ID = Settings1.Default.WORK_ID;
         }
 
         private HttpClient GetClient(string source)
@@ -38,7 +40,7 @@ namespace AutoScrewing.Lib
             {
                 try
                 {
-                    var payload = new MESHPayload1Model(OPERATION_ID, operationusersn, lotno, matlotno);
+                    var payload = new MESHPayload1Model(OPERATION_ID,WORK_ID, operationusersn, lotno, matlotno);
 
                     var res = await client.PostAsJsonAsync("openapi/mes/tracking", payload);
                 }
@@ -51,7 +53,7 @@ namespace AutoScrewing.Lib
             {
                 try
                 {
-                    var payload = new MESHPayload1Model(OPERATION_ID, operationusersn, lotno, matlotno);
+                    var payload = new MESHPayload1Model(OPERATION_ID,WORK_ID, operationusersn, lotno, matlotno);
                     await client.PostAsJsonAsync("openapi/mes/tracking/check", payload);
                 }
                 catch { }
