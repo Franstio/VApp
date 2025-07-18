@@ -36,62 +36,13 @@ namespace AutoScrewing.Models
 
         public class DataItem
         {
-            public string Id { get; set; } = string.Empty;
-            public string OperationId { get; set; }  = string.Empty;
-            public Operation Operation { get; set; } = new();
-            public int Index { get; set; }
-            public int RowNo { get; set; }
-            public string StandValue { get; set; } = string.Empty;
-            public string DefaultValue { get; set; } = string.Empty;
-            public string LowerValue { get; set; } = string.Empty;
-            public string UpperValue { get; set; } = string.Empty;
-            public string OperationDataItemId { get; set; } = string.Empty;
-            public string Key { get; set; } = string.Empty;
-            public string SubKey { get; set; } = string.Empty;
-            public int DataType { get; set; }
-            public string Name { get; set; } = string.Empty;
-            public string Description { get; set; } = string.Empty;
-            public string UnitName { get; set; } = string.Empty;
-            public string Remark { get; set; } = string.Empty;
-            public string DataSource { get; set; } = string.Empty;
-            public string WorkOrderId { get; set; }  = string.Empty;
-            public string ValueRule { get; set; } = string.Empty;
-            public bool UniqueCheck { get; set; }
-            public bool SetToLot { get; set; }
-            public string Arithmetic { get; set; } = string.Empty;
-            public bool CreateSubLot { get; set; }
-            public bool CheckSubLot { get; set; }
-            public string AttachmentUrl { get; set; } = string.Empty;
-            public string WorkstationId { get; set; } = string.Empty;
-            public Workstation Workstation { get; set; } = new();
-            public string Value { get; set; } = string.Empty;
+            public string key { get; set; } = string.Empty;
+            public string value { get; set; } = string.Empty;
+            public string? lowerValue { get; set; } = null;
+            public string? upperValue { get; set;} = null;
+            public string? standValue { get; set; } = null;
+            public string? unitName { get; set; } = null;
         }
 
-        public class Operation
-        {
-            public string Id { get; set; }
-            public string Name { get; set; } = string.Empty;
-            public string Path { get; set; } = string.Empty;
-            public string Type { get; set; } = string.Empty;
-            public string Description { get; set; } = string.Empty;
-            public bool SystemDefault { get; set; }
-            public string GroupId { get; set; } = string.Empty;
-            public string FailControlType { get; set; } = string.Empty;
-            public string CSharpScript { get; set; } = string.Empty;
-            public int Level { get; set; }
-            public bool FailWhileSkip { get; set; }
-            public bool NeedBindTerminal { get; set; }
-            public bool Enable { get; set; }
-            public string Code { get; set; } = string.Empty;
-            public string ErpOperationCode { get; set; } = string.Empty;
-        }
-
-        public class Workstation
-        {
-            public string Id { get; set; } = string.Empty;
-            public string Name { get; set; } = string.Empty;
-            public string Code { get; set; } = string.Empty;
-            public string Description { get; set; } = string.Empty;
-        }
     }
 }

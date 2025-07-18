@@ -48,12 +48,17 @@ namespace AutoScrewing.Lib
                     return JsonSerializer.Deserialize<MesResponse?>(data);
                 }
         }
-        public async Task<MesResponse?> Tracking(string operationusersn,string workid, string lotno, string matlotno,string result)
+        public async Task<MesResponse?> Tracking(string operationusersn,string workid, string lotno, string matlotno,string result,OngoingItemModel ongoing)
         {
                 using (var client = GetClient("Tracking"))
                 {
                     var payload = new MESHPayload1Model(OPERATION_ID, workid, operationusersn, lotno, matlotno);
-                    var res = await client.PostAsJsonAsync("openapi/mes/tracking", payload);
+                payload.DataItems.Add(new MESHPayload1Model.DataItem() { key = "Screwing_Torque", value = ongoing.Torque.ToString(), unitName = "nm" });
+                payload.DataItems.Add(new MESHPayload1Model.DataItem() { key = "Screwing_Time", value = ongoing.ScrewingTime, unitName = "second" });
+                payload.DataItems.Add(new MESHPayload1Model.DataItem() { key = "Screwing_Result", value = ongoing.ScrewingResult  ? "OK":"NG", standValue= "OK" });
+                payload.DataItems.Add(new MESHPayload1Model.DataItem() { key = "Laser_Result", value = ongoing.LaserResult ? "OK" : "NG", standValue="OK"});
+                payload.DataItems.Add(new MESHPayload1Model.DataItem() { key = "Camera_Result", value = ongoing.CameraResult ? "OK" : "NG", standValue = "OK" });
+                var res = await client.PostAsJsonAsync("openapi/mes/tracking", payload);
                 if (res.StatusCode == System.Net.HttpStatusCode.ServiceUnavailable)
                     throw new HttpRequestException("Can't Connect to MES API");
                 else if (!res.IsSuccessStatusCode)

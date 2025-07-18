@@ -212,8 +212,7 @@ namespace AutoScrewing
                     if (!check || item is null) continue;
                     item.FinalResult = item.ScrewingResult && item.LaserResult && item.CameraResult ? "OK" : "NG";
                     item.CurrentStatus = "Completed";
-
-                    await meshController.Tracking(item.OperationUserSN,workNumberScanBox.Text, item.Scan_ID, item.Scan_ID2, item.FinalResult=="OK"  ?"1" : "-1"); ;
+                    await meshController.Tracking(item.OperationUserSN,workNumberScanBox.Text, item.Scan_ID, item.Scan_ID2, item.FinalResult,item); ;
                     //                    var payload = new { serialnumber = item.Scan_ID, status = item.FinalResult, data = (TransactionModel)item };
                     //                    await File.WriteAllTextAsync(Path.Combine(path, "OUTPUT.txt"), JsonSerializer.Serialize(payload));
                     await TransactionRepository.CreateTransaction(item);
