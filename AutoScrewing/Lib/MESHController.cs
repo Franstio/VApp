@@ -4,6 +4,7 @@ using AutoScrewing.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
@@ -86,7 +87,7 @@ namespace AutoScrewing.Lib
                 {
                     try
                     {
-                        res = await base.SendAsync(request, cancellationToken);
+                        res = await base.SendAsync(request, new CancellationToken());
                         res.EnsureSuccessStatusCode();
                         log.status += "-Success";
                         log.result = await res.Content.ReadAsStringAsync();

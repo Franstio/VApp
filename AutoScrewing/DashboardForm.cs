@@ -469,11 +469,23 @@ namespace AutoScrewing
             var item = new OngoingItemModel() { Scan_ID = scan, Scan_ID2 = scan2, OperationUserSN = operationusersn, OperationId = Settings1.Default.OPERATION_ID, StartTime = DateTime.Now, CurrentStatus = "Screwing" };
             try
             {
-                await meshController.Tracking(operationusersn,worknumberorer, scan, scan2);
-                await plcController.Send(new PLCController.PLCItem("WR", "MR811", 1, "Starting Transaction - ON"));
-                //                    await Task.Delay(3000);
-                //                    await plcController.Send(new PLCController.PLCItem("WR", "MR811", 0, "Starting Transaction - OFF"));
-                ScrewingQueue.Enqueue(item);
+                var res = await meshController.Tracking(operationusersn,worknumberorer, scan, scan2);
+                if (res is not null)
+                {
+                    if (res.code == 1)
+                    {
+                        await plcController.Send(new PLCController.PLCItem("WR", "MR811", 1, "Starting Transaction - ON"));
+                        //                    await Task.Delay(3000);
+                        //                    await plcController.Send(new PLCController.PLCItem("WR", "MR811", 0, "Starting Transaction - OFF"));
+
+                        ScrewingQueue.Enqueue(item);
+                    }
+                    else if (res.code == -1 && res.message is not null)
+                    {
+                        MessageBox.Show(res.message,"Transaction Cancelled")
+                    }
+
+                }
                 await LoadData();
             }
             catch (Exception ex)
