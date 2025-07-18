@@ -63,7 +63,7 @@ namespace AutoScrewing.Database.Repository
                     var list = await conn.QueryAsync<TransactionModel>($"Select scan_id,scan_id2,operationusersn,operationid,torque,screwingresult,screwingtime,threadcount,laserresult,cameraresult,result,iserror,transactiontime,errordesc,finalresult,tighteningstatus From {Table_Name} order by TransactionTime Desc");
                     log.result = JsonSerializer.Serialize(list);
                     log.status += "-Success";
-                    await logRepository.RecordLog(log);
+               //     await logRepository.RecordLog(log);
                     return list.ToList();
                 }
             }
@@ -72,7 +72,7 @@ namespace AutoScrewing.Database.Repository
 
                 log.result = JsonSerializer.Serialize($"{e.Message} - {e.StackTrace}");
                 log.status += "-Failed";
-                await logRepository.RecordLog(log);
+             //   await logRepository.RecordLog(log);
                 return [];
             }
         }

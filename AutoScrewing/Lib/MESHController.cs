@@ -34,7 +34,7 @@ namespace AutoScrewing.Lib
             client.Timeout = TimeSpan.FromSeconds(10);
             return client;
         }
-        public async Task<MesResponse?> Tracking(string operationusersn,string workid,string lotno,string matlotno)
+        public async Task<MesResponse?> Checking(string operationusersn,string workid,string lotno,string matlotno)
         {
             try
             {
@@ -50,7 +50,7 @@ namespace AutoScrewing.Lib
             }
             catch { return null; }
         }
-        public async Task<MesResponse?> Checking(string operationusersn,string workid, string lotno, string matlotno,string result)
+        public async Task<MesResponse?> Tracking(string operationusersn,string workid, string lotno, string matlotno,string result)
         {
             try
             {
