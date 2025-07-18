@@ -52,8 +52,10 @@ namespace AutoScrewing.Lib
                 {
                     var payload = new MESHPayload1Model(OPERATION_ID, workid, operationusersn, lotno, matlotno);
                     var res = await client.PostAsJsonAsync("openapi/mes/tracking", payload);
-                    if (!res.IsSuccessStatusCode)
-                        return null;
+                if (res.StatusCode == System.Net.HttpStatusCode.ServiceUnavailable)
+                    throw new HttpRequestException("Can't Connect to MES API");
+                else if (!res.IsSuccessStatusCode)
+                    return null;
                     var data = await res.Content.ReadAsStringAsync();
                     return JsonSerializer.Deserialize<MesResponse?>(data);
                 }
@@ -90,10 +92,6 @@ namespace AutoScrewing.Lib
                         log.status += $"-Failed - {ex.StatusCode}";
                         log.result = $"{ex.Message} {ex.HttpRequestError}";
                         res = new HttpResponseMessage(ex.StatusCode ?? System.Net.HttpStatusCode.ServiceUnavailable);
-
-                        if (Settings1.Default.logMes)
-                            await logrepo.RecordLog(log);
-                        throw;
                     }
                     catch (Exception ex)
                     {
