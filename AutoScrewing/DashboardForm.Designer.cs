@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
             tableLayoutPanel1 = new TableLayoutPanel();
             screwingResultLabel = new Label();
             screwingTimeLabel = new Label();
@@ -156,14 +156,14 @@
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCells;
             dataGridView1.BackgroundColor = Color.White;
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = Color.FromArgb(229, 231, 235);
-            dataGridViewCellStyle1.Font = new Font("Sans Serif Collection", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle1.ForeColor = Color.FromArgb(31, 41, 55);
-            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
-            dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = Color.FromArgb(229, 231, 235);
+            dataGridViewCellStyle3.Font = new Font("Sans Serif Collection", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle3.ForeColor = Color.FromArgb(31, 41, 55);
+            dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
+            dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView1.Columns.AddRange(new DataGridViewColumn[] { Serial, Screwing, Laser, Camera, Judgement });
             tableLayoutPanel2.SetColumnSpan(dataGridView1, 3);
@@ -172,11 +172,11 @@
             dataGridView1.Location = new Point(3, 242);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.ReadOnly = true;
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = Color.White;
-            dataGridViewCellStyle2.Font = new Font("Sans Serif Collection", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle2.ForeColor = Color.FromArgb(55, 65, 81);
-            dataGridView1.RowsDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = Color.White;
+            dataGridViewCellStyle4.Font = new Font("Sans Serif Collection", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle4.ForeColor = Color.FromArgb(55, 65, 81);
+            dataGridView1.RowsDefaultCellStyle = dataGridViewCellStyle4;
             dataGridView1.Size = new Size(1320, 250);
             dataGridView1.TabIndex = 3;
             // 
@@ -485,8 +485,8 @@
             scan2Box.Name = "scan2Box";
             scan2Box.Size = new Size(263, 39);
             scan2Box.TabIndex = 12;
-            scan2Box.Tag = "Scan Operation MaterialLotNo";
-            scan2Box.Text = "Scan Operation MaterialLotNo";
+            scan2Box.Tag = "Scan Operation LotNo...";
+            scan2Box.Text = "Scan Operation LotNo...";
             scan2Box.TextAlign = HorizontalAlignment.Center;
             scan2Box.Enter += ScanFocus;
             scan2Box.KeyPress += scan2Box_KeyPress;
@@ -500,8 +500,8 @@
             scan1Box.Name = "scan1Box";
             scan1Box.Size = new Size(263, 39);
             scan1Box.TabIndex = 11;
-            scan1Box.Tag = "Scan Operation LotNo...";
-            scan1Box.Text = "Scan Operation LotNo...";
+            scan1Box.Tag = "Scan Operation MaterialLotNo'";
+            scan1Box.Text = "Scan Operation MaterialLotNo";
             scan1Box.TextAlign = HorizontalAlignment.Center;
             scan1Box.Enter += ScanFocus;
             scan1Box.KeyPress += scan1Box_KeyPress;

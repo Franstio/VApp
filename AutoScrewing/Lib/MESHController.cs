@@ -34,11 +34,11 @@ namespace AutoScrewing.Lib
             client.Timeout = TimeSpan.FromSeconds(3);
             return client;
         }
-        public async Task<MesResponse?> Checking(string operationusersn,string workid,string lotno,string matlotno)
+        public async Task<MesResponse?> Checking(string operationusersn,string workid,string  matlotno,string lotno)
         {
                 using (var client = GetClient("Checking"))
                 {
-                    var payload = new MESHPayload1Model(OPERATION_ID, workid, operationusersn, lotno, matlotno);
+                    var payload = new MESHPayload1Model(OPERATION_ID, workid, operationusersn, matlotno, lotno);
                     var res = await client.PostAsJsonAsync("openapi/mes/tracking/check", payload);
                 if (res.StatusCode == System.Net.HttpStatusCode.ServiceUnavailable)
                     throw new HttpRequestException("Can't Connect to MES API");
@@ -48,11 +48,11 @@ namespace AutoScrewing.Lib
                     return JsonSerializer.Deserialize<MesResponse?>(data);
                 }
         }
-        public async Task<MesResponse?> Tracking(string operationusersn,string workid, string lotno, string matlotno,string result,OngoingItemModel ongoing)
+        public async Task<MesResponse?> Tracking(string operationusersn,string workid, string matlotno, string lotno,string result,OngoingItemModel ongoing)
         {
                 using (var client = GetClient("Tracking"))
                 {
-                    var payload = new MESHPayload1Model(OPERATION_ID, workid, operationusersn, lotno, matlotno);
+                    var payload = new MESHPayload1Model(OPERATION_ID, workid, operationusersn, matlotno, lotno);
                 payload.DataItems.Add(new MESHPayload1Model.DataItem() { key = "Screwing_Torque", value = ongoing.Torque.ToString(), unitName = "nm" });
                 payload.DataItems.Add(new MESHPayload1Model.DataItem() { key = "Screwing_Time", value = ongoing.ScrewingTime, unitName = "second" });
                 payload.DataItems.Add(new MESHPayload1Model.DataItem() { key = "Screwing_Result", value = ongoing.ScrewingResult  ? "OK":"NG", standValue= "OK" });
