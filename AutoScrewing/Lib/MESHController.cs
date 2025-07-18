@@ -80,7 +80,7 @@ namespace AutoScrewing.Lib
                     request.Headers.Remove("X-SOURCE");
                 }
                 LogModel log = new LogModel("HTTP", source, source, "SEND");
-                log.payload = $"{request.Method} - {(request.Content is not null ? await request.Content.ReadAsStringAsync() : string.Empty)}";
+                log.payload = $"{request.Method} - {request.RequestUri} - {(request.Content is not null ? await request.Content.ReadAsStringAsync() : string.Empty)}";
                 LogRepository logrepo = new LogRepository();
                 HttpResponseMessage res = new HttpResponseMessage(System.Net.HttpStatusCode.InternalServerError);
                 for (int i = 0; i < 3;i++)
