@@ -173,6 +173,7 @@ namespace AutoScrewing
                 item.CameraStartTime = DashboardModel.StartCamera;
                 item.CameraEndTime = DateTime.Now;
                 item.CameraResult = DashboardModel.CameraStatus;
+                item.isCameraCompleted = true;
             }
             return result;
         }
@@ -315,6 +316,7 @@ namespace AutoScrewing
                 item.LaserResult = result;
                 item.LaserStartTime = DashboardModel.StartLaser;
                 item.LaserEndTime = DateTime.Now;
+                item.isLaseringCompleted = true;
             }
             return result;
         }
