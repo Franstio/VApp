@@ -4,6 +4,7 @@ using AutoScrewing.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text;
@@ -34,24 +35,26 @@ namespace AutoScrewing.Lib
             client.Timeout = TimeSpan.FromSeconds(3);
             return client;
         }
-        public async Task<MesResponse?> Checking(string operationusersn,string workid,string lotno,string matlotno)
+        public async Task<MesResponse?> Checking(string operationusersn,string workid,string lotno,string matlotno,out HttpStatusCode code)
         {
                 using (var client = GetClient("Checking"))
                 {
                     var payload = new MESHPayload1Model(OPERATION_ID, workid, operationusersn, lotno, matlotno);
                     var res = await client.PostAsJsonAsync("openapi/mes/tracking/check", payload);
+                    code = res.StatusCode;
                     if (!res.IsSuccessStatusCode)
                         return null;
                     var data = await res.Content.ReadAsStringAsync();
                     return JsonSerializer.Deserialize<MesResponse?>(data);
                 }
         }
-        public async Task<MesResponse?> Tracking(string operationusersn,string workid, string lotno, string matlotno,string result)
+        public async Task<MesResponse?> Tracking(string operationusersn,string workid, string lotno, string matlotno,string result,out HttpStatusCode code)
         {
                 using (var client = GetClient("Tracking"))
                 {
                     var payload = new MESHPayload1Model(OPERATION_ID, workid, operationusersn, lotno, matlotno);
                     var res = await client.PostAsJsonAsync("openapi/mes/tracking", payload);
+                code = res.StatusCode;
                     if (!res.IsSuccessStatusCode)
                         return null;
                     var data = await res.Content.ReadAsStringAsync();
@@ -89,7 +92,7 @@ namespace AutoScrewing.Lib
                     {
                         log.status += $"-Failed - {ex.StatusCode}";
                         log.result = $"{ex.Message} {ex.HttpRequestError}";
-                        res = new HttpResponseMessage(ex.StatusCode ?? System.Net.HttpStatusCode.InternalServerError);
+                        res = new HttpResponseMessage(ex.StatusCode ?? System.Net.HttpStatusCode.ServiceUnavailable);
                     }
                     catch (Exception ex)
                     {
