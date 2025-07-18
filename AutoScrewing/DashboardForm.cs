@@ -508,7 +508,7 @@ namespace AutoScrewing
                         scan1Box.Text = scan1Box.Tag?.ToString();
                         scan2Box.Text = scan2Box.Tag?.ToString();
 //                        workNumberScanBox.Text = workNumberScanBox.Tag?.ToString();
-                        userIdBox.Focus();
+                        scan1Box.Focus();
                     });
                 }
                 catch

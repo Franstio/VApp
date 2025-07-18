@@ -36,10 +36,10 @@ namespace AutoScrewing.Lib
         }
         public async Task<MesResponse?> Checking(string operationusersn,string workid,string lotno,string matlotno)
         {
-                using (var client = GetClient("Tracking"))
+                using (var client = GetClient("Checking"))
                 {
                     var payload = new MESHPayload1Model(OPERATION_ID, workid, operationusersn, lotno, matlotno);
-                    var res = await client.PostAsJsonAsync("openapi/mes/tracking", payload);
+                    var res = await client.PostAsJsonAsync("openapi/mes/tracking/check", payload);
                     if (!res.IsSuccessStatusCode)
                         return null;
                     var data = await res.Content.ReadAsStringAsync();
@@ -51,7 +51,7 @@ namespace AutoScrewing.Lib
                 using (var client = GetClient("Tracking"))
                 {
                     var payload = new MESHPayload1Model(OPERATION_ID, workid, operationusersn, lotno, matlotno);
-                    var res = await client.PostAsJsonAsync("openapi/mes/tracking/check", payload);
+                    var res = await client.PostAsJsonAsync("openapi/mes/tracking", payload);
                     if (!res.IsSuccessStatusCode)
                         return null;
                     var data = await res.Content.ReadAsStringAsync();
