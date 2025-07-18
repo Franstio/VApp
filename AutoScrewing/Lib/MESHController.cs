@@ -56,7 +56,7 @@ namespace AutoScrewing.Lib
                     throw new HttpRequestException("Can't Connect to MES API");
                 else if (!res.IsSuccessStatusCode)
                     return null;
-                    var data = await res.Content.ReadAsStringAsync();
+                     var data = await res.Content.ReadAsStringAsync();
                     return JsonSerializer.Deserialize<MesResponse?>(data);
                 }
         }
