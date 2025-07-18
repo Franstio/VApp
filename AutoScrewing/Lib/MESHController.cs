@@ -36,8 +36,6 @@ namespace AutoScrewing.Lib
         }
         public async Task<MesResponse?> Checking(string operationusersn,string workid,string lotno,string matlotno)
         {
-            try
-            {
                 using (var client = GetClient("Tracking"))
                 {
                     var payload = new MESHPayload1Model(OPERATION_ID, workid, operationusersn, lotno, matlotno);
@@ -47,13 +45,9 @@ namespace AutoScrewing.Lib
                     var data = await res.Content.ReadAsStringAsync();
                     return JsonSerializer.Deserialize<MesResponse?>(data);
                 }
-            }
-            catch { return null; }
         }
         public async Task<MesResponse?> Tracking(string operationusersn,string workid, string lotno, string matlotno,string result)
         {
-            try
-            {
                 using (var client = GetClient("Tracking"))
                 {
                     var payload = new MESHPayload1Model(OPERATION_ID, workid, operationusersn, lotno, matlotno);
@@ -63,8 +57,6 @@ namespace AutoScrewing.Lib
                     var data = await res.Content.ReadAsStringAsync();
                     return JsonSerializer.Deserialize<MesResponse?>(data);
                 }
-            }
-            catch { return null; }
         }
         public class MESH_HTTP_HANDLER : HttpClientHandler
         {

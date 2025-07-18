@@ -482,11 +482,17 @@ namespace AutoScrewing
                     }
                     else if (res.code == -1 && res.message is not null)
                     {
-                        MessageBox.Show(res.message, "Transaction Cancelled");
+                        await InvokeAsync(()=>
+                        MessageBox.Show(res.message, "Transaction Cancelled"));
                     }
 
                 }
                 await LoadData();
+            }
+            catch (HttpRequestException ex)
+            {
+                await InvokeAsync(() =>
+                MessageBox.Show(ex.Message, "Transaction Cancelled"));
             }
             catch (Exception ex)
             {
