@@ -451,10 +451,10 @@
             tableLayoutPanel6.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
             tableLayoutPanel6.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
             tableLayoutPanel6.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
-            tableLayoutPanel6.Controls.Add(workNumberScanBox, 3, 0);
-            tableLayoutPanel6.Controls.Add(scan2Box, 2, 0);
-            tableLayoutPanel6.Controls.Add(scan1Box, 1, 0);
-            tableLayoutPanel6.Controls.Add(userIdBox, 0, 0);
+            tableLayoutPanel6.Controls.Add(workNumberScanBox, 0, 0);
+            tableLayoutPanel6.Controls.Add(scan2Box, 3, 0);
+            tableLayoutPanel6.Controls.Add(scan1Box, 2, 0);
+            tableLayoutPanel6.Controls.Add(userIdBox, 1, 0);
             tableLayoutPanel6.Location = new Point(12, 27);
             tableLayoutPanel6.Name = "tableLayoutPanel6";
             tableLayoutPanel6.RowCount = 1;
@@ -466,7 +466,7 @@
             // 
             workNumberScanBox.Dock = DockStyle.Fill;
             workNumberScanBox.Font = new Font("Sans Serif Collection", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            workNumberScanBox.Location = new Point(810, 3);
+            workNumberScanBox.Location = new Point(3, 3);
             workNumberScanBox.Name = "workNumberScanBox";
             workNumberScanBox.Size = new Size(263, 39);
             workNumberScanBox.TabIndex = 13;
@@ -481,7 +481,7 @@
             // 
             scan2Box.Dock = DockStyle.Fill;
             scan2Box.Font = new Font("Sans Serif Collection", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            scan2Box.Location = new Point(541, 3);
+            scan2Box.Location = new Point(810, 3);
             scan2Box.Name = "scan2Box";
             scan2Box.Size = new Size(263, 39);
             scan2Box.TabIndex = 12;
@@ -496,7 +496,7 @@
             // 
             scan1Box.Dock = DockStyle.Fill;
             scan1Box.Font = new Font("Sans Serif Collection", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            scan1Box.Location = new Point(272, 3);
+            scan1Box.Location = new Point(541, 3);
             scan1Box.Name = "scan1Box";
             scan1Box.Size = new Size(263, 39);
             scan1Box.TabIndex = 11;
@@ -511,7 +511,7 @@
             // 
             userIdBox.Dock = DockStyle.Fill;
             userIdBox.Font = new Font("Sans Serif Collection", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            userIdBox.Location = new Point(3, 3);
+            userIdBox.Location = new Point(272, 3);
             userIdBox.Name = "userIdBox";
             userIdBox.Size = new Size(263, 39);
             userIdBox.TabIndex = 10;
