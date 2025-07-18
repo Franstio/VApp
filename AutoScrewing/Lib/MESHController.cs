@@ -31,7 +31,7 @@ namespace AutoScrewing.Lib
             HttpClient client = new HttpClient(new MESH_HTTP_HANDLER());
             client.BaseAddress = new Uri(BASE_ADDRESS);
             client.DefaultRequestHeaders.TryAddWithoutValidation("X-SOURCE", source);
-            client.Timeout = TimeSpan.FromSeconds(10);
+            client.Timeout = TimeSpan.FromSeconds(3);
             return client;
         }
         public async Task<MesResponse?> Checking(string operationusersn,string workid,string lotno,string matlotno)

@@ -489,6 +489,12 @@ namespace AutoScrewing
                 }
                 await LoadData();
             }
+            catch (TaskCanceledException _)
+            {
+
+                await InvokeAsync(() =>
+                MessageBox.Show("Can't connect to MES API", "Transaction Cancelled"));
+            }
             catch (HttpRequestException ex)
             {
                 await InvokeAsync(() =>
