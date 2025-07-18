@@ -40,7 +40,9 @@ namespace AutoScrewing.Lib
                 {
                     var payload = new MESHPayload1Model(OPERATION_ID, workid, operationusersn, lotno, matlotno);
                     var res = await client.PostAsJsonAsync("openapi/mes/tracking/check", payload);
-                    if (!res.IsSuccessStatusCode)
+                if (res.StatusCode == System.Net.HttpStatusCode.ServiceUnavailable)
+                    throw new HttpRequestException("Can't Connect to MES API");
+                if (!res.IsSuccessStatusCode)
                         return null;
                     var data = await res.Content.ReadAsStringAsync();
                     return JsonSerializer.Deserialize<MesResponse?>(data);
