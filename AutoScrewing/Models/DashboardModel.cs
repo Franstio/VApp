@@ -28,7 +28,9 @@ namespace AutoScrewing.Models
         public string SCAN_ID { get; set; } = string.Empty;
         public string SCAN_ID2 { get; set; } = string.Empty;
         public bool CameraStatus { get; set; } = false;
-
+        public DateTime StartScrewing { get;set; } = DateTime.MinValue;
+        public DateTime StartLaser { get; set; } = DateTime.MinValue;
+        public DateTime StartCamera { get; set; } = DateTime.MinValue;
         public bool isCameraReady { get; set; } = false;
         public bool isLaseringReady { get; set; } = false;
        // public bool isScrewingCompleted { get; set; } = false;

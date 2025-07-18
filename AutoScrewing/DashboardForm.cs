@@ -40,7 +40,7 @@ namespace AutoScrewing
         private DashboardModel _dashboardmodel = new DashboardModel();
         private Barrier barrier = new Barrier(3);
         private LogRepository logRepository = new LogRepository();
-        private string CHECKSUM_SCREWING = "";
+        private string CHECKSUM_SCREWING = "",NEW_CHECKSUM_SCREWING="";
         SemaphoreSlim semaphore = new SemaphoreSlim(1);
         Queue<OngoingItemModel>
             ScrewingQueue = new Queue<OngoingItemModel>(),
@@ -116,6 +116,7 @@ namespace AutoScrewing
             _ = Task.Run(() => ReadPLC());
             _ = Task.Run(() => OutputTransaction());
             _ = Task.Run(() => CheckReady());
+            _ = Task.Run(() => ShiftQueues());
             await LoadData();
             //Task.Run(async () =>
             //{
@@ -151,7 +152,7 @@ namespace AutoScrewing
         private async Task<bool> ReadCamera()
         {
             barrier.SignalAndWait();
-            var startTime = DateTime.Now;
+            DashboardModel.StartCamera = DateTime.Now;
             PLCController.PLCItem[] cmd = [
                 new PLCController.PLCItem("RD", "MR500", -1, "Read For Reading Camera NG"),
                 new PLCController.PLCItem("RD", "MR501", -1, "Read For Reading Camera OK")
@@ -166,27 +167,7 @@ namespace AutoScrewing
             bool isValid = !string.IsNullOrEmpty(OK) && !string.IsNullOrEmpty(NG);
             bool check = OK == "0" && NG == "0";
             result = !check && (OK == "1" && NG == "0");
-            if (CameraQueue.Count > 0 && !check && isValid)
-            {
-                var item = CameraQueue.Dequeue();
-                item.CameraStartTime = startTime;
-                item.CameraEndTime = DateTime.Now;
-                if ((OK != "0" && OK != "1") && (NG != "0" && NG != "1"))
-                {
-                    item.AddError("Camera");
-                }
-                item.CameraResult = result;
-                item.CurrentStatus = "Write output file";
-                item.FinalResult = item.ScrewingResult && item.LaserResult && item.CameraResult ? "OK" : "NG";
-                if (item.FinalResult == "NG")
-                {
-                    await plcController.Send(new PLCController.PLCItem("WR", "MR1000", 1, "After Camera Read 0 ON"));
-                    //                    await Task.Delay(1000);
-                    //                    await plcController.Send(new PLCController.PLCItem("WR", "MR1000", 0, "After Camera Read - OFF"));
-                }
-                item.isCameraCompleted = true;
-                FinalQueue.Enqueue(item);
-            }
+
             return result;
         }
         private async Task OutputTransaction()
@@ -269,6 +250,9 @@ namespace AutoScrewing
                     model.CameraStatus = DashboardModel.CameraStatus;
                     model.isCameraReady = DashboardModel.isCameraReady;
                     model.isLaseringReady = DashboardModel.isLaseringReady;
+                    model.StartScrewing = DashboardModel.StartScrewing;
+                    model.StartCamera = DashboardModel.StartCamera;
+                    model.StartLaser = DashboardModel.StartLaser;
                     DashboardModel = model;
                     await LoadData();
                 }
@@ -313,37 +297,23 @@ namespace AutoScrewing
                 Task.Run<string>(async () => await plcController.Send(cmd[0])),
                 Task.Run<string>(async () => await plcController.Send(cmd[1]))
             ];
-            var startTime = DateTime.Now;
+            DashboardModel.StartLaser = DateTime.Now;
             await Task.WhenAll(task);
             string OK = await task[1], NG = await task[0];
             bool check = OK == "0" && NG == "0";
             bool isValid = !string.IsNullOrEmpty(OK) && !string.IsNullOrEmpty(NG);
             bool result = !check && (OK == "1" && NG == "0");
-            if (LaserQueue.Count > 0 && !check && isValid)
-            {
-
-                var item = LaserQueue.Dequeue();
-                if ((OK != "0" && OK != "0") && (NG != "0" && NG != "1"))
-                {
-                    item.AddError("Laser");
-                }
-                item.LaserResult = result;
-                item.LaserStartTime = startTime;
-                item.LaserEndTime = DateTime.Now;
-                item.CurrentStatus = "Camera";
-                item.isLaseringCompleted = true;
-                CameraQueue.Enqueue(item);
-            }
+            
             return result;
         }
         private async Task<DashboardModel> ReadingScrewing()
         {
-            var startTime = DateTime.Now;
+            DashboardModel model = new DashboardModel();
+            model.StartScrewing = DateTime.Now;
             string res = await kilewController.Send("DATA100");
             string[] data = res.Split(",");
             if (data.Length < 28)
                 throw new Exception("Invalid Data");
-            DashboardModel model = new DashboardModel();
             if (data[0].Contains("REQ100"))
             {
                 res = await kilewController.Send("CMD100");
@@ -361,24 +331,7 @@ namespace AutoScrewing
                 model.Time = data[21];
                 model.Torque = Convert.ToDecimal(data[19], new CultureInfo("en-US"));
                 model.TorqueType = "Nm";//data[18].Replace("_", "");
-
-                if (ScrewingQueue.Count > 0 && data[7] != CHECKSUM_SCREWING)
-                {
-                    CHECKSUM_SCREWING = data[7];
-                    var item = ScrewingQueue.Dequeue();
-                    item.Torque = model.Torque;
-                    item.TighteningStatus = model.TighteningStatus;
-                    item.ScrewingResult = model.TighteningStatus.Contains("OK");
-                    item.ScrewingTime = model.Time;
-                    item.ThreadCount = model.Thread;
-                    item.ScrewStartTime = startTime;
-                    item.ScrewEndTime = DateTime.Now;
-                    item.CurrentStatus = "Lasering";
-                    item.CHECKSUM = CHECKSUM_SCREWING;
-                    item.isScrewingCompleted = true;
-                    LaserQueue.Enqueue(item);
-
-                }
+                NEW_CHECKSUM_SCREWING = data[7];
             }
             else if (data[0].Replace("{", "").Contains("REQ100"))
             {
@@ -391,6 +344,76 @@ namespace AutoScrewing
                 model.Torque = 0;
             }
             return model;
+        }
+        private async Task ShiftQueues()
+        {
+            while (true)
+            {
+
+                var res = await plcController.Send(new PLCController.PLCItem("RD", "MR811", -1, "Starting Transaction - ON"));
+                if (res is not null && res == "1")
+                {
+                    await ShiftCamera();
+                    ShiftLaser();
+                    ShiftScrewing();
+                }
+                await Task.Delay(500);
+            }
+        }
+
+        private void ShiftScrewing()
+        {
+            if (ScrewingQueue.Count > 0 && NEW_CHECKSUM_SCREWING != CHECKSUM_SCREWING)
+            {
+                var model = DashboardModel;
+                CHECKSUM_SCREWING = NEW_CHECKSUM_SCREWING;
+                var item = ScrewingQueue.Dequeue();
+                item.Torque = model.Torque;
+                item.TighteningStatus = model.TighteningStatus;
+                item.ScrewingResult = model.TighteningStatus.Contains("OK");
+                item.ScrewingTime = model.Time;
+                item.ThreadCount = model.Thread;
+                item.ScrewStartTime = model.StartScrewing;
+                item.ScrewEndTime = DateTime.Now;
+                item.CurrentStatus = "Lasering";
+                item.CHECKSUM = CHECKSUM_SCREWING;
+                item.isScrewingCompleted = true;
+                LaserQueue.Enqueue(item);
+
+            }
+        }
+        private void ShiftLaser()
+        {
+            if (LaserQueue.Count > 0)
+            {
+                var item = LaserQueue.Dequeue();
+                item.LaserResult = DashboardModel.LaserStatus;
+                item.LaserStartTime = DashboardModel.StartLaser;
+                item.LaserEndTime = DateTime.Now;
+                item.CurrentStatus = "Camera";
+                item.isLaseringCompleted = true;
+                CameraQueue.Enqueue(item);
+            }
+        }
+        private async Task ShiftCamera()
+        {
+            if (CameraQueue.Count > 0 )
+            {
+                var item = CameraQueue.Dequeue();
+                item.CameraStartTime = DashboardModel.StartCamera;
+                item.CameraEndTime = DateTime.Now;
+                item.CameraResult = DashboardModel.CameraStatus;
+                item.CurrentStatus = "Write output file";
+                item.FinalResult = item.ScrewingResult && item.LaserResult && item.CameraResult ? "OK" : "NG";
+                if (item.FinalResult == "NG")
+                {
+                    await plcController.Send(new PLCController.PLCItem("WR", "MR1000", 1, "After Camera Read 0 ON"));
+                    //                    await Task.Delay(1000);
+                    //                    await plcController.Send(new PLCController.PLCItem("WR", "MR1000", 0, "After Camera Read - OFF"));
+                }
+                item.isCameraCompleted = true;
+                FinalQueue.Enqueue(item);
+            }
         }
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
@@ -418,8 +441,7 @@ namespace AutoScrewing
             }
         }
 
-
-
+        
 
         private async void inputFileWatcher_Changed(object sender, FileSystemEventArgs e)
         {
