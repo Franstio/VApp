@@ -52,7 +52,7 @@ namespace AutoScrewing.Lib
         {
                 using (var client = GetClient("Tracking"))
                 {
-                    var payload = new MESHPayload1Model(OPERATION_ID, workid, operationusersn, matlotno, lotno);
+                    var payload = new MESHPayload1Model(OPERATION_ID, workid, operationusersn, matlotno, lotno,result);
                 payload.DataItems.Add(new MESHPayload1Model.DataItem() { key = "Screwing_Torque", value = ongoing.Torque.ToString(), unitName = "nm" });
                 payload.DataItems.Add(new MESHPayload1Model.DataItem() { key = "Screwing_Time", value = ongoing.ScrewingTime, unitName = "second" });
                 payload.DataItems.Add(new MESHPayload1Model.DataItem() { key = "Screwing_Result", value = ongoing.ScrewingResult  ? "OK":"NG", standValue= "OK" });
