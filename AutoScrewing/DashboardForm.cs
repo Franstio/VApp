@@ -482,7 +482,7 @@ namespace AutoScrewing
                     }
                     else if (res.code == -1 && res.message is not null)
                     {
-                        MessageBox.Show(res.message,"Transaction Cancelled")
+                        MessageBox.Show(res.message, "Transaction Cancelled");
                     }
 
                 }
