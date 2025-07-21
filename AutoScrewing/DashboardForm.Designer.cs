@@ -37,7 +37,8 @@
             torqueLabel = new Label();
             laserResultLabel = new Label();
             dataGridView1 = new DataGridView();
-            Serial = new DataGridViewTextBoxColumn();
+            MatLotNo = new DataGridViewTextBoxColumn();
+            LotNo = new DataGridViewTextBoxColumn();
             Screwing = new DataGridViewTextBoxColumn();
             Laser = new DataGridViewTextBoxColumn();
             Camera = new DataGridViewTextBoxColumn();
@@ -165,7 +166,7 @@
             dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
             dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Columns.AddRange(new DataGridViewColumn[] { Serial, Screwing, Laser, Camera, Judgement });
+            dataGridView1.Columns.AddRange(new DataGridViewColumn[] { MatLotNo, LotNo, Screwing, Laser, Camera, Judgement });
             tableLayoutPanel2.SetColumnSpan(dataGridView1, 3);
             dataGridView1.Dock = DockStyle.Fill;
             dataGridView1.GridColor = Color.FromArgb(209, 213, 219);
@@ -180,11 +181,17 @@
             dataGridView1.Size = new Size(1320, 250);
             dataGridView1.TabIndex = 3;
             // 
-            // Serial
+            // MatLotNo
             // 
-            Serial.HeaderText = "Serial";
-            Serial.Name = "Serial";
-            Serial.ReadOnly = true;
+            MatLotNo.HeaderText = "Material Lot No";
+            MatLotNo.Name = "MatLotNo";
+            MatLotNo.ReadOnly = true;
+            // 
+            // LotNo
+            // 
+            LotNo.HeaderText = "Lot No";
+            LotNo.Name = "LotNo";
+            LotNo.ReadOnly = true;
             // 
             // Screwing
             // 
@@ -561,11 +568,6 @@
         private Label torqueLabel;
         private Label laserResultLabel;
         private DataGridView dataGridView1;
-        private DataGridViewTextBoxColumn Serial;
-        private DataGridViewTextBoxColumn Screwing;
-        private DataGridViewTextBoxColumn Laser;
-        private DataGridViewTextBoxColumn Camera;
-        private DataGridViewTextBoxColumn Judgement;
         private Button button1;
         private TableLayoutPanel tableLayoutPanel2;
         private Label timeLabel;
@@ -593,5 +595,11 @@
         private TextBox scan2Box;
         private TextBox scan1Box;
         private TextBox workNumberScanBox;
+        private DataGridViewTextBoxColumn MatLotNo;
+        private DataGridViewTextBoxColumn LotNo;
+        private DataGridViewTextBoxColumn Screwing;
+        private DataGridViewTextBoxColumn Laser;
+        private DataGridViewTextBoxColumn Camera;
+        private DataGridViewTextBoxColumn Judgement;
     }
 }
