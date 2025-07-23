@@ -53,14 +53,14 @@ namespace AutoScrewing.Database.Repository
                 await logRepository.RecordLog(log);
             }
         }
-        public async Task<List<TransactionModel>> GetTransaction([CallerMemberName] string? methodName = null, [CallerFilePath] string? filePath = null, [CallerLineNumber] int lineNumber = 0)
+        public async Task<List<TransactionModel>> GetTransaction(int limit = 0,[CallerMemberName] string? methodName = null, [CallerFilePath] string? filePath = null, [CallerLineNumber] int lineNumber = 0)
         {
             LogModel log = new LogModel("SQL", "Transaction Repository", $"Called by `{methodName}` in `{System.IO.Path.GetFileName(filePath)}` at line `{lineNumber}`", "Send");
             try
             {
                 using (var conn = await GetConnection())
                 {
-                    var list = await conn.QueryAsync<TransactionModel>($"Select scan_id,scan_id2,operationusersn,operationid,torque,screwingresult,screwingtime,threadcount,laserresult,cameraresult,result,iserror,transactiontime,errordesc,finalresult,tighteningstatus From {Table_Name} order by TransactionTime Desc");
+                    var list = await conn.QueryAsync<TransactionModel>($"Select scan_id,scan_id2,operationusersn,operationid,torque,screwingresult,screwingtime,threadcount,laserresult,cameraresult,result,iserror,transactiontime,errordesc,finalresult,tighteningstatus From {Table_Name} order by TransactionTime Desc {(limit > 0 ? $"limit {limit}":"" )}");
                     log.result = JsonSerializer.Serialize(list);
                     log.status += "-Success";
                //     await logRepository.RecordLog(log);
