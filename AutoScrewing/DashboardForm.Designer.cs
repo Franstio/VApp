@@ -65,10 +65,14 @@
             manualToolStripMenuItem = new ToolStripMenuItem();
             inputFileWatcher = new FileSystemWatcher();
             tableLayoutPanel6 = new TableLayoutPanel();
+            label7 = new Label();
+            label6 = new Label();
+            label5 = new Label();
             workNumberScanBox = new TextBox();
             scan2Box = new TextBox();
             scan1Box = new TextBox();
             userIdBox = new TextBox();
+            label4 = new Label();
             tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             tableLayoutPanel2.SuspendLayout();
@@ -93,11 +97,11 @@
             tableLayoutPanel1.Controls.Add(torqueLabel, 0, 0);
             tableLayoutPanel1.Dock = DockStyle.Fill;
             tableLayoutPanel1.Font = new Font("Sans Serif Collection", 11.9999981F, FontStyle.Bold);
-            tableLayoutPanel1.Location = new Point(13, 44);
+            tableLayoutPanel1.Location = new Point(13, 47);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 1;
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutPanel1.Size = new Size(498, 176);
+            tableLayoutPanel1.Size = new Size(498, 187);
             tableLayoutPanel1.TabIndex = 0;
             // 
             // screwingResultLabel
@@ -106,7 +110,7 @@
             screwingResultLabel.Font = new Font("Sans Serif Collection", 18F, FontStyle.Bold);
             screwingResultLabel.Location = new Point(376, 0);
             screwingResultLabel.Name = "screwingResultLabel";
-            screwingResultLabel.Size = new Size(119, 176);
+            screwingResultLabel.Size = new Size(119, 187);
             screwingResultLabel.TabIndex = 3;
             screwingResultLabel.Text = "NG";
             screwingResultLabel.TextAlign = ContentAlignment.MiddleCenter;
@@ -120,7 +124,7 @@
             screwingTimeLabel.ForeColor = Color.FromArgb(31, 41, 55);
             screwingTimeLabel.Location = new Point(227, 0);
             screwingTimeLabel.Name = "screwingTimeLabel";
-            screwingTimeLabel.Size = new Size(143, 176);
+            screwingTimeLabel.Size = new Size(143, 187);
             screwingTimeLabel.TabIndex = 2;
             screwingTimeLabel.Text = "000.00 Seconds";
             screwingTimeLabel.TextAlign = ContentAlignment.MiddleCenter;
@@ -132,7 +136,7 @@
             torqueLabel.ForeColor = Color.FromArgb(31, 41, 55);
             torqueLabel.Location = new Point(3, 0);
             torqueLabel.Name = "torqueLabel";
-            torqueLabel.Size = new Size(218, 176);
+            torqueLabel.Size = new Size(218, 187);
             torqueLabel.TabIndex = 1;
             torqueLabel.Text = "0N";
             torqueLabel.TextAlign = ContentAlignment.MiddleCenter;
@@ -141,9 +145,9 @@
             // 
             laserResultLabel.Dock = DockStyle.Fill;
             laserResultLabel.Font = new Font("Sans Serif Collection", 36F, FontStyle.Bold);
-            laserResultLabel.Location = new Point(13, 41);
+            laserResultLabel.Location = new Point(13, 44);
             laserResultLabel.Name = "laserResultLabel";
-            laserResultLabel.Size = new Size(365, 182);
+            laserResultLabel.Size = new Size(365, 193);
             laserResultLabel.TabIndex = 0;
             laserResultLabel.Text = "OK";
             laserResultLabel.TextAlign = ContentAlignment.MiddleCenter;
@@ -170,7 +174,7 @@
             tableLayoutPanel2.SetColumnSpan(dataGridView1, 3);
             dataGridView1.Dock = DockStyle.Fill;
             dataGridView1.GridColor = Color.FromArgb(209, 213, 219);
-            dataGridView1.Location = new Point(3, 242);
+            dataGridView1.Location = new Point(3, 256);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.ReadOnly = true;
             dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
@@ -178,7 +182,7 @@
             dataGridViewCellStyle2.Font = new Font("Sans Serif Collection", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
             dataGridViewCellStyle2.ForeColor = Color.FromArgb(55, 65, 81);
             dataGridView1.RowsDefaultCellStyle = dataGridViewCellStyle2;
-            dataGridView1.Size = new Size(1320, 250);
+            dataGridView1.Size = new Size(1320, 265);
             dataGridView1.TabIndex = 3;
             // 
             // MatLotNo
@@ -254,13 +258,13 @@
             tableLayoutPanel2.Controls.Add(panel1, 0, 0);
             tableLayoutPanel2.Controls.Add(tableLayoutPanel4, 2, 0);
             tableLayoutPanel2.Controls.Add(flowLayoutPanel1, 0, 2);
-            tableLayoutPanel2.Location = new Point(12, 74);
+            tableLayoutPanel2.Location = new Point(12, 97);
             tableLayoutPanel2.Name = "tableLayoutPanel2";
             tableLayoutPanel2.RowCount = 3;
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 43F));
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 46F));
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 11F));
-            tableLayoutPanel2.Size = new Size(1326, 558);
+            tableLayoutPanel2.Size = new Size(1326, 590);
             tableLayoutPanel2.TabIndex = 7;
             // 
             // tableLayoutPanel5
@@ -277,7 +281,7 @@
             tableLayoutPanel5.RowCount = 2;
             tableLayoutPanel5.RowStyles.Add(new RowStyle(SizeType.Percent, 15F));
             tableLayoutPanel5.RowStyles.Add(new RowStyle(SizeType.Percent, 85F));
-            tableLayoutPanel5.Size = new Size(391, 233);
+            tableLayoutPanel5.Size = new Size(391, 247);
             tableLayoutPanel5.TabIndex = 6;
             // 
             // label3
@@ -287,7 +291,7 @@
             label3.ForeColor = Color.FromArgb(31, 41, 55);
             label3.Location = new Point(13, 10);
             label3.Name = "label3";
-            label3.Size = new Size(365, 31);
+            label3.Size = new Size(365, 34);
             label3.TabIndex = 2;
             label3.Text = "SENSOR LASER";
             // 
@@ -298,7 +302,7 @@
             panel1.Dock = DockStyle.Fill;
             panel1.Location = new Point(3, 3);
             panel1.Name = "panel1";
-            panel1.Size = new Size(524, 233);
+            panel1.Size = new Size(524, 247);
             panel1.TabIndex = 4;
             // 
             // tableLayoutPanel3
@@ -314,7 +318,7 @@
             tableLayoutPanel3.RowCount = 2;
             tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Percent, 15F));
             tableLayoutPanel3.RowStyles.Add(new RowStyle(SizeType.Percent, 85F));
-            tableLayoutPanel3.Size = new Size(524, 233);
+            tableLayoutPanel3.Size = new Size(524, 247);
             tableLayoutPanel3.TabIndex = 0;
             // 
             // label1
@@ -324,7 +328,7 @@
             label1.ForeColor = Color.FromArgb(31, 41, 55);
             label1.Location = new Point(13, 10);
             label1.Name = "label1";
-            label1.Size = new Size(498, 31);
+            label1.Size = new Size(498, 34);
             label1.TabIndex = 0;
             label1.Text = "SCREWING";
             // 
@@ -342,7 +346,7 @@
             tableLayoutPanel4.RowCount = 2;
             tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Percent, 15F));
             tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Percent, 85F));
-            tableLayoutPanel4.Size = new Size(393, 233);
+            tableLayoutPanel4.Size = new Size(393, 247);
             tableLayoutPanel4.TabIndex = 5;
             // 
             // label2
@@ -352,7 +356,7 @@
             label2.ForeColor = Color.FromArgb(31, 41, 55);
             label2.Location = new Point(13, 10);
             label2.Name = "label2";
-            label2.Size = new Size(367, 31);
+            label2.Size = new Size(367, 34);
             label2.TabIndex = 2;
             label2.Text = "CAMERA";
             // 
@@ -360,9 +364,9 @@
             // 
             cameraResultLabel.Dock = DockStyle.Fill;
             cameraResultLabel.Font = new Font("Sans Serif Collection", 36F, FontStyle.Bold);
-            cameraResultLabel.Location = new Point(13, 41);
+            cameraResultLabel.Location = new Point(13, 44);
             cameraResultLabel.Name = "cameraResultLabel";
-            cameraResultLabel.Size = new Size(367, 182);
+            cameraResultLabel.Size = new Size(367, 193);
             cameraResultLabel.TabIndex = 1;
             cameraResultLabel.Text = "NG";
             cameraResultLabel.TextAlign = ContentAlignment.MiddleCenter;
@@ -374,9 +378,9 @@
             tableLayoutPanel2.SetColumnSpan(flowLayoutPanel1, 3);
             flowLayoutPanel1.Controls.Add(button1);
             flowLayoutPanel1.Dock = DockStyle.Fill;
-            flowLayoutPanel1.Location = new Point(3, 498);
+            flowLayoutPanel1.Location = new Point(3, 527);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new Size(1320, 57);
+            flowLayoutPanel1.Size = new Size(1320, 60);
             flowLayoutPanel1.TabIndex = 7;
             // 
             // timer1
@@ -458,83 +462,116 @@
             tableLayoutPanel6.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
             tableLayoutPanel6.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
             tableLayoutPanel6.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
-            tableLayoutPanel6.Controls.Add(workNumberScanBox, 0, 0);
-            tableLayoutPanel6.Controls.Add(scan2Box, 3, 0);
-            tableLayoutPanel6.Controls.Add(scan1Box, 2, 0);
-            tableLayoutPanel6.Controls.Add(userIdBox, 1, 0);
+            tableLayoutPanel6.Controls.Add(label7, 3, 0);
+            tableLayoutPanel6.Controls.Add(label6, 2, 0);
+            tableLayoutPanel6.Controls.Add(label5, 1, 0);
+            tableLayoutPanel6.Controls.Add(workNumberScanBox, 0, 1);
+            tableLayoutPanel6.Controls.Add(scan2Box, 3, 1);
+            tableLayoutPanel6.Controls.Add(scan1Box, 2, 1);
+            tableLayoutPanel6.Controls.Add(userIdBox, 1, 1);
+            tableLayoutPanel6.Controls.Add(label4, 0, 0);
             tableLayoutPanel6.Location = new Point(12, 27);
             tableLayoutPanel6.Name = "tableLayoutPanel6";
-            tableLayoutPanel6.RowCount = 1;
-            tableLayoutPanel6.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutPanel6.Size = new Size(1076, 44);
+            tableLayoutPanel6.RowCount = 2;
+            tableLayoutPanel6.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
+            tableLayoutPanel6.RowStyles.Add(new RowStyle(SizeType.Percent, 75F));
+            tableLayoutPanel6.Size = new Size(1076, 64);
             tableLayoutPanel6.TabIndex = 9;
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Dock = DockStyle.Fill;
+            label7.Location = new Point(810, 0);
+            label7.Name = "label7";
+            label7.Size = new Size(263, 16);
+            label7.TabIndex = 17;
+            label7.Text = "Scan Work Number";
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Dock = DockStyle.Fill;
+            label6.Location = new Point(541, 0);
+            label6.Name = "label6";
+            label6.Size = new Size(263, 16);
+            label6.TabIndex = 16;
+            label6.Text = "Scan Operation Material Lot:";
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Dock = DockStyle.Fill;
+            label5.Location = new Point(272, 0);
+            label5.Name = "label5";
+            label5.Size = new Size(263, 16);
+            label5.TabIndex = 15;
+            label5.Text = "Scan Operation User SN:";
             // 
             // workNumberScanBox
             // 
             workNumberScanBox.Dock = DockStyle.Fill;
             workNumberScanBox.Font = new Font("Sans Serif Collection", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            workNumberScanBox.Location = new Point(3, 3);
+            workNumberScanBox.Location = new Point(3, 19);
             workNumberScanBox.Name = "workNumberScanBox";
             workNumberScanBox.Size = new Size(263, 39);
             workNumberScanBox.TabIndex = 13;
             workNumberScanBox.Tag = "Scan Work Order Number";
-            workNumberScanBox.Text = "Scan Work Order Number";
             workNumberScanBox.TextAlign = HorizontalAlignment.Center;
-            workNumberScanBox.Enter += ScanFocus;
             workNumberScanBox.KeyPress += textBox1_KeyPress;
-            workNumberScanBox.Leave += ScanFocus;
             // 
             // scan2Box
             // 
             scan2Box.Dock = DockStyle.Fill;
             scan2Box.Font = new Font("Sans Serif Collection", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            scan2Box.Location = new Point(810, 3);
+            scan2Box.Location = new Point(810, 19);
             scan2Box.Name = "scan2Box";
             scan2Box.Size = new Size(263, 39);
             scan2Box.TabIndex = 12;
             scan2Box.Tag = "Scan Operation LotNo...";
-            scan2Box.Text = "Scan Operation LotNo...";
             scan2Box.TextAlign = HorizontalAlignment.Center;
-            scan2Box.Enter += ScanFocus;
             scan2Box.KeyPress += scan2Box_KeyPress;
-            scan2Box.Leave += scanBoxLeave;
             // 
             // scan1Box
             // 
             scan1Box.Dock = DockStyle.Fill;
             scan1Box.Font = new Font("Sans Serif Collection", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            scan1Box.Location = new Point(541, 3);
+            scan1Box.Location = new Point(541, 19);
             scan1Box.Name = "scan1Box";
             scan1Box.Size = new Size(263, 39);
             scan1Box.TabIndex = 11;
             scan1Box.Tag = "Scan Operation MaterialLotNo'";
-            scan1Box.Text = "Scan Operation MaterialLotNo";
             scan1Box.TextAlign = HorizontalAlignment.Center;
-            scan1Box.Enter += ScanFocus;
             scan1Box.KeyPress += scan1Box_KeyPress;
-            scan1Box.Leave += scanBoxLeave;
             // 
             // userIdBox
             // 
             userIdBox.Dock = DockStyle.Fill;
             userIdBox.Font = new Font("Sans Serif Collection", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            userIdBox.Location = new Point(272, 3);
+            userIdBox.Location = new Point(272, 19);
             userIdBox.Name = "userIdBox";
             userIdBox.Size = new Size(263, 39);
             userIdBox.TabIndex = 10;
             userIdBox.Tag = "Scan Operation User SN...";
-            userIdBox.Text = "Scan Operation User SN...";
             userIdBox.TextAlign = HorizontalAlignment.Center;
-            userIdBox.Enter += ScanFocus;
             userIdBox.KeyPress += userIdBox_KeyPress;
-            userIdBox.Leave += scanBoxLeave;
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Dock = DockStyle.Fill;
+            label4.Location = new Point(3, 0);
+            label4.Name = "label4";
+            label4.Size = new Size(263, 16);
+            label4.TabIndex = 14;
+            label4.Text = "Scan Work Number:";
             // 
             // DashboardForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(244, 246, 248);
-            ClientSize = new Size(1347, 656);
+            ClientSize = new Size(1347, 711);
             Controls.Add(tableLayoutPanel6);
             Controls.Add(tableLayoutPanel2);
             Controls.Add(timeLabel);
@@ -601,5 +638,9 @@
         private DataGridViewTextBoxColumn Laser;
         private DataGridViewTextBoxColumn Camera;
         private DataGridViewTextBoxColumn Judgement;
+        private Label label4;
+        private Label label7;
+        private Label label6;
+        private Label label5;
     }
 }
