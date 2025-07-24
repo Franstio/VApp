@@ -381,11 +381,10 @@ namespace AutoScrewing
         }
         private async Task ShiftQueues()
         {
-            PLCController plc2 = Program.ServiceProvider.GetRequiredService<PLCController>();
             while (true)
             {
 
-                var res = await plc2.Send(new PLCController.PLCItem("RD", "R101", -1, "Reading Green Button",false));
+                var res = await plcController.Send(new PLCController.PLCItem("RD", "R101", -1, "Reading Green Button",false));
                 if (res is not null && res == "1")
                 {
 //                    await OutputTransaction();

@@ -22,7 +22,7 @@ namespace AutoScrewing.Lib
         public record PLCItem(string type,string command,int value,string description,bool isLogging=true);
         private CancellationTokenSource cancelToken = new CancellationTokenSource();
         public bool isActive { get; private set; } = false;
-        private SemaphoreSlim SemaphoreSlim = new SemaphoreSlim(1);
+        private static SemaphoreSlim SemaphoreSlim = new SemaphoreSlim(1);
         public PLCController()
         {
             PLC_TARGET = Settings1.Default.PLC_TARGET;
