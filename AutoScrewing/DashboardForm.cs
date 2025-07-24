@@ -379,17 +379,18 @@ namespace AutoScrewing
         }
         private async Task ShiftQueues()
         {
-            while (false)
+            while (true)
             {
 
-                var res = await plcController.Send(new PLCController.PLCItem("RD", "MR811", -1, "Starting Transaction - ON"));
+                var res = await plcController.Send(new PLCController.PLCItem("RD", "R101", -1, "Reading "));
                 if (res is not null && res == "1")
                 {
+                    await OutputTransaction();
                     await ShiftCamera();
                     ShiftLaser();
                     ShiftScrewing();
                 }
-                await Task.Delay(500);
+                await Task.Delay(1);
             }
         }
 

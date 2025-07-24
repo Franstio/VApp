@@ -19,7 +19,7 @@ namespace AutoScrewing.Lib
     {
         public string PLC_TARGET { get; set; } = "192.168.0.10";//255.255.255.0
         private LogRepository logRepository = new LogRepository();
-        public record PLCItem(string type,string command,int value,string description);
+        public record PLCItem(string type,string command,int value,string description,bool isLogging=true);
         private CancellationTokenSource cancelToken = new CancellationTokenSource();
         public bool isActive { get; private set; } = false;
         private static SemaphoreSlim SemaphoreSlim = new SemaphoreSlim(1);
@@ -74,7 +74,7 @@ namespace AutoScrewing.Lib
             {
                 Log.result = e.Message + " | " + e.StackTrace;
                 Log.status = $"{Log.status}-Failed";
-                if (Settings1.Default.logPlc)
+                if (Settings1.Default.logPlc && item.isLogging)
                     await logRepository.RecordLog(Log);
                 Console.Error.WriteLine(e.StackTrace);
                 Console.Error.WriteLine(e.Message);
