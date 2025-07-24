@@ -20,9 +20,9 @@ namespace AutoScrewing
             ServiceCollection services = new ServiceCollection();
             services.addCommonServices();
             ServiceProvider = services.BuildServiceProvider();
-            var TransactionRepository = ServiceProvider.GetRequiredService<TransactionRepository>();
-            var item = new TransactionModel() { Scan_ID = "12312", Scan_ID2 = "1920924", OperationId = Settings1.Default.OPERATION_ID, WorkNumber = "BM1131331" };
-            TransactionRepository.CreateTransaction(item).Wait();
+            //var TransactionRepository = ServiceProvider.GetRequiredService<TransactionRepository>();
+            //var item = new TransactionModel() { Scan_ID = "12312", Scan_ID2 = "1920924", OperationId = Settings1.Default.OPERATION_ID, WorkNumber = "BM1131331" };
+            //TransactionRepository.CreateTransaction(item).Wait();
             ApplicationConfiguration.Initialize();
             Application.Run(new DashboardForm());
         }
