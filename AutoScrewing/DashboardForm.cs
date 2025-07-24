@@ -385,7 +385,7 @@ namespace AutoScrewing
             while (true)
             {
 
-                var res = await plc2.Send(new PLCController.PLCItem("RD", "R101", -1, "Reading "));
+                var res = await plc2.Send(new PLCController.PLCItem("RD", "R101", -1, "Reading Green Button",false));
                 if (res is not null && res == "1")
                 {
 //                    await OutputTransaction();
