@@ -37,8 +37,8 @@ namespace AutoScrewing.Database.Repository
                 using (var conn = await GetConnection())
                 {
                     var transaction = await conn.ExecuteAsync(
-                        $@"Insert into {Table_Name}(scan_id,scan_id2,operationusersn,operationid,torque,screwingResult,screwingtime,threadcount,laserresult,cameraresult,result,iserror,transactiontime,errordesc,finalresult,tighteningstatus)
-                    Values (@Scan_ID,@Scan_ID2,@OperationUserSN,@OperationId,@Torque,@ScrewingResult,@ScrewingTime,@ThreadCount ,@LaserResult,@CameraResult,@Result,@IsError,@TransactionTime,@ErrorDesc,@FinalResult,@TighteningStatus)", model);
+                        $@"Insert into {Table_Name}(scan_id,scan_id2,worknumber,operationusersn,operationid,torque,screwingResult,screwingtime,threadcount,laserresult,cameraresult,result,iserror,transactiontime,errordesc,finalresult,tighteningstatus)
+                    Values (@Scan_ID,@Scan_ID2,@OperationUserSN,@WorkNumber,@OperationId,@Torque,@ScrewingResult,@ScrewingTime,@ThreadCount ,@LaserResult,@CameraResult,@Result,@IsError,@TransactionTime,@ErrorDesc,@FinalResult,@TighteningStatus)", model);
                     log.result = JsonSerializer.Serialize (transaction);
                     log.status += "-Success";
                 }
@@ -60,7 +60,7 @@ namespace AutoScrewing.Database.Repository
             {
                 using (var conn = await GetConnection())
                 {
-                    var list = await conn.QueryAsync<TransactionModel>($"Select scan_id,scan_id2,operationusersn,operationid,torque,screwingresult,screwingtime,threadcount,laserresult,cameraresult,result,iserror,transactiontime,errordesc,finalresult,tighteningstatus From {Table_Name} order by TransactionTime Desc {(limit > 0 ? $"limit {limit}":"" )}");
+                    var list = await conn.QueryAsync<TransactionModel>($"Select scan_id,scan_id2,worknumber,operationusersn,operationid,torque,screwingresult,screwingtime,threadcount,laserresult,cameraresult,result,iserror,transactiontime,errordesc,finalresult,tighteningstatus From {Table_Name} order by TransactionTime Desc {(limit > 0 ? $"limit {limit}":"" )}");
                     log.result = JsonSerializer.Serialize(list);
                     log.status += "-Success";
                //     await logRepository.RecordLog(log);

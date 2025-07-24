@@ -25,7 +25,7 @@ namespace AutoScrewing.Database.Models
 
         public string OperationUserSN { get; set; } = string.Empty;
         public string OperationId { get; set; } = string.Empty;
-
+        public string WorkNumber { get; set; } = string.Empty;
         public void AddError(string error)
         {
             IsError = true;

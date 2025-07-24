@@ -505,7 +505,7 @@ namespace AutoScrewing
         }
         private async Task LoadScanToStart(string operationusersn, string scan, string scan2,string worknumberorer)
         {
-            var item = new OngoingItemModel() { Scan_ID = scan, Scan_ID2 = scan2, OperationUserSN = operationusersn, OperationId = Settings1.Default.OPERATION_ID, StartTime = DateTime.Now, CurrentStatus = "Screwing" };
+            var item = new OngoingItemModel() { Scan_ID = scan, Scan_ID2 = scan2,WorkNumber=worknumberorer, OperationUserSN = operationusersn, OperationId = Settings1.Default.OPERATION_ID, StartTime = DateTime.Now, CurrentStatus = "Screwing" };
             try
             {
                 var res = await meshController.Checking(operationusersn,worknumberorer, scan, scan2);
