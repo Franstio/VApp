@@ -58,6 +58,8 @@ namespace AutoScrewing.Lib
                 payload.DataItems.Add(new MESHPayload1Model.DataItem() { key = "Screwing_Result", value = ongoing.ScrewingResult  ? "OK":"NG", standValue= "OK" });
                 payload.DataItems.Add(new MESHPayload1Model.DataItem() { key = "Laser_Result", value = ongoing.LaserResult ? "OK" : "NG", standValue="OK"});
                 payload.DataItems.Add(new MESHPayload1Model.DataItem() { key = "Camera_Result", value = ongoing.CameraResult ? "OK" : "NG", standValue = "OK" });
+                payload.DataItems.Add(new MESHPayload1Model.DataItem() { key = "MatLotNo", value = ongoing.Scan_ID });
+                payload.DataItems.Add(new MESHPayload1Model.DataItem() { key = "LotNo",value=ongoing.Scan_ID2});
                 var res = await client.PostAsJsonAsync("openapi/mes/tracking", payload);
                 if (res.StatusCode == System.Net.HttpStatusCode.ServiceUnavailable)
                     throw new HttpRequestException("Can't Connect to MES API");
