@@ -28,7 +28,7 @@ namespace AutoScrewing
         }
         private static void addCommonServices(this IServiceCollection serviceCollection)
         {
-            Type[] types = [typeof(MESHController), typeof(KilewController),typeof(PLCController)];
+            Type[] types = [typeof(MESHController), typeof(KilewController),typeof(PLCController),typeof(TransactionRepository),typeof(ConfigRepository),typeof(LogRepository)];
             for (int i = 0; i < types.Length; i++)
                 serviceCollection.AddScoped(types[i]);
 
