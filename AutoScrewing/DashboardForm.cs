@@ -554,8 +554,8 @@ namespace AutoScrewing
                     await InvokeAsync(() =>
                     {
   //                      userIdBox.Text = userIdBox.Tag?.ToString();
-                        scan1Box.Text = scan1Box.Tag?.ToString();
-                        scan2Box.Text = scan2Box.Tag?.ToString();
+                        scan1Box.Clear();
+                        scan2Box.Clear();
 //                        workNumberScanBox.Text = workNumberScanBox.Tag?.ToString();
                         scan1Box.Focus();
                     });
