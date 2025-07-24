@@ -118,7 +118,7 @@ namespace AutoScrewing
             //DashboardModel = data;
             _ = Task.Run(() => ReadIncomingData());
             _ = Task.Run(() => ReadPLC());
-            _ = Task.Run(() => OutputTransaction());
+//            _ = Task.Run(() => OutputTransaction());
             _ = Task.Run(() => CheckReady());
             _ = Task.Run(() => ShiftQueues());
             await LoadData();
@@ -183,8 +183,6 @@ namespace AutoScrewing
         }
         private async Task OutputTransaction()
         {
-            while (true)
-            {
                 try
                 {
                     inputFileWatcher.Path = Settings1.Default.Input_Path;
@@ -200,9 +198,9 @@ namespace AutoScrewing
                     //    continue;
                     //}
                     if (FinalQueue.Count < 1)
-                        continue;
+                        return;
                     var item = FinalQueue.Peek();
-                    if (item is null) continue;
+                    if (item is null) return;
                     item.FinalResult = item.ScrewingResult && item.LaserResult && item.CameraResult ? "OK" : "NG";
                     item.CurrentStatus = "Completed";
                     await meshController.Tracking(item.OperationUserSN,workNumberScanBox.Text, item.Scan_ID, item.Scan_ID2, item.FinalResult,item); ;
@@ -221,7 +219,7 @@ namespace AutoScrewing
                 {
                     await Task.Delay(500);
                 }
-            }
+            
         }
         private async Task ReadPLC()
         {
@@ -518,7 +516,7 @@ namespace AutoScrewing
                         await plcController.Send(new PLCController.PLCItem("WR", "MR811", 1, "Starting Transaction - ON"));
                         //                    await Task.Delay(3000);
                         //                    await plcController.Send(new PLCController.PLCItem("WR", "MR811", 0, "Starting Transaction - OFF"));
-
+                        await OutputTransaction();
                         await ShiftCamera();
                         ShiftLaser();
                         ShiftScrewing();
