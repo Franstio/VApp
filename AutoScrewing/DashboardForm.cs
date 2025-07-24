@@ -118,7 +118,7 @@ namespace AutoScrewing
             //DashboardModel = data;
             _ = Task.Run(() => ReadIncomingData());
             _ = Task.Run(() => ReadPLC());
-//            _ = Task.Run(() => OutputTransaction());
+            _ = Task.Run(() => OutputTransaction());
             _ = Task.Run(() => CheckReady());
             _ = Task.Run(() => ShiftQueues());
             await LoadData();
@@ -183,6 +183,8 @@ namespace AutoScrewing
         }
         private async Task OutputTransaction()
         {
+            while (true)
+            {
                 try
                 {
                     inputFileWatcher.Path = Settings1.Default.Input_Path;
@@ -198,12 +200,12 @@ namespace AutoScrewing
                     //    continue;
                     //}
                     if (FinalQueue.Count < 1)
-                        return;
+                        continue;
                     var item = FinalQueue.Peek();
-                    if (item is null) return;
+                    if (item is null) continue;
                     item.FinalResult = item.ScrewingResult && item.LaserResult && item.CameraResult ? "OK" : "NG";
                     item.CurrentStatus = "Completed";
-                    await meshController.Tracking(item.OperationUserSN,workNumberScanBox.Text, item.Scan_ID, item.Scan_ID2, item.FinalResult,item); ;
+                    await meshController.Tracking(item.OperationUserSN, workNumberScanBox.Text, item.Scan_ID, item.Scan_ID2, item.FinalResult, item); ;
                     //                    var payload = new { serialnumber = item.Scan_ID, status = item.FinalResult, data = (TransactionModel)item };
                     //                    await File.WriteAllTextAsync(Path.Combine(path, "OUTPUT.txt"), JsonSerializer.Serialize(payload));
                     await TransactionRepository.CreateTransaction(item);
@@ -219,7 +221,7 @@ namespace AutoScrewing
                 {
                     await Task.Delay(500);
                 }
-            
+            }
         }
         private async Task ReadPLC()
         {
@@ -385,7 +387,7 @@ namespace AutoScrewing
                 var res = await plcController.Send(new PLCController.PLCItem("RD", "R101", -1, "Reading "));
                 if (res is not null && res == "1")
                 {
-                    await OutputTransaction();
+//                    await OutputTransaction();
                     await ShiftCamera();
                     ShiftLaser();
                     ShiftScrewing();
@@ -517,7 +519,7 @@ namespace AutoScrewing
                         await plcController.Send(new PLCController.PLCItem("WR", "MR811", 1, "Starting Transaction - ON"));
                         //                    await Task.Delay(3000);
                         //                    await plcController.Send(new PLCController.PLCItem("WR", "MR811", 0, "Starting Transaction - OFF"));
-                        await OutputTransaction();
+//                        await OutputTransaction();
                         await ShiftCamera();
                         ShiftLaser();
                         ShiftScrewing();
