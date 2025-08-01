@@ -36,12 +36,12 @@ namespace AutoScrewing
     {
         private TransactionRepository TransactionRepository = new TransactionRepository();
         private MESHController meshController;
-        private KilewController kilewController ;
-        private PLCController plcController ;
+        private KilewController kilewController;
+        private PLCController plcController;
         private DashboardModel _dashboardmodel = new DashboardModel();
         private Barrier barrier = new Barrier(3);
         private LogRepository logRepository = new LogRepository();
-        private string CHECKSUM_SCREWING = "",NEW_CHECKSUM_SCREWING="";
+        private string CHECKSUM_SCREWING = "", NEW_CHECKSUM_SCREWING = "";
         SemaphoreSlim semaphore = new SemaphoreSlim(1);
         Queue<OngoingItemModel>
             ScrewingQueue = new Queue<OngoingItemModel>(),
@@ -49,7 +49,7 @@ namespace AutoScrewing
             CameraQueue = new Queue<OngoingItemModel>(),
             FinalQueue = new Queue<OngoingItemModel>(),
             RegisteredItem = new Queue<OngoingItemModel>();
-        OngoingItemModel? screwingCurrent=null, laserCurrent=null, cameraCurrent=null;
+        OngoingItemModel? screwingCurrent = null, laserCurrent = null, cameraCurrent = null;
         public Task<List<OngoingItemModel>> GetOngoingItems()
         {
             List<Queue<OngoingItemModel>> a = [ScrewingQueue, LaserQueue, CameraQueue, FinalQueue];
@@ -66,8 +66,8 @@ namespace AutoScrewing
         {
             var list = await GetOngoingItems();
             var finishedList = RegisteredItem.ToList();
-            List<OngoingItemModel> combine = [.. list, ..finishedList.Take(4-list.Count)];
-            var data = combine.OrderByDescending(x=>x.StartTime).Select(x => new object[] { x.Scan_ID,x.Scan_ID2, $"{(x.isScrewingCompleted ? x.TighteningStatus : "-")} {x.Torque}", x.isLaseringCompleted ? (x.LaserResult ? "OK" : "NG") : "-", x.isCameraCompleted ? (x.CameraResult ? "OK" : "NG") : "-", x.isScrewingCompleted && x.isLaseringCompleted && x.isCameraCompleted ? x.FinalResult : "-" }).ToArray();
+            List<OngoingItemModel> combine = [.. list, .. finishedList.Take(4 - list.Count)];
+            var data = combine.OrderByDescending(x => x.StartTime).Select(x => new object[] { x.Scan_ID, x.Scan_ID2, $"{(x.isScrewingCompleted ? x.TighteningStatus : "-")} {x.Torque}", x.isLaseringCompleted ? (x.LaserResult ? "OK" : "NG") : "-", x.isCameraCompleted ? (x.CameraResult ? "OK" : "NG") : "-", x.isScrewingCompleted && x.isLaseringCompleted && x.isCameraCompleted ? x.FinalResult : "-" }).ToArray();
 
             //    var transactionData = (await TransactionRepository.GetTransaction(1)).Select(x => new object[] { x.Scan_ID, x.Scan_ID2, $"{x.TighteningStatus} {x.Torque}", x.LaserResult ? "OK" : "NG", x.CameraResult ? "OK" : "NG", x.FinalResult });
             await InvokeAsync(() =>
@@ -165,7 +165,10 @@ namespace AutoScrewing
                     var cmd1 = new PLCController.PLCItem("RD", "MR810", -1, "Read For Check if ready");
                     string? valid = await plcController.Send(cmd1);
                     if (valid != "1")
+                    {
+                        semaphore.Release();
                         continue;
+                    }
                     DashboardModel.StartCamera = DateTime.Now;
                     PLCController.PLCItem[] cmd = [
                         new PLCController.PLCItem("RD", "MR500", -1, "Read For Reading Camera NG"),
@@ -193,7 +196,6 @@ namespace AutoScrewing
                         item.CameraResult = DashboardModel.CameraStatus;
                         item.isCameraCompleted = true;
                         await ShiftCamera();
-                        await Task.Delay(1000);
                     }
                     semaphore.Release();
                 }
@@ -229,11 +231,11 @@ namespace AutoScrewing
                     if (item is null) continue;
                     item.FinalResult = item.ScrewingResult && item.LaserResult && item.CameraResult ? "OK" : "NG";
                     item.CurrentStatus = "Completed";
-//                    await meshController.Tracking(item.OperationUserSN, workNumberScanBox.Text, item.Scan_ID, item.Scan_ID2, item.FinalResult, item); ;
+                    //                    await meshController.Tracking(item.OperationUserSN, workNumberScanBox.Text, item.Scan_ID, item.Scan_ID2, item.FinalResult, item); ;
                     //                    var payload = new { serialnumber = item.Scan_ID, status = item.FinalResult, data = (TransactionModel)item };
                     //                    await File.WriteAllTextAsync(Path.Combine(path, "OUTPUT.txt"), JsonSerializer.Serialize(payload));
                     await TransactionRepository.CreateTransaction(item);
-                    RegisteredItem.Enqueue( FinalQueue.Dequeue());
+                    RegisteredItem.Enqueue(FinalQueue.Dequeue());
                     await LoadData();
                 }
                 catch (Exception ex)
@@ -381,7 +383,7 @@ namespace AutoScrewing
                 model.Torque = Convert.ToDecimal(data[19], new CultureInfo("en-US"));
                 model.TorqueType = "Nm";//data[18].Replace("_", "");
                 NEW_CHECKSUM_SCREWING = data[7];
-                if (ScrewingQueue.Count > 0 )
+                if (ScrewingQueue.Count > 0)
                 {
                     CHECKSUM_SCREWING = NEW_CHECKSUM_SCREWING;
                     var item = ScrewingQueue.Peek();
@@ -413,12 +415,12 @@ namespace AutoScrewing
             while (true)
             {
 
-                var res = await plcController.Send(new PLCController.PLCItem("RD", "MR006", -1, "Reading Start Button",false));
+                var res = await plcController.Send(new PLCController.PLCItem("RD", "MR006", -1, "Reading Start Button", false));
                 if (res is not null && res == "1")
                 {
                     await plcController.Send(new PLCController.PLCItem("WR", "MR006", 0, "Disabling Start Button", false));
-//                    await OutputTransaction();
-//                    await ShiftCamera();
+                    //                    await OutputTransaction();
+                    //                    await ShiftCamera();
                     ShiftLaser();
                     ShiftScrewing();
                 }
@@ -428,7 +430,7 @@ namespace AutoScrewing
 
         private void ShiftScrewing()
         {
-            if (ScrewingQueue.Count > 0 )
+            if (ScrewingQueue.Count > 0)
             {
                 var model = DashboardModel;
                 CHECKSUM_SCREWING = NEW_CHECKSUM_SCREWING;
@@ -451,7 +453,7 @@ namespace AutoScrewing
         }
         private async Task ShiftCamera()
         {
-            if (CameraQueue.Count > 0 )
+            if (CameraQueue.Count > 0)
             {
                 var item = CameraQueue.Dequeue();
                 item.CurrentStatus = "Write output file";
@@ -492,7 +494,7 @@ namespace AutoScrewing
             }
         }
 
-        
+
 
         private async void inputFileWatcher_Changed(object sender, FileSystemEventArgs e)
         {
@@ -536,20 +538,20 @@ namespace AutoScrewing
                 await logRepository.RecordLog(new LogModel("Input-File", "inputFileWatcher_Changed", "Reading input file from mesh", "Failed") { payload = e.FullPath, result = ex.Message + " | " + ex.StackTrace });
             }
         }
-        private async Task LoadScanToStart(string operationusersn, string scan, string scan2,string worknumberorer)
+        private async Task LoadScanToStart(string operationusersn, string scan, string scan2, string worknumberorer)
         {
-            var item = new OngoingItemModel() { Scan_ID = scan, Scan_ID2 = scan2,WorkNumber=worknumberorer, OperationUserSN = operationusersn, OperationId = Settings1.Default.OPERATION_ID, StartTime = DateTime.Now, CurrentStatus = "Screwing" };
+            var item = new OngoingItemModel() { Scan_ID = scan, Scan_ID2 = scan2, WorkNumber = worknumberorer, OperationUserSN = operationusersn, OperationId = Settings1.Default.OPERATION_ID, StartTime = DateTime.Now, CurrentStatus = "Screwing" };
             try
             {
                 MesResponse? res = new MesResponse() { code = 1, message = "", data = "" }; //await meshController.Checking(operationusersn,worknumberorer, scan, scan2);
-                if (res is not null )
+                if (res is not null)
                 {
-                    if (res.code == 1 )
+                    if (res.code == 1)
                     {
                         //                    await Task.Delay(3000);
                         //                    await plcController.Send(new PLCController.PLCItem("WR", "MR811", 0, "Starting Transaction - OFF"));
-//                        await OutputTransaction();
-//                        await ShiftCamera();
+                        //                        await OutputTransaction();
+                        //                        await ShiftCamera();
                         ShiftLaser();
                         ShiftScrewing();
                         ScrewingQueue.Enqueue(item);
@@ -557,7 +559,7 @@ namespace AutoScrewing
                     }
                     else if (res.code == -1 && res.message is not null)
                     {
-                        await InvokeAsync(()=>
+                        await InvokeAsync(() =>
                         MessageBox.Show(res.message, "Transaction Cancelled"));
                     }
 
@@ -585,10 +587,10 @@ namespace AutoScrewing
                 {
                     await InvokeAsync(() =>
                     {
-  //                      userIdBox.Text = userIdBox.Tag?.ToString();
+                        //                      userIdBox.Text = userIdBox.Tag?.ToString();
                         scan1Box.Clear();
                         scan2Box.Clear();
-//                        workNumberScanBox.Text = workNumberScanBox.Tag?.ToString();
+                        //                        workNumberScanBox.Text = workNumberScanBox.Tag?.ToString();
                         scan1Box.Focus();
                     });
                 }
@@ -754,7 +756,7 @@ namespace AutoScrewing
                 if ((!string.IsNullOrEmpty(scan1Box.Text) && !string.IsNullOrEmpty(scan2Box.Text) && !string.IsNullOrEmpty(userIdBox.Text)) && !string.IsNullOrEmpty(workNumberScanBox.Text) &&
                     (scan1Box.Text != scan1Box.Tag?.ToString() && scan2Box.Text != scan2Box.Tag?.ToString() && userIdBox.Text != userIdBox.Tag?.ToString()) && workNumberScanBox.Text != workNumberScanBox.Tag?.ToString())
                 {
-                    await LoadScanToStart(userIdBox.Text, scan1Box.Text, scan2Box.Text,workNumberScanBox.Text);
+                    await LoadScanToStart(userIdBox.Text, scan1Box.Text, scan2Box.Text, workNumberScanBox.Text);
                 }
                 else
                 {
@@ -770,7 +772,7 @@ namespace AutoScrewing
                 if ((!string.IsNullOrEmpty(scan1Box.Text) && !string.IsNullOrEmpty(scan2Box.Text) && !string.IsNullOrEmpty(userIdBox.Text)) && !string.IsNullOrEmpty(workNumberScanBox.Text) &&
                     (scan1Box.Text != scan1Box.Tag?.ToString() && scan2Box.Text != scan2Box.Tag?.ToString() && userIdBox.Text != userIdBox.Tag?.ToString()) && workNumberScanBox.Text != workNumberScanBox.Tag?.ToString())
                 {
-                    await LoadScanToStart(userIdBox.Text, scan1Box.Text, scan2Box.Text,workNumberScanBox.Text);
+                    await LoadScanToStart(userIdBox.Text, scan1Box.Text, scan2Box.Text, workNumberScanBox.Text);
                 }
                 else
                 {
@@ -814,7 +816,7 @@ namespace AutoScrewing
         public async void StartTransaction()
         {
             Random rnd = new Random();
-            await LoadScanToStart("1030422494",rnd.Next(10000,99999).ToString("D5"), rnd.Next(10000, 99999).ToString("D5"),"BM249942942");
+            await LoadScanToStart("1030422494", rnd.Next(10000, 99999).ToString("D5"), rnd.Next(10000, 99999).ToString("D5"), "BM249942942");
         }
 
         public interface IDashboardOngoingItems
