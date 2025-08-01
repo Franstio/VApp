@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Text;
 using System.Globalization;
@@ -117,6 +118,8 @@ namespace AutoScrewing
             //DashboardModel = data;
             _ = Task.Run(() => ReadIncomingData());
             _ = Task.Run(() => ReadPLC());
+            _ = Task.Run(() => ReadCamera());
+
             _ = Task.Run(() => OutputTransaction());
             _ = Task.Run(() => CheckReady());
             _ = Task.Run(() => ShiftQueues());
@@ -152,34 +155,55 @@ namespace AutoScrewing
             }
             catch { }
         }
-        private async Task<bool> ReadCamera()
+        private async Task ReadCamera()
         {
-            DashboardModel.StartCamera = DateTime.Now;
-            PLCController.PLCItem[] cmd = [
-                new PLCController.PLCItem("RD", "MR500", -1, "Read For Reading Camera NG"),
-                new PLCController.PLCItem("RD", "MR501", -1, "Read For Reading Camera OK")
-            ];
-            await Task.Delay(3000);
-            List<Task<string>> task = [
-                Task.Run<string>(async () => await plcController.Send(cmd[0])),
-                Task.Run<string>(async () => await plcController.Send(cmd[1]))
-            ];
-            await Task.WhenAll(task);
-            string OK = await task[1], NG = await task[0];
-            bool result = false;
-            bool isValid = !string.IsNullOrEmpty(OK) && !string.IsNullOrEmpty(NG);
-            bool check = OK == "0" && NG == "0";
-            result = !check && (OK == "1" && NG == "0");
-            if (CameraQueue.Count > 0)
+            while (true)
             {
-                var item = CameraQueue.Peek();
-                item.CameraStartTime = DashboardModel.StartCamera;
-                item.CameraEndTime = DateTime.Now;
-                item.CameraResult = DashboardModel.CameraStatus;
-                item.isCameraCompleted = true;
-                await ShiftCamera();
+                try
+                {
+                    await semaphore.WaitAsync();
+                    var cmd1 = new PLCController.PLCItem("RD", "MR810", -1, "Read For Check if ready");
+                    string? valid = await plcController.Send(cmd1);
+                    if (valid != "1")
+                        continue;
+                    DashboardModel.StartCamera = DateTime.Now;
+                    PLCController.PLCItem[] cmd = [
+                        new PLCController.PLCItem("RD", "MR500", -1, "Read For Reading Camera NG"),
+                new PLCController.PLCItem("RD", "MR501", -1, "Read For Reading Camera OK")
+                    ];
+                    List<Task<string>> task = [
+                        Task.Run<string>(async () => await plcController.Send(cmd[0])),
+                Task.Run<string>(async () => await plcController.Send(cmd[1]))
+                    ];
+                    await Task.WhenAll(task);
+                    string OK = await task[1], NG = await task[0];
+                    bool result = false;
+                    bool isValid = !string.IsNullOrEmpty(OK) && !string.IsNullOrEmpty(NG);
+                    bool check = OK == "0" && NG == "0";
+                    result = !check && (OK == "1" && NG == "0");
+
+                    DashboardModel model = DashboardModel;
+                    model.CameraStatus = result;
+                    DashboardModel = model;
+                    if (CameraQueue.Count > 0)
+                    {
+                        var item = CameraQueue.Peek();
+                        item.CameraStartTime = DashboardModel.StartCamera;
+                        item.CameraEndTime = DateTime.Now;
+                        item.CameraResult = DashboardModel.CameraStatus;
+                        item.isCameraCompleted = true;
+                        await ShiftCamera();
+                        await Task.Delay(1000);
+                    }
+                    semaphore.Release();
+                }
+
+                catch (Exception ex)
+                {
+                    semaphore.Release();
+                    Debug.WriteLine(ex.Message + "|" + ex.StackTrace);
+                }
             }
-            return result;
         }
         private async Task OutputTransaction()
         {
@@ -205,7 +229,7 @@ namespace AutoScrewing
                     if (item is null) continue;
                     item.FinalResult = item.ScrewingResult && item.LaserResult && item.CameraResult ? "OK" : "NG";
                     item.CurrentStatus = "Completed";
-                    await meshController.Tracking(item.OperationUserSN, workNumberScanBox.Text, item.Scan_ID, item.Scan_ID2, item.FinalResult, item); ;
+//                    await meshController.Tracking(item.OperationUserSN, workNumberScanBox.Text, item.Scan_ID, item.Scan_ID2, item.FinalResult, item); ;
                     //                    var payload = new { serialnumber = item.Scan_ID, status = item.FinalResult, data = (TransactionModel)item };
                     //                    await File.WriteAllTextAsync(Path.Combine(path, "OUTPUT.txt"), JsonSerializer.Serialize(payload));
                     await TransactionRepository.CreateTransaction(item);
@@ -236,17 +260,15 @@ namespace AutoScrewing
                     string? valid = await plcController.Send(cmd1);
                     if (valid != "1")
                         continue;
-                    semaphore.Release();
                     Task<bool> laserTask = Task.Run(async () => await ReadingLaser());
-                    Task<bool> cameraTask = Task.Run(async () => await ReadCamera());
                     await Task.WhenAll(laserTask, laserTask);
                     await semaphore.WaitAsync();
                     await Task.Delay(1000);
                     DashboardModel model = DashboardModel;
                     model.LaserStatus = await laserTask;
-                    model.CameraStatus = await cameraTask;
                     DashboardModel = model;
                     await LoadData();
+                    semaphore.Release();
                 }
                 catch (Exception ex)
                 {
@@ -519,7 +541,7 @@ namespace AutoScrewing
             var item = new OngoingItemModel() { Scan_ID = scan, Scan_ID2 = scan2,WorkNumber=worknumberorer, OperationUserSN = operationusersn, OperationId = Settings1.Default.OPERATION_ID, StartTime = DateTime.Now, CurrentStatus = "Screwing" };
             try
             {
-                MesResponse? res =  await meshController.Checking(operationusersn,worknumberorer, scan, scan2);
+                MesResponse? res = new MesResponse() { code = 1, message = "", data = "" }; //await meshController.Checking(operationusersn,worknumberorer, scan, scan2);
                 if (res is not null )
                 {
                     if (res.code == 1 )
