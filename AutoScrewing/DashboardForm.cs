@@ -324,6 +324,7 @@ namespace AutoScrewing
                 item.LaserStartTime = DashboardModel.StartLaser;
                 item.LaserEndTime = DateTime.Now;
                 item.isLaseringCompleted = true;
+                await Task.Delay(500);
             }
             return result;
         }
@@ -518,7 +519,6 @@ namespace AutoScrewing
                 {
                     if (res.code == 1 )
                     {
-                        await plcController.Send(new PLCController.PLCItem("WR", "MR811", 1, "Starting Transaction - ON"));
                         //                    await Task.Delay(3000);
                         //                    await plcController.Send(new PLCController.PLCItem("WR", "MR811", 0, "Starting Transaction - OFF"));
 //                        await OutputTransaction();
@@ -526,6 +526,7 @@ namespace AutoScrewing
                         ShiftLaser();
                         ShiftScrewing();
                         ScrewingQueue.Enqueue(item);
+                        await plcController.Send(new PLCController.PLCItem("WR", "MR811", 1, "Starting Transaction - ON"));
                     }
                     else if (res.code == -1 && res.message is not null)
                     {
