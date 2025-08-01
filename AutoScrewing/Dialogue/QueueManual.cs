@@ -16,6 +16,7 @@ namespace AutoScrewing.Dialogue
     {
         public interface IQueueManual
         {
+            void StartTransaction();
             void DequeueScrewing(bool isOk);
             void DequeueLaser(bool isOK);
             void DequeueCamera(bool isOk);
@@ -108,12 +109,13 @@ namespace AutoScrewing.Dialogue
 
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
-            Random rnd = new Random();
-            var inp = new InputFileModel(rnd.Next(10000, 100000).ToString(), rnd.Next(10000, 100000).ToString(), "OK");
+            queueForm.StartTransaction();
+//            Random rnd = new Random();
+//            var inp = new InputFileModel(rnd.Next(10000, 100000).ToString(), rnd.Next(10000, 100000).ToString(), "OK");
 
-            string payload = "{\r\n  \"P1507801-00-D:SDA2251900001QL\": \"PASS\"\r\n}";
-//            string payload = JsonSerializer.Serialize(inp);
-            File.WriteAllText(Path.Combine(Settings1.Default.Input_Path, "test.json"), payload);
+//            string payload = "{\r\n  \"P1507801-00-D:SDA2251900001QL\": \"PASS\"\r\n}";
+////            string payload = JsonSerializer.Serialize(inp);
+//            File.WriteAllText(Path.Combine(Settings1.Default.Input_Path, "test.json"), payload);
         }
 
         private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)

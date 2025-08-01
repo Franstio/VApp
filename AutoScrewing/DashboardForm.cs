@@ -46,7 +46,8 @@ namespace AutoScrewing
             ScrewingQueue = new Queue<OngoingItemModel>(),
             LaserQueue = new Queue<OngoingItemModel>(),
             CameraQueue = new Queue<OngoingItemModel>(),
-            FinalQueue = new Queue<OngoingItemModel>();
+            FinalQueue = new Queue<OngoingItemModel>(),
+            RegisteredItem = new Queue<OngoingItemModel>();
         OngoingItemModel? screwingCurrent=null, laserCurrent=null, cameraCurrent=null;
         public Task<List<OngoingItemModel>> GetOngoingItems()
         {
@@ -63,19 +64,17 @@ namespace AutoScrewing
         private async Task LoadData()
         {
             var list = await GetOngoingItems();
-            var transactionData = (await TransactionRepository.GetTransaction(4)).Select(x => new object[] { x.Scan_ID,x.Scan_ID2, $"{x.TighteningStatus} {x.Torque}", x.LaserResult ? "OK" : "NG", x.CameraResult ? "OK" : "NG", x.FinalResult });
-            var data = list.Select(x => new object[] { x.Scan_ID,x.Scan_ID2, $"{(x.isScrewingCompleted ? x.TighteningStatus : "-")} {x.Torque}", x.isLaseringCompleted ? (x.LaserResult ? "OK" : "NG") : "-", x.isCameraCompleted ? (x.CameraResult ? "OK" : "NG") : "-", x.isScrewingCompleted && x.isLaseringCompleted && x.isCameraCompleted ? x.FinalResult : "-" }).ToArray();
+            var finishedList = RegisteredItem.ToList();
+            List<OngoingItemModel> combine = [.. list, ..finishedList.Take(4-list.Count)];
+            var data = combine.OrderByDescending(x=>x.StartTime).Select(x => new object[] { x.Scan_ID,x.Scan_ID2, $"{(x.isScrewingCompleted ? x.TighteningStatus : "-")} {x.Torque}", x.isLaseringCompleted ? (x.LaserResult ? "OK" : "NG") : "-", x.isCameraCompleted ? (x.CameraResult ? "OK" : "NG") : "-", x.isScrewingCompleted && x.isLaseringCompleted && x.isCameraCompleted ? x.FinalResult : "-" }).ToArray();
+
+            //    var transactionData = (await TransactionRepository.GetTransaction(1)).Select(x => new object[] { x.Scan_ID, x.Scan_ID2, $"{x.TighteningStatus} {x.Torque}", x.LaserResult ? "OK" : "NG", x.CameraResult ? "OK" : "NG", x.FinalResult });
             await InvokeAsync(() =>
             {
                 dataGridView1.Rows.Clear();
                 foreach (var item in data)
                     dataGridView1.Rows.Add(item);
-                foreach (var item in transactionData)
-                {
-                    if (dataGridView1.RowCount >= 4)
-                        break;
-                    dataGridView1.Rows.Add(item);
-                }
+
             });
         }
 
@@ -178,6 +177,7 @@ namespace AutoScrewing
                 item.CameraEndTime = DateTime.Now;
                 item.CameraResult = DashboardModel.CameraStatus;
                 item.isCameraCompleted = true;
+                await ShiftCamera();
             }
             return result;
         }
@@ -209,7 +209,8 @@ namespace AutoScrewing
                     //                    var payload = new { serialnumber = item.Scan_ID, status = item.FinalResult, data = (TransactionModel)item };
                     //                    await File.WriteAllTextAsync(Path.Combine(path, "OUTPUT.txt"), JsonSerializer.Serialize(payload));
                     await TransactionRepository.CreateTransaction(item);
-                    FinalQueue.Dequeue();
+                    RegisteredItem.Enqueue( FinalQueue.Dequeue());
+                    await LoadData();
                 }
                 catch (Exception ex)
                 {
@@ -388,7 +389,7 @@ namespace AutoScrewing
                 if (res is not null && res == "1")
                 {
 //                    await OutputTransaction();
-                    await ShiftCamera();
+//                    await ShiftCamera();
                     ShiftLaser();
                     ShiftScrewing();
                 }
@@ -511,16 +512,16 @@ namespace AutoScrewing
             var item = new OngoingItemModel() { Scan_ID = scan, Scan_ID2 = scan2,WorkNumber=worknumberorer, OperationUserSN = operationusersn, OperationId = Settings1.Default.OPERATION_ID, StartTime = DateTime.Now, CurrentStatus = "Screwing" };
             try
             {
-                var res = await meshController.Checking(operationusersn,worknumberorer, scan, scan2);
-                if (res is not null)
+                MesResponse? res =  await meshController.Checking(operationusersn,worknumberorer, scan, scan2);
+                if (res is not null )
                 {
-                    if (res.code == 1)
+                    if (res.code == 1 )
                     {
                         await plcController.Send(new PLCController.PLCItem("WR", "MR811", 1, "Starting Transaction - ON"));
                         //                    await Task.Delay(3000);
                         //                    await plcController.Send(new PLCController.PLCItem("WR", "MR811", 0, "Starting Transaction - OFF"));
 //                        await OutputTransaction();
-                        await ShiftCamera();
+//                        await ShiftCamera();
                         ShiftLaser();
                         ShiftScrewing();
                         ScrewingQueue.Enqueue(item);
@@ -779,6 +780,12 @@ namespace AutoScrewing
                     userIdBox.Focus();
                 }
             }
+        }
+
+        public async void StartTransaction()
+        {
+            Random rnd = new Random();
+            await LoadScanToStart("1030422494",rnd.Next(10000,99999).ToString("D5"), rnd.Next(10000, 99999).ToString("D5"),"BM249942942");
         }
 
         public interface IDashboardOngoingItems
