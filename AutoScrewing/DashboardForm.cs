@@ -231,11 +231,17 @@ namespace AutoScrewing
             {
                 try
                 {
+
+                    var cmd1 = new PLCController.PLCItem("RD", "MR810", -1, "Read For Check if ready");
+                    string valid = string.Empty;
+                    if (valid != "1")
+                        continue;
                     semaphore.Release();
                     Task<bool> laserTask = Task.Run(async () => await ReadingLaser());
                     Task<bool> cameraTask = Task.Run(async () => await ReadCamera());
                     await Task.WhenAll(laserTask, laserTask);
                     await semaphore.WaitAsync();
+                    await Task.Delay(1000);
                     DashboardModel model = DashboardModel;
                     model.LaserStatus = await laserTask;
                     model.CameraStatus = await cameraTask;
@@ -283,7 +289,7 @@ namespace AutoScrewing
             while (true)
             {
 
-                var cmd = new PLCController.PLCItem("RD", "MR812", -1, "Read For Check if ready");
+                var cmd = new PLCController.PLCItem("RD", "MR810", -1, "Read For Check if ready");
                 var rd = await plcController.Send(cmd);
                 var mdl = DashboardModel;
                 if (string.IsNullOrEmpty(rd) || rd == "0")
@@ -302,7 +308,7 @@ namespace AutoScrewing
         }
         private async Task<bool> ReadingLaser()
         {
-            barrier.SignalAndWait();
+
             PLCController.PLCItem[] cmd = [
                 new PLCController.PLCItem("RD", "MR502", -1, "Read For Reading Laser NG"),
                 new PLCController.PLCItem("RD", "MR503", -1, "Read For Reading Laser OK")
@@ -324,7 +330,6 @@ namespace AutoScrewing
                 item.LaserStartTime = DashboardModel.StartLaser;
                 item.LaserEndTime = DateTime.Now;
                 item.isLaseringCompleted = true;
-                await Task.Delay(500);
             }
             return result;
         }
