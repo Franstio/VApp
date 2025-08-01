@@ -385,9 +385,10 @@ namespace AutoScrewing
             while (true)
             {
 
-                var res = await plcController.Send(new PLCController.PLCItem("RD", "R101", -1, "Reading Green Button",false));
+                var res = await plcController.Send(new PLCController.PLCItem("RD", "MR006", -1, "Reading Start Button",false));
                 if (res is not null && res == "1")
                 {
+                    await plcController.Send(new PLCController.PLCItem("WR", "MR006", 0, "Disabling Start Button", false));
 //                    await OutputTransaction();
 //                    await ShiftCamera();
                     ShiftLaser();
