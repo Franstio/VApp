@@ -154,7 +154,6 @@ namespace AutoScrewing
         }
         private async Task<bool> ReadCamera()
         {
-            barrier.SignalAndWait();
             DashboardModel.StartCamera = DateTime.Now;
             PLCController.PLCItem[] cmd = [
                 new PLCController.PLCItem("RD", "MR500", -1, "Read For Reading Camera NG"),
@@ -301,7 +300,7 @@ namespace AutoScrewing
                 {
                     mdl.isLaseringReady = true;
                     mdl.isCameraReady = true;
-                    barrier.SignalAndWait();
+
                 }
                 DashboardModel = mdl;
             }
