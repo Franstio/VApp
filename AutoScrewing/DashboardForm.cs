@@ -159,7 +159,7 @@ namespace AutoScrewing
                 new PLCController.PLCItem("RD", "MR500", -1, "Read For Reading Camera NG"),
                 new PLCController.PLCItem("RD", "MR501", -1, "Read For Reading Camera OK")
             ];
-            await Task.Delay(1000);
+            await Task.Delay(3000);
             List<Task<string>> task = [
                 Task.Run<string>(async () => await plcController.Send(cmd[0])),
                 Task.Run<string>(async () => await plcController.Send(cmd[1]))
