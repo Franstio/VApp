@@ -232,7 +232,7 @@ namespace AutoScrewing
                 {
 
                     var cmd1 = new PLCController.PLCItem("RD", "MR810", -1, "Read For Check if ready");
-                    string valid = string.Empty;
+                    string? valid = await plcController.Send(cmd1);
                     if (valid != "1")
                         continue;
                     semaphore.Release();
