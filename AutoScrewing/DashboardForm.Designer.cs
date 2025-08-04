@@ -63,6 +63,7 @@
             sampleToolStripMenuItem = new ToolStripMenuItem();
             logToolStripMenuItem = new ToolStripMenuItem();
             manualToolStripMenuItem = new ToolStripMenuItem();
+            maintenanceToolStripMenuItem = new ToolStripMenuItem();
             inputFileWatcher = new FileSystemWatcher();
             tableLayoutPanel6 = new TableLayoutPanel();
             label7 = new Label();
@@ -392,7 +393,7 @@
             // menuStrip1
             // 
             menuStrip1.BackColor = Color.FromArgb(30, 58, 138);
-            menuStrip1.Items.AddRange(new ToolStripItem[] { configToolStripMenuItem, runningQueueToolStripMenuItem, statusToolStripMenuItem, sampleToolStripMenuItem, logToolStripMenuItem, manualToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { configToolStripMenuItem, runningQueueToolStripMenuItem, statusToolStripMenuItem, sampleToolStripMenuItem, logToolStripMenuItem, manualToolStripMenuItem, maintenanceToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(1347, 24);
@@ -446,6 +447,14 @@
             manualToolStripMenuItem.Size = new Size(59, 20);
             manualToolStripMenuItem.Text = "Manual";
             manualToolStripMenuItem.Click += manualToolStripMenuItem_Click;
+            // 
+            // maintenanceToolStripMenuItem
+            // 
+            maintenanceToolStripMenuItem.ForeColor = Color.FromArgb(249, 250, 251);
+            maintenanceToolStripMenuItem.Name = "maintenanceToolStripMenuItem";
+            maintenanceToolStripMenuItem.Size = new Size(88, 20);
+            maintenanceToolStripMenuItem.Text = "Maintenance";
+            maintenanceToolStripMenuItem.Click += maintenanceToolStripMenuItem_Click;
             // 
             // inputFileWatcher
             // 
@@ -642,5 +651,6 @@
         private Label label7;
         private Label label6;
         private Label label5;
+        private ToolStripMenuItem maintenanceToolStripMenuItem;
     }
 }

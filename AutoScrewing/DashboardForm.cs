@@ -231,7 +231,7 @@ namespace AutoScrewing
                     if (item is null) continue;
                     item.FinalResult = item.ScrewingResult && item.LaserResult && item.CameraResult ? "OK" : "NG";
                     item.CurrentStatus = "Completed";
-                    //                    await meshController.Tracking(item.OperationUserSN, workNumberScanBox.Text, item.Scan_ID, item.Scan_ID2, item.FinalResult, item); ;
+                    await meshController.Tracking(item.OperationUserSN, workNumberScanBox.Text, item.Scan_ID, item.Scan_ID2, item.FinalResult, item); ;
                     //                    var payload = new { serialnumber = item.Scan_ID, status = item.FinalResult, data = (TransactionModel)item };
                     //                    await File.WriteAllTextAsync(Path.Combine(path, "OUTPUT.txt"), JsonSerializer.Serialize(payload));
                     await TransactionRepository.CreateTransaction(item);
@@ -543,7 +543,7 @@ namespace AutoScrewing
             var item = new OngoingItemModel() { Scan_ID = scan, Scan_ID2 = scan2, WorkNumber = worknumberorer, OperationUserSN = operationusersn, OperationId = Settings1.Default.OPERATION_ID, StartTime = DateTime.Now, CurrentStatus = "Screwing" };
             try
             {
-                MesResponse? res = new MesResponse() { code = 1, message = "", data = "" }; //await meshController.Checking(operationusersn,worknumberorer, scan, scan2);
+                MesResponse? res = await meshController.Checking(operationusersn,worknumberorer, scan, scan2);
                 if (res is not null)
                 {
                     if (res.code == 1)
@@ -817,6 +817,20 @@ namespace AutoScrewing
         {
             Random rnd = new Random();
             await LoadScanToStart("1030422494", rnd.Next(10000, 99999).ToString("D5"), rnd.Next(10000, 99999).ToString("D5"), "BM249942942");
+        }
+
+        private void maintenanceToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (var frm = new LoginForm())
+            {
+                var result = frm.ShowDialog();
+                var usr = frm.GetLogin();
+                if (result == DialogResult.OK && usr != null)
+                {
+                    var frm2 = new MaintenanceForm();
+                    frm2.Show();
+                }
+            }
         }
 
         public interface IDashboardOngoingItems

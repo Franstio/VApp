@@ -59,5 +59,25 @@ namespace AutoScrewing.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] green_circle {
+            get {
+                object obj = ResourceManager.GetObject("green-circle", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] red_circle {
+            get {
+                object obj = ResourceManager.GetObject("red-circle", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
     }
 }
