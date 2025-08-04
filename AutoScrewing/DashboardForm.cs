@@ -184,12 +184,12 @@ namespace AutoScrewing
                     bool isValid = !string.IsNullOrEmpty(OK) && !string.IsNullOrEmpty(NG);
                     bool check = OK == "0" && NG == "0";
                     result = !check && (OK == "1" && NG == "0");
-                    if (check)
-                    {
+                    //if (check)
+                    //{
 
-                        semaphore.Release();
-                        continue;
-                    }
+                    //    semaphore.Release();
+                    //    continue;
+                    //}
                     DashboardModel model = DashboardModel;
                     model.CameraStatus = result;
                     DashboardModel = model;
