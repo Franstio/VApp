@@ -179,5 +179,17 @@ namespace AutoScrewing {
                 this["logMes"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool mesActive {
+            get {
+                return ((bool)(this["mesActive"]));
+            }
+            set {
+                this["mesActive"] = value;
+            }
+        }
     }
 }

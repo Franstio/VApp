@@ -55,6 +55,7 @@
             checkBox1 = new CheckBox();
             inputfolderdialogue = new FolderBrowserDialog();
             outputfolderdialogue = new FolderBrowserDialog();
+            checkBox4 = new CheckBox();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
             tableLayoutPanel1.SuspendLayout();
@@ -274,6 +275,7 @@
             // 
             // groupBox3
             // 
+            groupBox3.Controls.Add(checkBox4);
             groupBox3.Controls.Add(checkBox3);
             groupBox3.Controls.Add(checkBox2);
             groupBox3.Controls.Add(checkBox1);
@@ -318,6 +320,17 @@
             checkBox1.Text = "Logging Kilew";
             checkBox1.UseVisualStyleBackColor = true;
             checkBox1.CheckedChanged += checkBox1_CheckedChanged;
+            // 
+            // checkBox4
+            // 
+            checkBox4.AutoSize = true;
+            checkBox4.Location = new Point(6, 104);
+            checkBox4.Name = "checkBox4";
+            checkBox4.Size = new Size(93, 19);
+            checkBox4.TabIndex = 3;
+            checkBox4.Text = "Enable Mesh";
+            checkBox4.UseVisualStyleBackColor = true;
+            checkBox4.CheckedChanged += checkBox4_CheckedChanged;
             // 
             // ConfigForm
             // 
@@ -369,5 +382,6 @@
         private CheckBox checkBox3;
         private CheckBox checkBox2;
         private CheckBox checkBox1;
+        private CheckBox checkBox4;
     }
 }

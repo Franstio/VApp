@@ -35,6 +35,7 @@ namespace AutoScrewing.Dialogue
                 urlBox.Text = Settings1.Default.MESH_URL;
                 operationBox.Text = Settings1.Default.OPERATION_ID;
                 checkBox1.Checked = Settings1.Default.logKilew;
+                checkBox4.Checked = Settings1.Default.mesActive;
                 checkBox2.Checked = Settings1.Default.logMes;
                 checkBox3.Checked = Settings1.Default.logPlc;
                 string[] ports = SerialPort.GetPortNames();
@@ -98,6 +99,12 @@ namespace AutoScrewing.Dialogue
         private void checkBox3_CheckedChanged(object sender, EventArgs e)
         {
             Settings1.Default.logPlc = checkBox3.Checked;
+            Settings1.Default.Save();
+        }
+
+        private void checkBox4_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings1.Default.mesActive = checkBox4.Checked;
             Settings1.Default.Save();
         }
     }
