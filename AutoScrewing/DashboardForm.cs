@@ -268,6 +268,7 @@ namespace AutoScrewing
                     string? valid = await plcController.Send(cmd1);
                     if (valid != "1")
                         continue;
+                    await Task.Delay(1000);
                     Task<bool> laserTask = Task.Run(async () => await ReadingLaser());
                     await Task.WhenAll(laserTask, laserTask);
                     await semaphore.WaitAsync();
