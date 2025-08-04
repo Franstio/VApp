@@ -353,7 +353,7 @@ namespace AutoScrewing
             bool check = OK == "0" && NG == "0";
             bool isValid = !string.IsNullOrEmpty(OK) && !string.IsNullOrEmpty(NG);
             bool result = !check && (OK == "1" && NG == "0");
-            if (LaserQueue.Count > 0)
+            if (LaserQueue.Count > 0 && !LaserQueue.Peek().isLaseringCompleted)
             {
                 var item = LaserQueue.Peek();
                 item.LaserResult = result;
