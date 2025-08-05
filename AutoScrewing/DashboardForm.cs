@@ -203,6 +203,7 @@ namespace AutoScrewing
                         item.CameraEndTime = DateTime.Now;
                         item.CameraResult = DashboardModel.CameraStatus;
                         item.isCameraCompleted = true;
+                        await Task.Delay(1000);
                         await ShiftCamera();
                     }
                     semaphore.Release();
