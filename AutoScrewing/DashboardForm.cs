@@ -176,11 +176,12 @@ namespace AutoScrewing
                             new PLCController.PLCItem("RD", "MR500", -1, "Read For Reading Camera NG"),
                 new PLCController.PLCItem("RD", "MR501", -1, "Read For Reading Camera OK")
                         ];
+
+                        await Task.Delay(2000);
                         List<Task<string>> task = [
                             Task.Run<string>(async () => await plcController.Send(cmd[0])),
                 Task.Run<string>(async () => await plcController.Send(cmd[1]))
                         ];
-                        await Task.Delay(1000);
                         await Task.WhenAll(task);
                         string OK = await task[1], NG = await task[0];
                         bool result = false;
@@ -345,13 +346,12 @@ namespace AutoScrewing
                     new PLCController.PLCItem("RD", "MR502", -1, "Read For Reading Laser NG"),
                 new PLCController.PLCItem("RD", "MR503", -1, "Read For Reading Laser OK")
                     ];
-                    await Task.Delay(2000); 
+                    await Task.Delay(1000);
                     List<Task<string>> task = [
                         Task.Run<string>(async () => await plcController.Send(cmd[0])),
                 Task.Run<string>(async () => await plcController.Send(cmd[1]))
                     ];
                     DashboardModel.StartLaser = DateTime.Now;
-
                     await Task.WhenAll(task);
                     string OK = await task[1], NG = await task[0];
                     check = OK == "0" && NG == "0";
