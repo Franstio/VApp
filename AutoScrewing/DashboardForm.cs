@@ -161,9 +161,9 @@ namespace AutoScrewing
             {
                 try
                 {
-                    if (CameraQueue.Count > 0)
+                    await semaphore.WaitAsync();
+                    if (CameraQueue.Count > 0 && !CameraQueue.Peek().isCameraCompleted)
                     {
-                        await semaphore.WaitAsync();
                         var cmd1 = new PLCController.PLCItem("RD", "MR810", -1, "Read For Check if ready");
                         string? valid = await plcController.Send(cmd1);
                         if (valid != "1")
@@ -465,19 +465,26 @@ namespace AutoScrewing
         }
         private async Task ShiftCamera()
         {
-            if (CameraQueue.Count > 0)
+            try
             {
-                var item = CameraQueue.Dequeue();
-                item.CurrentStatus = "Write output file";
-                item.FinalResult = item.ScrewingResult && item.LaserResult && item.CameraResult ? "OK" : "NG";
-                if (item.FinalResult == "NG")
+                if (CameraQueue.Count > 0)
                 {
-                    await plcController.Send(new PLCController.PLCItem("WR", "MR1000", 1, "After Camera Read 0 ON"));
-                    //                    await Task.Delay(1000);
-                    //                    await plcController.Send(new PLCController.PLCItem("WR", "MR1000", 0, "After Camera Read - OFF"));
+                    var item = CameraQueue.Dequeue();
+                    item.CurrentStatus = "Write output file";
+                    item.FinalResult = item.ScrewingResult && item.LaserResult && item.CameraResult ? "OK" : "NG";
+                    if (item.FinalResult == "NG")
+                    {
+                        await plcController.Send(new PLCController.PLCItem("WR", "MR1000", 1, "After Camera Read 0 ON"));
+                        //                    await Task.Delay(1000);
+                        //                    await plcController.Send(new PLCController.PLCItem("WR", "MR1000", 0, "After Camera Read - OFF"));
+                    }
+                    item.isCameraCompleted = true;
+                    FinalQueue.Enqueue(item);
                 }
-                item.isCameraCompleted = true;
-                FinalQueue.Enqueue(item);
+            }
+            catch
+            {
+
             }
         }
         private void textBox1_TextChanged(object sender, EventArgs e)
