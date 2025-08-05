@@ -597,6 +597,7 @@ namespace AutoScrewing
                 {
                     if (res.code == 1)
                     {
+                        meshSend = false;
                         //                    await Task.Delay(3000);
                         //                    await plcController.Send(new PLCController.PLCItem("WR", "MR811", 0, "Starting Transaction - OFF"));
                         //                        await OutputTransaction();
@@ -605,7 +606,6 @@ namespace AutoScrewing
                         ShiftScrewing();
                         ScrewingQueue.Enqueue(item);
                         var mesh = await plcController.Send(new PLCController.PLCItem("WR", "MR811", 1, "Starting Transaction - ON"));
-                        await Task.Delay(200);
                         meshSend = true;
                     }
                     else if (res.code == -1 && res.message is not null)
