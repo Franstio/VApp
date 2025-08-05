@@ -121,7 +121,7 @@ namespace AutoScrewing
             _ = Task.Run(() => ReadCamera());
 
             _ = Task.Run(() => OutputTransaction());
-            _ = Task.Run(() => CheckReady());
+//            _ = Task.Run(() => CheckReady());
             _ = Task.Run(() => ShiftQueues());
             await LoadData();
             //Task.Run(async () =>
@@ -166,12 +166,21 @@ namespace AutoScrewing
                     {
                         var cmd1 = new PLCController.PLCItem("RD", "MR810", -1, "Read For Check if ready");
                         string? valid = await plcController.Send(cmd1);
+
+                        var mdl = DashboardModel;
                         if (valid != "1")
                         {
+                            mdl.isCameraReady = false;
+                            DashboardModel = mdl;
+                            CameraQueue.Peek().isCameraCompleted = false;
                             semaphore.Release();
                             continue;
                         }
                         DashboardModel.StartCamera = DateTime.Now;
+
+                        mdl.isCameraReady = false;
+                        DashboardModel = mdl;
+                        semaphore.Release();
                         PLCController.PLCItem[] cmd = [
                             new PLCController.PLCItem("RD", "MR500", -1, "Read For Reading Camera NG"),
                 new PLCController.PLCItem("RD", "MR501", -1, "Read For Reading Camera OK")
@@ -203,6 +212,7 @@ namespace AutoScrewing
                         item.CameraEndTime = DateTime.Now;
                         item.CameraResult = DashboardModel.CameraStatus;
                         item.isCameraCompleted = true;
+                        
                         await Task.Delay(1000);
                         await ShiftCamera();
                     }
@@ -270,8 +280,16 @@ namespace AutoScrewing
 
                     var cmd1 = new PLCController.PLCItem("RD", "MR810", -1, "Read For Check if ready");
                     string? valid = await plcController.Send(cmd1);
+
+                    var mdl = DashboardModel;
                     if (valid != "1")
+                    {
+                        mdl.isLaseringReady = false;
+                        DashboardModel = mdl;
                         continue;
+                    }
+                    mdl.isLaseringReady = true;
+                    DashboardModel = mdl;
                     Task<bool> laserTask = Task.Run(async () => await ReadingLaser());
                     await Task.WhenAll(laserTask, laserTask);
                     await semaphore.WaitAsync();
@@ -338,7 +356,8 @@ namespace AutoScrewing
         private async Task<bool> ReadingLaser()
         {
             bool result = false;
-            if (LaserQueue.Count > 0 && !LaserQueue.Peek().isLaseringCompleted)
+            var mdl = DashboardModel;
+            if (LaserQueue.Count > 0 && !LaserQueue.Peek().isLaseringCompleted && mdl.isLaseringReady)
             {
                 bool check = false;
                 do
