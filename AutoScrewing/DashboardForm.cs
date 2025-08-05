@@ -268,11 +268,9 @@ namespace AutoScrewing
                     string? valid = await plcController.Send(cmd1);
                     if (valid != "1")
                         continue;
-                    await Task.Delay(1000);
                     Task<bool> laserTask = Task.Run(async () => await ReadingLaser());
                     await Task.WhenAll(laserTask, laserTask);
                     await semaphore.WaitAsync();
-                    await Task.Delay(1000);
                     DashboardModel model = DashboardModel;
                     model.LaserStatus = await laserTask;
                     DashboardModel = model;
@@ -339,28 +337,35 @@ namespace AutoScrewing
         }
         private async Task<bool> ReadingLaser()
         {
-
-            PLCController.PLCItem[] cmd = [
-                new PLCController.PLCItem("RD", "MR502", -1, "Read For Reading Laser NG"),
-                new PLCController.PLCItem("RD", "MR503", -1, "Read For Reading Laser OK")
-            ];
-            List<Task<string>> task = [
-                Task.Run<string>(async () => await plcController.Send(cmd[0])),
-                Task.Run<string>(async () => await plcController.Send(cmd[1]))
-            ];
-            DashboardModel.StartLaser = DateTime.Now;
-            await Task.WhenAll(task);
-            string OK = await task[1], NG = await task[0];
-            bool check = OK == "0" && NG == "0";
-            bool isValid = !string.IsNullOrEmpty(OK) && !string.IsNullOrEmpty(NG);
-            bool result = !check && (OK == "1" && NG == "0");
+            bool result = false;
             if (LaserQueue.Count > 0 && !LaserQueue.Peek().isLaseringCompleted)
             {
-                var item = LaserQueue.Peek();
-                item.LaserResult = result;
-                item.LaserStartTime = DashboardModel.StartLaser;
-                item.LaserEndTime = DateTime.Now;
-                item.isLaseringCompleted = true;
+                bool check = false;
+                do
+                {
+                    PLCController.PLCItem[] cmd = [
+                    new PLCController.PLCItem("RD", "MR502", -1, "Read For Reading Laser NG"),
+                new PLCController.PLCItem("RD", "MR503", -1, "Read For Reading Laser OK")
+                    ];
+                    List<Task<string>> task = [
+                        Task.Run<string>(async () => await plcController.Send(cmd[0])),
+                Task.Run<string>(async () => await plcController.Send(cmd[1]))
+                    ];
+                    DashboardModel.StartLaser = DateTime.Now;
+                    await Task.WhenAll(task);
+                    string OK = await task[1], NG = await task[0];
+                    check = OK == "0" && NG == "0";
+                    bool isValid = !string.IsNullOrEmpty(OK) && !string.IsNullOrEmpty(NG);
+                    result = !check && (OK == "1" && NG == "0");
+
+                    await Task.Delay(1000);
+                    var item = LaserQueue.Peek();
+                    item.LaserResult = result;
+                    item.LaserStartTime = DashboardModel.StartLaser;
+                    item.LaserEndTime = DateTime.Now;
+                    item.isLaseringCompleted = true;
+                }
+                while (check);
             }
             return result;
         }
