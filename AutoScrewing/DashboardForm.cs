@@ -161,40 +161,41 @@ namespace AutoScrewing
             {
                 try
                 {
-                    await semaphore.WaitAsync();
-                    var cmd1 = new PLCController.PLCItem("RD", "MR810", -1, "Read For Check if ready");
-                    string? valid = await plcController.Send(cmd1);
-                    if (valid != "1")
-                    {
-                        semaphore.Release();
-                        continue;
-                    }
-                    DashboardModel.StartCamera = DateTime.Now;
-                    PLCController.PLCItem[] cmd = [
-                        new PLCController.PLCItem("RD", "MR500", -1, "Read For Reading Camera NG"),
-                new PLCController.PLCItem("RD", "MR501", -1, "Read For Reading Camera OK")
-                    ];
-                    List<Task<string>> task = [
-                        Task.Run<string>(async () => await plcController.Send(cmd[0])),
-                Task.Run<string>(async () => await plcController.Send(cmd[1]))
-                    ];
-                    await Task.WhenAll(task);
-                    string OK = await task[1], NG = await task[0];
-                    bool result = false;
-                    bool isValid = !string.IsNullOrEmpty(OK) && !string.IsNullOrEmpty(NG);
-                    bool check = OK == "0" && NG == "0";
-                    result = !check && (OK == "1" && NG == "0");
-                    //if (check)
-                    //{
-
-                    //    semaphore.Release();
-                    //    continue;
-                    //}
-                    DashboardModel model = DashboardModel;
-                    model.CameraStatus = result;
-                    DashboardModel = model;
                     if (CameraQueue.Count > 0)
                     {
+                        await semaphore.WaitAsync();
+                        var cmd1 = new PLCController.PLCItem("RD", "MR810", -1, "Read For Check if ready");
+                        string? valid = await plcController.Send(cmd1);
+                        if (valid != "1")
+                        {
+                            semaphore.Release();
+                            continue;
+                        }
+                        DashboardModel.StartCamera = DateTime.Now;
+                        PLCController.PLCItem[] cmd = [
+                            new PLCController.PLCItem("RD", "MR500", -1, "Read For Reading Camera NG"),
+                new PLCController.PLCItem("RD", "MR501", -1, "Read For Reading Camera OK")
+                        ];
+                        List<Task<string>> task = [
+                            Task.Run<string>(async () => await plcController.Send(cmd[0])),
+                Task.Run<string>(async () => await plcController.Send(cmd[1]))
+                        ];
+                        await Task.WhenAll(task);
+                        string OK = await task[1], NG = await task[0];
+                        bool result = false;
+                        bool isValid = !string.IsNullOrEmpty(OK) && !string.IsNullOrEmpty(NG);
+                        bool check = OK == "0" && NG == "0";
+                        result = !check && (OK == "1" && NG == "0");
+                        //if (check)
+                        //{
+
+                        //    semaphore.Release();
+                        //    continue;
+                        //}
+                        DashboardModel model = DashboardModel;
+                        model.CameraStatus = result;
+                        DashboardModel = model;
+
                         var item = CameraQueue.Peek();
                         item.CameraStartTime = DashboardModel.StartCamera;
                         item.CameraEndTime = DateTime.Now;
