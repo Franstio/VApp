@@ -282,7 +282,7 @@ namespace AutoScrewing
                     string? valid = await plcController.Send(cmd1);
 
                     var mdl = DashboardModel;
-                    if (valid != "1")
+                    if (valid != "1" || LaserQueue.Count < 1)
                     {
                         mdl.isLaseringReady = false;
                         DashboardModel = mdl;
