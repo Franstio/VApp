@@ -271,10 +271,6 @@ namespace AutoScrewing
                     Task<bool> laserTask = Task.Run(async () => await ReadingLaser());
                     await Task.WhenAll(laserTask, laserTask);
                     await semaphore.WaitAsync();
-                    DashboardModel model = DashboardModel;
-                    model.LaserStatus = await laserTask;
-                    DashboardModel = model;
-                    await LoadData();
                     semaphore.Release();
                 }
                 catch (Exception ex)
@@ -364,6 +360,10 @@ namespace AutoScrewing
                     item.LaserStartTime = DashboardModel.StartLaser;
                     item.LaserEndTime = DateTime.Now;
                     item.isLaseringCompleted = true;
+                    DashboardModel model = DashboardModel;
+                    model.LaserStatus = result;
+                    DashboardModel = model;
+                    await LoadData();
                 }
                 while (check);
             }
