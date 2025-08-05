@@ -459,7 +459,6 @@ namespace AutoScrewing
             {
                 var item = LaserQueue.Dequeue();
                 item.CurrentStatus = "Camera";
-                item.isLaseringCompleted = true;
                 CameraQueue.Enqueue(item);
             }
         }
