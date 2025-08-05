@@ -39,6 +39,7 @@ namespace AutoScrewing
         private KilewController kilewController;
         private PLCController plcController;
         private DashboardModel _dashboardmodel = new DashboardModel();
+        private bool meshSend = false;
         private Barrier barrier = new Barrier(3);
         private LogRepository logRepository = new LogRepository();
         private string CHECKSUM_SCREWING = "", NEW_CHECKSUM_SCREWING = "";
@@ -282,7 +283,7 @@ namespace AutoScrewing
                     string? valid = await plcController.Send(cmd1);
 
                     var mdl = DashboardModel;
-                    if (valid != "1" || LaserQueue.Count < 1)
+                    if (valid != "1" || LaserQueue.Count < 1 && !meshSend)
                     {
                         mdl.isLaseringReady = false;
                         DashboardModel = mdl;
@@ -386,6 +387,7 @@ namespace AutoScrewing
                     DashboardModel model = DashboardModel;
                     model.LaserStatus = result;
                     DashboardModel = model;
+                    meshSend = false;
                     await LoadData();
                 }
                 while (check);
@@ -597,6 +599,7 @@ namespace AutoScrewing
                         ShiftScrewing();
                         ScrewingQueue.Enqueue(item);
                         await plcController.Send(new PLCController.PLCItem("WR", "MR811", 1, "Starting Transaction - ON"));
+                        meshSend = true;
                     }
                     else if (res.code == -1 && res.message is not null)
                     {
