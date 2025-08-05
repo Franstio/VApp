@@ -180,6 +180,7 @@ namespace AutoScrewing
                             Task.Run<string>(async () => await plcController.Send(cmd[0])),
                 Task.Run<string>(async () => await plcController.Send(cmd[1]))
                         ];
+                        await Task.Delay(1000);
                         await Task.WhenAll(task);
                         string OK = await task[1], NG = await task[0];
                         bool result = false;
@@ -349,13 +350,14 @@ namespace AutoScrewing
                 Task.Run<string>(async () => await plcController.Send(cmd[1]))
                     ];
                     DashboardModel.StartLaser = DateTime.Now;
+
+                    await Task.Delay(1000);
                     await Task.WhenAll(task);
                     string OK = await task[1], NG = await task[0];
                     check = OK == "0" && NG == "0";
                     bool isValid = !string.IsNullOrEmpty(OK) && !string.IsNullOrEmpty(NG);
                     result = !check && (OK == "1" && NG == "0");
 
-                    await Task.Delay(1000);
                     var item = LaserQueue.Peek();
                     item.LaserResult = result;
                     item.LaserStartTime = DashboardModel.StartLaser;
