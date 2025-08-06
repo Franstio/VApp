@@ -50,7 +50,6 @@ namespace AutoScrewing
             CameraQueue = new Queue<OngoingItemModel>(),
             FinalQueue = new Queue<OngoingItemModel>(),
             RegisteredItem = new Queue<OngoingItemModel>();
-        OngoingItemModel? screwingCurrent = null, laserCurrent = null, cameraCurrent = null;
         public Task<List<OngoingItemModel>> GetOngoingItems()
         {
             List<Queue<OngoingItemModel>> a = [ScrewingQueue, LaserQueue, CameraQueue, FinalQueue];
@@ -417,6 +416,7 @@ namespace AutoScrewing
                 item.isLaseringCompleted = true;
                 DashboardModel model = DashboardModel;
                 model.LaserStatus = result;
+                model.isLaseringReady = true;
                 await SetDashboardControl(model);
                 meshSend = false;
                 await LoadData();
@@ -487,14 +487,14 @@ namespace AutoScrewing
                     await plcController.Send(new PLCController.PLCItem("WR", "MR006", 0, "Disabling Start Button", false));
                     //                    await OutputTransaction();
                     //                    await ShiftCamera();
-                    ShiftLaserToCamera();
-                    ShiftScrewingToLaser();
+                    await ShiftLaserToCamera();
+                    await ShiftScrewingToLaser();
                 }
                 await Task.Delay(1);
             }
         }
 
-        private void ShiftScrewingToLaser()
+        private async Task ShiftScrewingToLaser()
         {
             if (ScrewingQueue.Count > 0)
             {
@@ -504,14 +504,22 @@ namespace AutoScrewing
                 item.CurrentStatus = "Lasering";
                 item.CHECKSUM = CHECKSUM_SCREWING;
                 item.isScrewingCompleted = true;
+                var mdl = DashboardModel;
+                mdl.isLaseringReady = false;
+                item.isLaseringCompleted = false;
+                await SetDashboardControl(mdl);
                 LaserQueue.Enqueue(item);
             }
         }
-        private void ShiftLaserToCamera()
+        private async Task ShiftLaserToCamera()
         {
             if (LaserQueue.Count > 0)
             {
                 var item = LaserQueue.Dequeue();
+                var mdl = DashboardModel;
+                mdl.isCameraReady = false;
+                item.isCameraCompleted = false;
+                await SetDashboardControl(mdl);
                 item.CurrentStatus = "Camera";
                 CameraQueue.Enqueue(item);
             }
@@ -623,7 +631,7 @@ namespace AutoScrewing
         }
         private async Task LoadScanToStart(string operationusersn, string scan, string scan2, string worknumberorer)
         {
-            var item = new OngoingItemModel() { Scan_ID = scan, Scan_ID2 = scan2, WorkNumber = worknumberorer, OperationUserSN = operationusersn, OperationId = Settings1.Default.OPERATION_ID, StartTime = DateTime.Now, CurrentStatus = "Screwing" };
+            var item = new OngoingItemModel() { Scan_ID = scan, Scan_ID2 = scan2, WorkNumber = worknumberorer,isScrewingCompleted=false, OperationUserSN = operationusersn, OperationId = Settings1.Default.OPERATION_ID, StartTime = DateTime.Now, CurrentStatus = "Screwing" };
             try
             {
                 MesResponse? res = Settings1.Default.mesActive ? await meshController.Checking(operationusersn,worknumberorer, scan, scan2) : new MesResponse() { code = 1, data = "", message = "" };
@@ -632,8 +640,8 @@ namespace AutoScrewing
                     if (res.code == 1)
                     {
                         meshSend = false;
-                        ShiftLaserToCamera();
-                        ShiftScrewingToLaser();
+                        await ShiftLaserToCamera();
+                        await ShiftScrewingToLaser();
                         ShiftScanToScrewing(item);
                         var mesh = await plcController.Send(new PLCController.PLCItem("WR", "MR811", 1, "Starting Transaction - ON"));
                         meshSend = true;
