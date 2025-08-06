@@ -151,15 +151,16 @@ namespace AutoScrewing
             //            textBox1.Text = "test";
         }
 
-        private async void SetDashboardControl(DashboardModel model)
+        private async Task SetDashboardControl(DashboardModel model)
         {
             DashboardModel = model;
             try
             {
+                
                 await InvokeAsync(() =>
                 {
-                    try
-                    {
+                        try
+                        {
                         torqueLabel.Text = $"{model.Torque.ToString("0.0000")} {model.TorqueType}";
                         screwingResultLabel.Text = model.TighteningStatus;
                         screwingTimeLabel.Text = $"{model.Time} Seconds";
@@ -187,7 +188,7 @@ namespace AutoScrewing
                         if (valid != "1")
                         {
                             mdl.isCameraReady = false;
-                            SetDashboardControl(mdl);
+                            await SetDashboardControl(mdl);
                             CameraQueue.Peek().isCameraCompleted = false;
                             semaphore.Release();
                             continue;
@@ -198,7 +199,7 @@ namespace AutoScrewing
                         {
                             mdl.isCameraReady = false;
 
-                            SetDashboardControl(mdl);
+                            await SetDashboardControl(mdl);
                             CameraQueue.Peek().isCameraCompleted = false;
                             semaphore.Release();
                             continue;
@@ -206,7 +207,7 @@ namespace AutoScrewing
                         DashboardModel.StartCamera = DateTime.Now;
 
                         mdl.isCameraReady = true;
-                        SetDashboardControl(mdl);
+                        await SetDashboardControl(mdl);
                         semaphore.Release();
                         PLCController.PLCItem[] cmd = [
                             new PLCController.PLCItem("RD", "MR500", -1, "Read For Reading Camera NG"),
@@ -226,7 +227,7 @@ namespace AutoScrewing
                         result = !check && (OK == "1" && NG == "0");
                         DashboardModel model = DashboardModel;
                         model.CameraStatus = result;
-                        SetDashboardControl(model);
+                        await SetDashboardControl(model);
 
                         var item = CameraQueue.Peek();
                         item.CameraStartTime = DashboardModel.StartCamera;
@@ -289,14 +290,14 @@ namespace AutoScrewing
                     if (LaserQueue.Count < 1)
                     {
                         mdl.isLaseringReady = false;
-                        SetDashboardControl(mdl);
+                        await SetDashboardControl(mdl);
                         continue;
                     }
 
                     if (!meshSend)
                     {
                         mdl.isLaseringReady = false;
-                        SetDashboardControl(mdl);
+                        await SetDashboardControl(mdl);
                         continue;
                     }
 
@@ -307,7 +308,7 @@ namespace AutoScrewing
                     if (valid != "1" || LaserQueue.Count < 1 )
                     {
                         mdl.isLaseringReady = false;
-                        SetDashboardControl(mdl);
+                        await SetDashboardControl(mdl);
                         continue;
                     }
                     cmd1 = new PLCController.PLCItem("RD", "MR008", -1, "Read if stepper running");
@@ -316,12 +317,12 @@ namespace AutoScrewing
                     {
 
                         mdl.isLaseringReady = false;
-                        SetDashboardControl(mdl);
+                        await SetDashboardControl(mdl);
                         continue;
                     }
 
                     mdl.isLaseringReady = true;
-                    SetDashboardControl(mdl);
+                    await SetDashboardControl(mdl);
                     await ReadingLaser();
                 }
                 catch (Exception ex)
@@ -350,7 +351,7 @@ namespace AutoScrewing
                     model.StartScrewing = DashboardModel.StartScrewing;
                     model.StartCamera = DashboardModel.StartCamera;
                     model.StartLaser = DashboardModel.StartLaser;
-                    SetDashboardControl(model);
+                    await SetDashboardControl(model);
                     await LoadData();
                 }
                 catch (Exception ex)
@@ -416,7 +417,7 @@ namespace AutoScrewing
                 item.isLaseringCompleted = true;
                 DashboardModel model = DashboardModel;
                 model.LaserStatus = result;
-                SetDashboardControl(model);
+                await SetDashboardControl(model);
                 meshSend = false;
                 await LoadData();
             }
