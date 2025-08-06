@@ -69,15 +69,30 @@ namespace AutoScrewing
             var finishedList = RegisteredItem.ToList();
             List<OngoingItemModel> combine = [.. list, .. finishedList.TakeLast(4 - list.Count)];
             var data = combine.OrderByDescending(x => x.StartTime).Select(x => new object[] { x.Scan_ID, x.Scan_ID2, $"{(x.isScrewingCompleted ? x.TighteningStatus : "-")} {x.Torque}", x.isLaseringCompleted ? (x.LaserResult ? "OK" : "NG") : "-", x.isCameraCompleted ? (x.CameraResult ? "OK" : "NG") : "-", x.isScrewingCompleted && x.isLaseringCompleted && x.isCameraCompleted ? x.FinalResult : "-" }).ToArray();
-
             //    var transactionData = (await TransactionRepository.GetTransaction(1)).Select(x => new object[] { x.Scan_ID, x.Scan_ID2, $"{x.TighteningStatus} {x.Torque}", x.LaserResult ? "OK" : "NG", x.CameraResult ? "OK" : "NG", x.FinalResult });
             await InvokeAsync(() =>
             {
                 dataGridView1.Rows.Clear();
+                if (data.Length < 1)
+                    return;
+                int finalResultColumnIndex = data[0].Length-1;
                 foreach (var item in data)
+                {
                     dataGridView1.Rows.Add(item);
-
+                    var rowCell = dataGridView1.Rows[^1];
+                    if (item[finalResultColumnIndex] is not null && item[finalResultColumnIndex]?.ToString() != "-")
+                    {
+                        rowCell.Cells[finalResultColumnIndex].Style.BackColor = item[finalResultColumnIndex].ToString() == "NG" ? ColorTranslator.FromHtml("#EF4444") : ColorTranslator.FromHtml("#10B981");
+                        rowCell.Cells[finalResultColumnIndex].Style.ForeColor = button1.ForeColor;
+                    }
+                    else
+                    {
+                        rowCell.Cells[finalResultColumnIndex].Style.BackColor = rowCell.Cells[0].Style.BackColor;
+                        rowCell.Cells[finalResultColumnIndex].Style.ForeColor = rowCell.Cells[0].Style.ForeColor ;
+                    }
+                }
             });
+
         }
 
         private List<DashboardModel> listRunning = new List<DashboardModel>();
