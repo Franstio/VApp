@@ -180,6 +180,7 @@ namespace AutoScrewing
                     await semaphore.WaitAsync();
                     if (CameraQueue.Count > 0 && !CameraQueue.Peek().isCameraCompleted)
                     {
+                        await Task.Delay(1000);
                         var cmd1 = new PLCController.PLCItem("RD", "MR810", -1, "Read For Check if ready");
                         string? valid = await plcController.Send(cmd1);
 
