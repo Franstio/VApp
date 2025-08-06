@@ -504,10 +504,7 @@ namespace AutoScrewing
                 item.CurrentStatus = "Lasering";
                 item.CHECKSUM = CHECKSUM_SCREWING;
                 item.isScrewingCompleted = true;
-                var mdl = DashboardModel;
-                mdl.isLaseringReady = false;
                 item.isLaseringCompleted = false;
-                await SetDashboardControl(mdl);
                 LaserQueue.Enqueue(item);
             }
         }
