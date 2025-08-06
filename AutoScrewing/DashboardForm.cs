@@ -24,6 +24,7 @@ using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 using System.Text.Json.Serialization.Metadata;
 using System.Threading.Tasks;
+using System.Threading.Tasks.Dataflow;
 using System.Windows.Forms;
 using System.Xml;
 using static System.Net.Mime.MediaTypeNames;
@@ -484,11 +485,13 @@ namespace AutoScrewing
                 var res = await plcController.Send(new PLCController.PLCItem("RD", "MR006", -1, "Reading Start Button", false));
                 if (res is not null && res == "1")
                 {
+                    meshSend = false;
                     await plcController.Send(new PLCController.PLCItem("WR", "MR006", 0, "Disabling Start Button", false));
                     //                    await OutputTransaction();
                     //                    await ShiftCamera();
                     await ShiftLaserToCamera();
                     await ShiftScrewingToLaser();
+                    meshSend = true;
                 }
                 await Task.Delay(1);
             }
