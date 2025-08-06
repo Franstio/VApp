@@ -164,8 +164,8 @@ namespace AutoScrewing
                         torqueLabel.Text = $"{model.Torque.ToString("0.0000")} {model.TorqueType}";
                         screwingResultLabel.Text = model.TighteningStatus;
                         screwingTimeLabel.Text = $"{model.Time} Seconds";
-                        laserResultLabel.Text = !model.isLaseringReady ? "Checking" : model.LaserStatus ? "OK" : "NG";
-                        cameraResultLabel.Text = !model.isCameraReady ? "Checking" : model.CameraStatus ? "OK" : "NG";
+                        laserResultLabel.Text = LaserQueue.Count > 0 &&   LaserQueue.Peek().isLaseringCompleted ? (LaserQueue.Peek().LaserResult ? "OK" : "NG") : (!model.isLaseringReady ? "Checking" : model.LaserStatus ? "OK" : "NG")  ;
+                        cameraResultLabel.Text = CameraQueue.Count > 0 && CameraQueue.Peek().isCameraCompleted ? (CameraQueue.Peek().CameraResult ? "OK" : "NG")  : ( !model.isCameraReady ? "Checking" : model.CameraStatus ? "OK" : "NG");
                     }
                     catch { }
                 });
