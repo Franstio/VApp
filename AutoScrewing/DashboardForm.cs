@@ -178,7 +178,7 @@ namespace AutoScrewing
                 try
                 {
                     await semaphore.WaitAsync();
-                    if (CameraQueue.Count > 0 && !CameraQueue.Peek().isCameraCompleted)
+                    if (CameraQueue.Count > 0 && !CameraQueue.Peek().isCameraCompleted && meshSend)
                     {
                         await Task.Delay(1000);
                         var cmd1 = new PLCController.PLCItem("RD", "MR810", -1, "Read For Check if ready");
@@ -419,7 +419,6 @@ namespace AutoScrewing
                 model.LaserStatus = result;
                 model.isLaseringReady = true;
                 await SetDashboardControl(model);
-                meshSend = false;
                 await LoadData();
             }
             return result;
