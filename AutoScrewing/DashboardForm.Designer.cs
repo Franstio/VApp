@@ -496,7 +496,7 @@
             label7.Name = "label7";
             label7.Size = new Size(270, 33);
             label7.TabIndex = 17;
-            label7.Text = "Scan Work Number:";
+            label7.Text = "Scan Operation LotNo:";
             // 
             // label6
             // 
