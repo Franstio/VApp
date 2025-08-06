@@ -187,7 +187,7 @@ namespace AutoScrewing
                         if (valid != "1")
                         {
                             mdl.isCameraReady = false;
-                            DashboardModel = mdl;
+                            SetDashboardControl(mdl);
                             CameraQueue.Peek().isCameraCompleted = false;
                             semaphore.Release();
                             continue;
@@ -197,7 +197,8 @@ namespace AutoScrewing
                         if (valid == "1")
                         {
                             mdl.isCameraReady = false;
-                            DashboardModel = mdl;
+
+                            SetDashboardControl(mdl);
                             CameraQueue.Peek().isCameraCompleted = false;
                             semaphore.Release();
                             continue;
@@ -225,7 +226,7 @@ namespace AutoScrewing
                         result = !check && (OK == "1" && NG == "0");
                         DashboardModel model = DashboardModel;
                         model.CameraStatus = result;
-                        DashboardModel = model;
+                        SetDashboardControl(model);
 
                         var item = CameraQueue.Peek();
                         item.CameraStartTime = DashboardModel.StartCamera;
@@ -415,7 +416,7 @@ namespace AutoScrewing
                 item.isLaseringCompleted = true;
                 DashboardModel model = DashboardModel;
                 model.LaserStatus = result;
-                DashboardModel = model;
+                SetDashboardControl(model);
                 meshSend = false;
                 await LoadData();
             }
