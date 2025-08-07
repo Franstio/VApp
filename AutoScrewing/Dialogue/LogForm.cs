@@ -1,5 +1,6 @@
 ﻿using AutoScrewing.Database.Models;
 using AutoScrewing.Database.Repository;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -16,11 +17,12 @@ namespace AutoScrewing.Dialogue
 {
     public partial class LogForm : Form
     {
-        private LogRepository logRepository = new LogRepository();
+        private LogRepository logRepository;
         private List<LogModel> logData = new List<LogModel>();
         public LogForm()
         {
             InitializeComponent();
+            logRepository = Program.ServiceProvider.GetRequiredService<LogRepository>();
         }
         async Task LoadLogType()
         {

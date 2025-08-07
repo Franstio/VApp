@@ -194,6 +194,18 @@ namespace AutoScrewing
                             semaphore.Release();
                             continue;
                         }
+                        cmd1 = new PLCController.PLCItem("RD", "R1004", -1, "Read Camera before read");
+                        valid = await plcController.Send(cmd1);
+                        if (valid != "1")
+                        {
+
+                            mdl.isCameraReady = false;
+
+                            await SetDashboardControl(mdl);
+                            CameraQueue.Peek().isCameraCompleted = false;
+                            semaphore.Release();
+                            continue;
+                        }
                         cmd1 = new PLCController.PLCItem("RD", "MR008", -1, "Read if stepper is running");
                         valid = await plcController.Send(cmd1);
                         if (valid == "1")
@@ -312,6 +324,18 @@ namespace AutoScrewing
                         await SetDashboardControl(mdl);
                         continue;
                     }
+
+
+                    cmd1 = new PLCController.PLCItem("RD", "R105", -1, "Read Laser before read");
+                    valid = await plcController.Send(cmd1);
+                    if (valid != "1")
+                    {
+
+                        mdl.isLaseringReady = false;
+                        await SetDashboardControl(mdl);
+                        continue;
+                    }
+
                     cmd1 = new PLCController.PLCItem("RD", "MR008", -1, "Read if stepper running");
                     valid = await plcController.Send(cmd1);
                     if (valid == "1" )
