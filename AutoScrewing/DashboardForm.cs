@@ -41,6 +41,7 @@ namespace AutoScrewing
         private PLCController plcController;
         private DashboardModel _dashboardmodel = new DashboardModel();
         private bool meshSend = false;
+        private EmergencyDialogue msgDialogue = new EmergencyDialogue();
         private Barrier barrier = new Barrier(3);
         private LogRepository logRepository = new LogRepository();
         private string CHECKSUM_SCREWING = "", NEW_CHECKSUM_SCREWING = "";
@@ -131,6 +132,7 @@ namespace AutoScrewing
             //    TighteningStatus = "3NG-F"
             //};
             //DashboardModel = data;
+            _ = Task.Run(() => CheckEmergency());
             _ = Task.Run(() => ReadScrewingKilew());
             _ = Task.Run(() => ReadLaserPLC());
             _ = Task.Run(() => ReadCamera());
@@ -942,6 +944,19 @@ namespace AutoScrewing
                 {
                     var frm2 = new MaintenanceForm();
                     frm2.Show();
+                }
+            }
+        }
+        private async Task CheckEmergency()
+        {
+            PLCController.PLCItem plcRead = new PLCController.PLCItem("RD", "R10", -1, "Read Emergency",false);
+            while (true)
+            {
+                var rd = await plcController.Send(plcRead);
+                if (rd == "0")
+                {
+                    msgDialogue = new EmergencyDialogue();
+                    msgDialogue.ShowDialog();
                 }
             }
         }
