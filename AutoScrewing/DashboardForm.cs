@@ -956,16 +956,20 @@ namespace AutoScrewing
 
             while (true)
             {
-                Task<string>[] Tasks = [Task.Run(async () => await plcController.Send(plcReads[0])), Task.Run(async () => await plcController.Send(plcReads[1]))];
-                await Task.WhenAll(Tasks);
-                bool pause = (await Tasks[1])=="1";
-                bool emergency =  (await Tasks[0])=="0";
-                if (pause || emergency)
+                try
                 {
-                    msgDialogue = new EmergencyDialogue();
-                    msgDialogue.StartPosition = FormStartPosition.CenterParent;
-                    await InvokeAsync(() => msgDialogue.ShowDialog());
+                    Task<string>[] Tasks = [Task.Run(async () => await plcController.Send(plcReads[0])), Task.Run(async () => await plcController.Send(plcReads[1]))];
+                    await Task.WhenAll(Tasks);
+                    bool pause = (await Tasks[1]) == "1";
+                    bool emergency = (await Tasks[0]) == "0";
+                    if (pause || emergency)
+                    {
+                        msgDialogue = new EmergencyDialogue();
+                        msgDialogue.StartPosition = FormStartPosition.CenterParent;
+                        await InvokeAsync(() => msgDialogue.ShowDialog());
+                    }
                 }
+                catch { }
             }
         }
 
