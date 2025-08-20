@@ -42,22 +42,25 @@ namespace AutoScrewing.Dialogue
 
             while (true)
             {
-
-                Task<string>[] Tasks = [Task.Run(async () => await plcController.Send(plcReads[0])), Task.Run(async () => await plcController.Send(plcReads[1]))];
-                await Task.WhenAll(Tasks);
-                bool pause = (await Tasks[1]) == "1";
-                bool emergency = (await Tasks[0]) == "0";
-                if (emergency)
+                try
                 {
-                    await InvokeAsync(() => label1.Text = "Emergency Active");
+                    Task<string>[] Tasks = [Task.Run(async () => await plcController.Send(plcReads[0])), Task.Run(async () => await plcController.Send(plcReads[1]))];
+                    await Task.WhenAll(Tasks);
+                    bool pause = (await Tasks[1]) == "1";
+                    bool emergency = (await Tasks[0]) == "0";
+                    if (emergency)
+                    {
+                        await InvokeAsync(() => label1.Text = "Emergency Active");
+                    }
+                    else if (pause)
+                    {
+                        await InvokeAsync(() => label1.Text = "Pause Active");
+                    }
+                    else
+                        this.Close();
+                    await Task.Delay(100);
                 }
-                else if (pause)
-                {
-                    await InvokeAsync(() => label1.Text = "Pause Active");
-                }
-                else
-                    this.Close();
-                await Task.Delay(100);
+                catch { }
             }
         }
     }
