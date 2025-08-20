@@ -12,16 +12,15 @@ using System.Windows.Forms;
 
 namespace AutoScrewing.Dialogue
 {
-    
+
     public partial class EmergencyDialogue : Form
     {
         PLCController plcController;
-        
+
         public EmergencyDialogue()
         {
             InitializeComponent();
             plcController = Program.ServiceProvider.GetRequiredService<PLCController>();
-            Task.Run(WaitForComplete);
         }
         private const int CP_NOCLOSE_BUTTON = 0x200;
         protected override CreateParams CreateParams
@@ -57,11 +56,16 @@ namespace AutoScrewing.Dialogue
                         await InvokeAsync(() => label1.Text = "Pause Active");
                     }
                     else
-                        await InvokeAsync(()=>this.Close());
+                        await InvokeAsync(() => this.Close());
                     await Task.Delay(100);
                 }
                 catch { }
             }
+        }
+
+        private void EmergencyDialogue_Load(object sender, EventArgs e)
+        {
+            Task.Run(WaitForComplete);
         }
     }
 }
