@@ -57,7 +57,7 @@ namespace AutoScrewing.Dialogue
                         await InvokeAsync(() => label1.Text = "Pause Active");
                     }
                     else
-                        this.Close();
+                        await InvokeAsync(()=>this.Close());
                     await Task.Delay(100);
                 }
                 catch { }
