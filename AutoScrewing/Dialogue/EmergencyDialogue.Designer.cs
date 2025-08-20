@@ -54,6 +54,7 @@
             MinimizeBox = false;
             Name = "EmergencyDialogue";
             Text = "Message";
+            FormClosing += EmergencyDialogue_FormClosing;
             Load += EmergencyDialogue_Load;
             ResumeLayout(false);
         }

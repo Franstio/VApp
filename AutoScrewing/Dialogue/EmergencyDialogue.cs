@@ -16,7 +16,7 @@ namespace AutoScrewing.Dialogue
     public partial class EmergencyDialogue : Form
     {
         PLCController plcController;
-
+        private CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
         public EmergencyDialogue()
         {
             InitializeComponent();
@@ -39,7 +39,7 @@ namespace AutoScrewing.Dialogue
                 new PLCController.PLCItem("RD", "R100", -1, "Read Pause",false),
             ];
 
-            while (true)
+            while (!cancellationTokenSource.IsCancellationRequested)
             {
                 try
                 {
@@ -66,6 +66,11 @@ namespace AutoScrewing.Dialogue
         private void EmergencyDialogue_Load(object sender, EventArgs e)
         {
             Task.Run(WaitForComplete);
+        }
+
+        private void EmergencyDialogue_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            cancellationTokenSource.Cancel();
         }
     }
 }
