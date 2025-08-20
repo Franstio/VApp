@@ -12,9 +12,11 @@ using System.Windows.Forms;
 
 namespace AutoScrewing.Dialogue
 {
+    
     public partial class EmergencyDialogue : Form
     {
         PLCController plcController;
+        
         public EmergencyDialogue()
         {
             InitializeComponent();
@@ -31,14 +33,29 @@ namespace AutoScrewing.Dialogue
                 return myCp;
             }
         }
-
         private async Task WaitForComplete()
         {
+            PLCController.PLCItem[] plcReads = [
+                new PLCController.PLCItem("RD", "R10", -1, "Read Emergency",false),
+                new PLCController.PLCItem("RD", "R100", -1, "Read Pause",false),
+            ];
+
             while (true)
             {
-                PLCController.PLCItem r10 = new PLCController.PLCItem("RD", "R10", -1, "Read Emergency", false);
-                var res = await plcController.Send(r10);
-                if (res == "1")
+
+                Task<string>[] Tasks = [Task.Run(async () => await plcController.Send(plcReads[0])), Task.Run(async () => await plcController.Send(plcReads[1]))];
+                await Task.WhenAll(Tasks);
+                bool pause = (await Tasks[1]) == "1";
+                bool emergency = (await Tasks[0]) == "0";
+                if (emergency)
+                {
+                    await InvokeAsync(() => label1.Text = "Emergency Active");
+                }
+                else if (pause)
+                {
+                    await InvokeAsync(() => label1.Text = "Pause Active");
+                }
+                else
                     this.Close();
                 await Task.Delay(100);
             }

@@ -40,7 +40,6 @@
             label1.Name = "label1";
             label1.Size = new Size(410, 180);
             label1.TabIndex = 0;
-            label1.Text = "Emergency Active";
             label1.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // EmergencyDialogue
@@ -54,7 +53,7 @@
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "EmergencyDialogue";
-            Text = "Emergency";
+            Text = "Message";
             ResumeLayout(false);
         }
 

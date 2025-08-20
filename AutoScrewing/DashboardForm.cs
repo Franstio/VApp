@@ -949,11 +949,18 @@ namespace AutoScrewing
         }
         private async Task CheckEmergency()
         {
-            PLCController.PLCItem plcRead = new PLCController.PLCItem("RD", "R10", -1, "Read Emergency",false);
+            PLCController.PLCItem[] plcReads = [
+                new PLCController.PLCItem("RD", "R10", -1, "Read Emergency",false),
+                new PLCController.PLCItem("RD", "R100", -1, "Read Pause",false),
+            ];
+
             while (true)
             {
-                var rd = await plcController.Send(plcRead);
-                if (rd == "0")
+                Task<string>[] Tasks = [Task.Run(async () => await plcController.Send(plcReads[0])), Task.Run(async () => await plcController.Send(plcReads[1]))];
+                await Task.WhenAll(Tasks);
+                bool pause = (await Tasks[1])=="1";
+                bool emergency =  (await Tasks[0])=="0";
+                if (pause || emergency)
                 {
                     msgDialogue = new EmergencyDialogue();
                     msgDialogue.StartPosition = FormStartPosition.CenterParent;
