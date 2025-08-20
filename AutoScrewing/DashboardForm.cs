@@ -956,6 +956,7 @@ namespace AutoScrewing
                 if (rd == "0")
                 {
                     msgDialogue = new EmergencyDialogue();
+                    msgDialogue.StartPosition = FormStartPosition.CenterParent;
                     await InvokeAsync(() => msgDialogue.ShowDialog());
                 }
             }

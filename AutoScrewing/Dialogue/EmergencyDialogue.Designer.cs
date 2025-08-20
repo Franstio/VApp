@@ -35,6 +35,7 @@
             // 
             label1.Dock = DockStyle.Fill;
             label1.Font = new Font("Sans Serif Collection", 11.9999981F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label1.ForeColor = Color.White;
             label1.Location = new Point(0, 0);
             label1.Name = "label1";
             label1.Size = new Size(410, 180);
@@ -46,6 +47,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.FromArgb(239, 68, 68);
             ClientSize = new Size(410, 180);
             Controls.Add(label1);
             FormBorderStyle = FormBorderStyle.FixedDialog;
