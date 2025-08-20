@@ -48,6 +48,9 @@
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(410, 180);
             Controls.Add(label1);
+            FormBorderStyle = FormBorderStyle.FixedDialog;
+            MaximizeBox = false;
+            MinimizeBox = false;
             Name = "EmergencyDialogue";
             Text = "Emergency";
             ResumeLayout(false);

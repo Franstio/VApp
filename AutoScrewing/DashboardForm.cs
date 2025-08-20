@@ -956,7 +956,7 @@ namespace AutoScrewing
                 if (rd == "0")
                 {
                     msgDialogue = new EmergencyDialogue();
-                    msgDialogue.ShowDialog();
+                    await InvokeAsync(() => msgDialogue.ShowDialog());
                 }
             }
         }

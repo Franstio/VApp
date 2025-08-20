@@ -21,6 +21,17 @@ namespace AutoScrewing.Dialogue
             plcController = Program.ServiceProvider.GetRequiredService<PLCController>();
             Task.Run(WaitForComplete);
         }
+        private const int CP_NOCLOSE_BUTTON = 0x200;
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams myCp = base.CreateParams;
+                myCp.ClassStyle = myCp.ClassStyle | CP_NOCLOSE_BUTTON;
+                return myCp;
+            }
+        }
+
         private async Task WaitForComplete()
         {
             while (true)
