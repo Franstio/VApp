@@ -44,7 +44,7 @@ namespace AutoScrewing
         private EmergencyDialogue msgDialogue = new EmergencyDialogue();
         private LogRepository logRepository = new LogRepository();
         private string CHECKSUM_SCREWING = "", NEW_CHECKSUM_SCREWING = "";
-        SemaphoreSlim semaphore = new SemaphoreSlim(1), readyFlag = new SemaphoreSlim(1);
+        SemaphoreSlim semaphore = new SemaphoreSlim(1), readyFlag = new SemaphoreSlim(1,1);
         Queue<OngoingItemModel>
             ScrewingQueue = new Queue<OngoingItemModel>(),
             LaserQueue = new Queue<OngoingItemModel>(),
