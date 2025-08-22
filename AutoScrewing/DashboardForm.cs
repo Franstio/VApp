@@ -516,6 +516,7 @@ namespace AutoScrewing
                     //                    await OutputTransaction();
                     //                    await ShiftCamera();
 
+                    _ = Task.Run(() => ShiftTrigger());
                     //                    await ShiftLaserToCamera();
                     //                    await ShiftScrewingToLaser();
                     meshSend = true;
