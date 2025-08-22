@@ -41,6 +41,7 @@ namespace AutoScrewing
         private PLCController plcController;
         private DashboardModel _dashboardmodel = new DashboardModel();
         private bool meshSend = false;
+        private bool runTrigger = false;
         private EmergencyDialogue msgDialogue = new EmergencyDialogue();
         private LogRepository logRepository = new LogRepository();
         private string CHECKSUM_SCREWING = "", NEW_CHECKSUM_SCREWING = "";
@@ -515,7 +516,6 @@ namespace AutoScrewing
                     //                    await OutputTransaction();
                     //                    await ShiftCamera();
 
-                    _ = Task.Run(()=>ShiftTrigger());
                     //                    await ShiftLaserToCamera();
                     //                    await ShiftScrewingToLaser();
                     meshSend = true;
@@ -665,18 +665,31 @@ namespace AutoScrewing
         }
         private async Task ShiftTrigger()
         {
-            bool shiftClear = false;
-            PLCController.PLCItem shiftPlc = new PLCController.PLCItem("RD", "MR008", -1, "Check if stepper run");
-            do
+            if (runTrigger)
+                return;
+
+            try
             {
-                string res = await plcController.Send(shiftPlc);
-                shiftClear = res == "1";
+                bool shiftClear = false;
+                PLCController.PLCItem shiftPlc = new PLCController.PLCItem("RD", "MR008", -1, "Check if stepper run");
+                runTrigger = true;
+                do
+                {
+                    try
+                    {
+                        string res = await plcController.Send(shiftPlc);
+                        shiftClear = res == "1";
+                    }
+                    catch { }
+                }
+                while (!shiftClear);
+                await ShiftLaserToCamera();
+                await ShiftScrewingToLaser();
+                if (StandbyQueue.Count > 0)
+                    ShiftScanToScrewing(StandbyQueue.Dequeue());
             }
-            while (!shiftClear);
-            await ShiftLaserToCamera();
-            await ShiftScrewingToLaser();
-            if (StandbyQueue.Count > 0)
-                ShiftScanToScrewing(StandbyQueue.Dequeue());
+            catch { }
+            finally { runTrigger = false; }
         }
         private async Task LoadScanToStart(string operationusersn, string scan, string scan2, string worknumberorer)
         {
@@ -691,7 +704,7 @@ namespace AutoScrewing
                         meshSend = false;
                         var mesh = await plcController.Send(new PLCController.PLCItem("WR", "MR811", 1, "Starting Transaction - ON"));
                         ShiftToStandby(item);
-                        _ = Task.Run(()=>ShiftTrigger());
+                        _ = Task.Run(() => ShiftTrigger());
                         meshSend = true;
                     }
                     else if (res.code == -1 && res.message is not null)
