@@ -31,6 +31,7 @@ namespace AutoScrewing.Lib
         }
         TcpClient BuildTcpClient()
         {
+            tcpClient = new TcpClient();
             tcpClient.NoDelay  = true;
             tcpClient.SendTimeout = 3000;
             tcpClient.ReceiveTimeout = 3000;

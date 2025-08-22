@@ -31,7 +31,11 @@ namespace AutoScrewing
             Type[] types = [typeof(MESHController), typeof(KilewController),typeof(PLCController),typeof(TransactionRepository),typeof(ConfigRepository),typeof(LogRepository)];
             for (int i = 0; i < types.Length; i++)
                 serviceCollection.AddScoped(types[i]);
-
+            serviceCollection.AddHttpClient().ConfigureHttpClientDefaults(config =>
+            {
+                config.AddHttpMessageHandler<MESHController.MESH_HTTP_HANDLER>();
+            });
+            serviceCollection.AddTransient<MESHController.MESH_HTTP_HANDLER>();
         }
         public static IServiceProvider ServiceProvider { get; private set; } = null!;
     }
