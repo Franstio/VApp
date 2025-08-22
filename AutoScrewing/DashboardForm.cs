@@ -676,12 +676,16 @@ namespace AutoScrewing
                 bool handOff = res == "0";
                 await InvokeAsync(() =>
                 {
-                    scan1Box.Clear();
-                    scan2Box.Clear();
+                    bool prev = scan1Box.Enabled;
                     scan1Box.Enabled = handOff;
                     scan2Box.Enabled = handOff;
-                    if (handOff)
+                    if (handOff && !scan1Box.Enabled)
+                    {
+                        scan1Box.Clear();
+                        scan2Box.Clear();
                         scan1Box.Focus();
+
+                    }
                 });
                 await Task.Delay(100);
             }
