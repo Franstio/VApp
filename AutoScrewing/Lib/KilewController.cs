@@ -13,7 +13,7 @@ namespace AutoScrewing.Lib
 {
     public class KilewController
     {
-        SerialPort _client = new SerialPort();
+        private static SerialPort _client = null!;
         string baseAddress = "COM4";
         SemaphoreSlim semaphoreSlim = new SemaphoreSlim(1);
         public bool isActive { get; private set; } = false;
@@ -21,6 +21,8 @@ namespace AutoScrewing.Lib
         public KilewController()
         {
             baseAddress = Settings1.Default.Screwing_Port ;
+            if (_client == null || _client.PortName != baseAddress)
+                _client = BuildPort();
         }
         SerialPort BuildPort()
         {
@@ -47,49 +49,45 @@ namespace AutoScrewing.Lib
             cmd = GetCommand(cmd);
             log.payload = cmd;
             await semaphoreSlim.WaitAsync();
-                if (_client == null || _client.PortName != baseAddress)
-                    _client = BuildPort();
-            using (_client)
-            {
-                try
-                {
 
-                    if (!_client.IsOpen)
-                        _client.Open();
-                    byte[] buffer = Encoding.ASCII.GetBytes(cmd);
-                    _client.Write(buffer, 0, buffer.Length);
-                    await Task.Delay(1000);
-                    byte[] rd = new byte[8];
-                    string text = _client.ReadLine();
-                    log.result = text;
-                    log.status += "-Success";
-                    if (Settings1.Default.logKilew)
-                        await logRepository.RecordLog(log);
-                    isActive = true;
-                    semaphoreSlim.Release();
-                    return text;
-                }
-                catch (FileNotFoundException e)
-                {
-                    log.result = e.Message + " | " + e.StackTrace;
-                    log.status += "-Failed";
-                    if (Settings1.Default.logKilew)
-                        await logRepository.RecordLog(log);
-                    isActive = false;
-                    semaphoreSlim.Release();
-                    return string.Empty;
-                }
-                catch (Exception e)
-                {
-                    log.result = e.Message + " | " + e.StackTrace;
-                    log.status += "-Failed";
-                    if (Settings1.Default.logKilew)
-                        await logRepository.RecordLog(log);
-                    isActive = false;
-                    semaphoreSlim.Release();
-                    return string.Empty;
-                }
+            try
+            {
+                if (!_client.IsOpen)
+                    _client.Open();
+                byte[] buffer = Encoding.ASCII.GetBytes(cmd);
+                _client.Write(buffer, 0, buffer.Length);
+                await Task.Delay(1000);
+                byte[] rd = new byte[8];
+                string text = _client.ReadLine();
+                log.result = text;
+                log.status += "-Success";
+                if (Settings1.Default.logKilew)
+                    await logRepository.RecordLog(log);
+                isActive = true;
+                semaphoreSlim.Release();
+                return text;
             }
+            catch (FileNotFoundException e)
+            {
+                log.result = e.Message + " | " + e.StackTrace;
+                log.status += "-Failed";
+                if (Settings1.Default.logKilew)
+                    await logRepository.RecordLog(log);
+                isActive = false;
+                semaphoreSlim.Release();
+                return string.Empty;
+            }
+            catch (Exception e)
+            {
+                log.result = e.Message + " | " + e.StackTrace;
+                log.status += "-Failed";
+                if (Settings1.Default.logKilew)
+                    await logRepository.RecordLog(log);
+                isActive = false;
+                semaphoreSlim.Release();
+                return string.Empty;
+            }
+
 
         }
     }

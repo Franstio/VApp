@@ -23,17 +23,18 @@ namespace AutoScrewing.Lib
         private CancellationTokenSource cancelToken = new CancellationTokenSource();
         public bool isActive { get; private set; } = false;
         private static SemaphoreSlim SemaphoreSlim = new SemaphoreSlim(1);
+        private static TcpClient tcpClient = null!;
         public PLCController()
         {
             PLC_TARGET = Settings1.Default.PLC_TARGET;
+            tcpClient = tcpClient ?? BuildTcpClient();
         }
         TcpClient BuildTcpClient()
         {
-            var client = new TcpClient();
-            client.NoDelay  = true;
-            client.SendTimeout = 3000;
-            client.ReceiveTimeout = 3000;
-            return client;
+            tcpClient.NoDelay  = true;
+            tcpClient.SendTimeout = 3000;
+            tcpClient.ReceiveTimeout = 3000;
+            return tcpClient;
         }
         private async Task<string> GetMessage(Stream stream)
         {
@@ -48,29 +49,27 @@ namespace AutoScrewing.Lib
             Log.payload = JsonSerializer.Serialize(item);
             try
             {
-                using (var tcpClient = BuildTcpClient())
-                {
-                    string val = item.type == "WR" ? $" {item.value.ToString()}" : "";
-                    await tcpClient.ConnectAsync(IPAddress.Parse(PLC_TARGET), 8501).WaitAsync(TimeSpan.FromMilliseconds(100));
-                    string command = $"{item.type} {item.command}{val}\r\n";
-                    byte[] buffer = Encoding.ASCII.GetBytes(command);
+                string val = item.type == "WR" ? $" {item.value.ToString()}" : "";
+                await tcpClient.ConnectAsync(IPAddress.Parse(PLC_TARGET), 8501).WaitAsync(TimeSpan.FromMilliseconds(100));
+                string command = $"{item.type} {item.command}{val}\r\n";
+                byte[] buffer = Encoding.ASCII.GetBytes(command);
 
-                    await tcpClient.GetStream().WriteAsync(buffer, 0, buffer.Length);
+                await tcpClient.GetStream().WriteAsync(buffer, 0, buffer.Length);
 
-                    await Task.Delay(100);
+                await Task.Delay(100);
 
-                    string res = await GetMessage(tcpClient.GetStream());
-                    Console.WriteLine($"Writing {item.command} with value {item.value} and result {res} {DateTime.Now.ToLongDateString()} | {item.description}");
-                    Log.result = res;
-                    Log.status = $"{Log.status}-Success";
-                    if (Settings1.Default.logPlc)
-                        await logRepository.RecordLog(Log);
-                    isActive = true;
-                    SemaphoreSlim.Release();
-                    return res.Replace("\0", "").Replace("\r", "").Replace("\n", "").Trim();
-                }
+                string res = await GetMessage(tcpClient.GetStream());
+                Console.WriteLine($"Writing {item.command} with value {item.value} and result {res} {DateTime.Now.ToLongDateString()} | {item.description}");
+                Log.result = res;
+                Log.status = $"{Log.status}-Success";
+                if (Settings1.Default.logPlc)
+                    await logRepository.RecordLog(Log);
+                isActive = true;
+                SemaphoreSlim.Release();
+                return res.Replace("\0", "").Replace("\r", "").Replace("\n", "").Trim();
+
             }
-            catch (Exception e )
+            catch (Exception e)
             {
                 Log.result = e.Message + " | " + e.StackTrace;
                 Log.status = $"{Log.status}-Failed";
@@ -78,7 +77,7 @@ namespace AutoScrewing.Lib
                     await logRepository.RecordLog(Log);
                 Console.Error.WriteLine(e.StackTrace);
                 Console.Error.WriteLine(e.Message);
-                isActive = false;   
+                isActive = false;
                 SemaphoreSlim.Release();
                 return string.Empty;
             }
