@@ -552,8 +552,10 @@ namespace AutoScrewing
         }
         private async Task ShiftLaserToCamera()
         {
-            if (LaserQueue.Count > 0)
+            if (LaserQueue.Count > 0 )
             {
+                if (!LaserQueue.Peek().isLaseringCompleted)
+                    return;
                 var item = LaserQueue.Dequeue();
                 var mdl = DashboardModel;
                 mdl.isCameraReady = false;
