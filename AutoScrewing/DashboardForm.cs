@@ -513,8 +513,10 @@ namespace AutoScrewing
                     await plcController.Send(new PLCController.PLCItem("WR", "MR006", 0, "Disabling Start Button", false));
                     //                    await OutputTransaction();
                     //                    await ShiftCamera();
-                    await ShiftLaserToCamera();
-                    await ShiftScrewingToLaser();
+
+                    _ = Task.Run(ShiftTrigger);
+                    //                    await ShiftLaserToCamera();
+                    //                    await ShiftScrewingToLaser();
                     meshSend = true;
                 }
                 await Task.Delay(1);
