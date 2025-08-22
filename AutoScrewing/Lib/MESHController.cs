@@ -19,6 +19,7 @@ namespace AutoScrewing.Lib
         private string OPERATION_USER = string.Empty;
         private string OPERATION_ID = string.Empty;
         private string WORK_ID = string.Empty;
+        private static HttpClient client = new HttpClient(new MESH_HTTP_HANDLER());
         public MESHController()
         {
             BASE_ADDRESS = Settings1.Default.MESH_URL;
@@ -28,7 +29,6 @@ namespace AutoScrewing.Lib
 
         private HttpClient GetClient(string source)
         {
-            HttpClient client = new HttpClient(new MESH_HTTP_HANDLER());
             client.BaseAddress = new Uri(BASE_ADDRESS);
             client.DefaultRequestHeaders.TryAddWithoutValidation("X-SOURCE", source);
             client.Timeout = TimeSpan.FromSeconds(3);
