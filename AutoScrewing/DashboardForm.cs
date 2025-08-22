@@ -679,7 +679,7 @@ namespace AutoScrewing
                     bool prev = scan1Box.Enabled;
                     scan1Box.Enabled = handOff;
                     scan2Box.Enabled = handOff;
-                    if (handOff && !scan1Box.Enabled)
+                    if (handOff && prev)
                     {
                         scan1Box.Clear();
                         scan2Box.Clear();
