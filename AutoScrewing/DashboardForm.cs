@@ -515,6 +515,14 @@ namespace AutoScrewing
                 if (res is not null && res == "1")
                 {
                     meshSend = false;
+                    var plcItem = new PLCController.PLCItem("RD", "CR8401", -1, "", false);
+                    bool checkCR = false;
+                    do
+                    {
+                        var data = await plcController.Send(plcItem);
+                        checkCR = data == "1";
+                    }
+                    while (!checkCR);
                     await plcController.Send(new PLCController.PLCItem("WR", "MR006", 0, "Disabling Start Button", false));
                     //                    await OutputTransaction();
                     //                    await ShiftCamera();
