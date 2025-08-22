@@ -143,6 +143,7 @@ namespace AutoScrewing
             _ = Task.Run(() => ShiftQueues());
 
             _ = Task.Run(() => ShiftTrigger());
+            _ = Task.Run(CheckHandSensor);
             await LoadData();
             //Task.Run(async () =>
             //{
