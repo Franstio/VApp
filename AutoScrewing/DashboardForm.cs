@@ -44,7 +44,7 @@ namespace AutoScrewing
         private EmergencyDialogue msgDialogue = new EmergencyDialogue();
         private LogRepository logRepository = new LogRepository();
         private string CHECKSUM_SCREWING = "", NEW_CHECKSUM_SCREWING = "";
-        SemaphoreSlim semaphore = new SemaphoreSlim(1), readyFlag = new SemaphoreSlim(1,1);
+        SemaphoreSlim semaphore = new SemaphoreSlim(1);
         Queue<OngoingItemModel>
             ScrewingQueue = new Queue<OngoingItemModel>(),
             LaserQueue = new Queue<OngoingItemModel>(),
@@ -450,8 +450,6 @@ namespace AutoScrewing
         }
         private async Task<DashboardModel> ReadingScrewing()
         {
-            if (readyFlag.CurrentCount > 0 )
-                await readyFlag.WaitAsync();
             DashboardModel model = new DashboardModel();
             model.StartScrewing = DateTime.Now;
             string res = await kilewController.Send("DATA100");
@@ -488,7 +486,6 @@ namespace AutoScrewing
                     item.ScrewStartTime = model.StartScrewing;
                     item.ScrewEndTime = DateTime.Now;
                     item.CHECKSUM = data[7];
-                    readyFlag.Release();
 
                 }
             }
@@ -671,7 +668,6 @@ namespace AutoScrewing
         }
         private async Task LoadScanToStart(string operationusersn, string scan, string scan2, string worknumberorer)
         {
-            await readyFlag.WaitAsync();
             var item = new OngoingItemModel() { Scan_ID = scan, Scan_ID2 = scan2, WorkNumber = worknumberorer,isScrewingCompleted=false, OperationUserSN = operationusersn, OperationId = Settings1.Default.OPERATION_ID, StartTime = DateTime.Now, CurrentStatus = "Screwing" };
             try
             {
@@ -714,7 +710,6 @@ namespace AutoScrewing
             {
                 try
                 {
-                    readyFlag.Release();
                     await InvokeAsync(() =>
                     {
                         //                      userIdBox.Text = userIdBox.Tag?.ToString();
