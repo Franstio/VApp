@@ -690,7 +690,17 @@ namespace AutoScrewing
                     await ShiftScrewingToLaser();
                     if (StandbyQueue.Count > 0)
                         ShiftScanToScrewing(StandbyQueue.Dequeue());
-                    await Task.Delay(100);
+                    do
+                    {
+                        try
+                        {
+                            await Task.Delay(100);
+                            string res = await plcController.Send(shiftPlc);
+                            shiftClear = res == "0";
+                        }
+                        catch { }
+                    }
+                    while (!shiftClear);
                 }
                 catch { }
                 finally { }
