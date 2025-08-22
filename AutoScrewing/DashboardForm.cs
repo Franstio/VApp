@@ -987,6 +987,7 @@ namespace AutoScrewing
                         });
                         return;
                     }
+                    await Task.Delay(100);
                 }
                 catch { }
             }
