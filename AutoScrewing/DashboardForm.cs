@@ -666,6 +666,21 @@ namespace AutoScrewing
             item.CurrentStatus = "-";
             StandbyQueue.Enqueue(item);
         }
+        private async Task CheckHandSensor()
+        {
+            PLCController.PLCItem item = new PLCController.PLCItem("RD", "MR314", -1, "Check hand sensor");
+            while (true)
+            {
+                var res = await plcController.Send(item);
+                bool handOff = res == "0";
+                await InvokeAsync(() =>
+                {
+                    scan1Box.Enabled = handOff;
+                    scan2Box.Enabled = handOff;
+                });
+                await Task.Delay(100);
+            }
+        }
         private async Task ShiftTrigger()
         {
             while (true)
