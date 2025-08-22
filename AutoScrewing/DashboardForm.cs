@@ -669,7 +669,7 @@ namespace AutoScrewing
         }
         private async Task CheckHandSensor()
         {
-            PLCController.PLCItem item = new PLCController.PLCItem("RD", "MR314", -1, "Check hand sensor");
+            PLCController.PLCItem item = new PLCController.PLCItem("RD", "MR814", -1, "Check hand sensor");
             while (true)
             {
                 var res = await plcController.Send(item);
