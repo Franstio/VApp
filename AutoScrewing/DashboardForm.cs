@@ -46,6 +46,7 @@ namespace AutoScrewing
         private string CHECKSUM_SCREWING = "", NEW_CHECKSUM_SCREWING = "";
         SemaphoreSlim semaphore = new SemaphoreSlim(1);
         Queue<OngoingItemModel>
+            StandbyQueue = new Queue<OngoingItemModel>(),
             ScrewingQueue = new Queue<OngoingItemModel>(),
             LaserQueue = new Queue<OngoingItemModel>(),
             CameraQueue = new Queue<OngoingItemModel>(),
@@ -53,7 +54,7 @@ namespace AutoScrewing
             RegisteredItem = new Queue<OngoingItemModel>();
         public Task<List<OngoingItemModel>> GetOngoingItems()
         {
-            List<Queue<OngoingItemModel>> a = [ScrewingQueue, LaserQueue, CameraQueue, FinalQueue];
+            List<Queue<OngoingItemModel>> a = [StandbyQueue,ScrewingQueue, LaserQueue, CameraQueue, FinalQueue];
             try
             {
                 return Task.FromResult(a.SelectMany(x => x).OrderByDescending(x => x.TransactionTime).ToList());
@@ -653,9 +654,16 @@ namespace AutoScrewing
         }
         private void ShiftScanToScrewing(OngoingItemModel item)
         {
+            item.CurrentStatus = "Screwing";
+            item.StartTime = DateTime.Now;
             ScrewingQueue.Enqueue(item);
         }
-        private async Task ShiftTrigger()
+        private void ShiftToStandby(OngoingItemModel item)
+        {
+            item.CurrentStatus = "-";
+            StandbyQueue.Enqueue(item);
+        }
+        private async Task ShiftTrigger(OngoingItemModel? item = null)
         {
             bool shiftClear = false;
             PLCController.PLCItem shiftPlc = new PLCController.PLCItem("RD", "MR008", -1, "Check if stepper run");
@@ -667,6 +675,8 @@ namespace AutoScrewing
             while (!shiftClear);
             await ShiftLaserToCamera();
             await ShiftScrewingToLaser();
+            if (item is not null)
+                ShiftScanToScrewing(item);
         }
         private async Task LoadScanToStart(string operationusersn, string scan, string scan2, string worknumberorer)
         {
@@ -680,7 +690,7 @@ namespace AutoScrewing
                     {
                         meshSend = false;
                         var mesh = await plcController.Send(new PLCController.PLCItem("WR", "MR811", 1, "Starting Transaction - ON"));
-                        ShiftScanToScrewing(item);
+                        ShiftToStandby(item);
                         _ = Task.Run(ShiftTrigger);
                         meshSend = true;
                     }
