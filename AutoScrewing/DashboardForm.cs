@@ -251,8 +251,8 @@ namespace AutoScrewing
                         item.CameraEndTime = DateTime.Now;
                         item.CameraResult = DashboardModel.CameraStatus;
                         item.isCameraCompleted = true;
-                        
-//                        await Task.Delay(1000);
+                        await plcController.Send(new PLCController.PLCItem("WR", "MR006", 0, "Disabling Start Button", false));
+                        //                        await Task.Delay(1000);
                         await ShiftCameraToFinal();
                     }
                     semaphore.Release();
@@ -447,6 +447,7 @@ namespace AutoScrewing
                 model.LaserStatus = result;
                 model.isLaseringReady = true;
                 await SetDashboardControl(model);
+                await plcController.Send(new PLCController.PLCItem("WR", "MR006", 0, "Disabling Start Button", false));
                 await LoadData();
             }
             return result;
