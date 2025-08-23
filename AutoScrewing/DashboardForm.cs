@@ -187,7 +187,6 @@ namespace AutoScrewing
                     await semaphore.WaitAsync();
                     if (CameraQueue.Count > 0 && !CameraQueue.Peek().isCameraCompleted && meshSend)
                     {
-                        await Task.Delay(1000);
                         var cmd1 = new PLCController.PLCItem("RD", "MR810", -1, "Read For Check if ready");
                         string? valid = await plcController.Send(cmd1);
 
@@ -233,7 +232,6 @@ namespace AutoScrewing
                             new PLCController.PLCItem("RD", "MR501", -1, "Read For Reading Camera OK")
                         ];
 
-                        await Task.Delay(2000);
                         List<Task<string>> task = [
                             Task.Run<string>(async () => await plcController.Send(cmd[0])),
                             Task.Run<string>(async () => await plcController.Send(cmd[1]))
@@ -254,7 +252,7 @@ namespace AutoScrewing
                         item.CameraResult = DashboardModel.CameraStatus;
                         item.isCameraCompleted = true;
                         
-                        await Task.Delay(1000);
+//                        await Task.Delay(1000);
                         await ShiftCameraToFinal();
                     }
                     semaphore.Release();
