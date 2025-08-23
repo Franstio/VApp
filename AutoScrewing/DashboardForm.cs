@@ -70,7 +70,7 @@ namespace AutoScrewing
             var list = await GetOngoingItems();
             var finishedList = RegisteredItem.ToList();
             List<OngoingItemModel> combine = [.. list, .. finishedList.TakeLast(4 - list.Count)];
-            var data = combine.OrderByDescending(x => x.StartTime).Select(x => new object[] { x.Scan_ID, x.Scan_ID2, $"{(x.isScrewingCompleted ? x.TighteningStatus : "-")} {x.Torque}", x.isLaseringCompleted ? (x.LaserResult ? "OK" : "NG") : "-", x.isCameraCompleted ? (x.CameraResult ? "OK" : "NG") : "-", x.isScrewingCompleted && x.isLaseringCompleted && x.isCameraCompleted ? x.FinalResult : "-" }).ToArray();
+            var data = combine.OrderByDescending(x => x.StartTime is null ? DateTime.MaxValue : x.StartTime).Select(x => new object[] { x.Scan_ID, x.Scan_ID2, $"{(x.isScrewingCompleted ? x.TighteningStatus : "-")} {x.Torque}", x.isLaseringCompleted ? (x.LaserResult ? "OK" : "NG") : "-", x.isCameraCompleted ? (x.CameraResult ? "OK" : "NG") : "-", x.isScrewingCompleted && x.isLaseringCompleted && x.isCameraCompleted ? x.FinalResult : "-" }).ToArray();
             //    var transactionData = (await TransactionRepository.GetTransaction(1)).Select(x => new object[] { x.Scan_ID, x.Scan_ID2, $"{x.TighteningStatus} {x.Torque}", x.LaserResult ? "OK" : "NG", x.CameraResult ? "OK" : "NG", x.FinalResult });
             await InvokeAsync(() =>
             {
@@ -742,7 +742,7 @@ namespace AutoScrewing
         }
         private async Task LoadScanToStart(string operationusersn, string scan, string scan2, string worknumberorer)
         {
-            var item = new OngoingItemModel() { Scan_ID = scan, Scan_ID2 = scan2, WorkNumber = worknumberorer,isScrewingCompleted=false, OperationUserSN = operationusersn, OperationId = Settings1.Default.OPERATION_ID, StartTime = DateTime.Now, CurrentStatus = "Screwing" };
+            var item = new OngoingItemModel() { Scan_ID = scan, Scan_ID2 = scan2, WorkNumber = worknumberorer,isScrewingCompleted=false, OperationUserSN = operationusersn, OperationId = Settings1.Default.OPERATION_ID, CurrentStatus = "Screwing" };
             try
             {
                 MesResponse? res = Settings1.Default.mesActive ? await meshController.Checking(operationusersn,worknumberorer, scan, scan2) : new MesResponse() { code = 1, data = "", message = "" };
