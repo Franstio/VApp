@@ -45,7 +45,7 @@ namespace AutoScrewing
         private EmergencyDialogue msgDialogue = new EmergencyDialogue();
         private LogRepository logRepository = new LogRepository();
         private string CHECKSUM_SCREWING = "", NEW_CHECKSUM_SCREWING = "";
-        SemaphoreSlim semaphore = new SemaphoreSlim(1);
+//        SemaphoreSlim semaphore = new SemaphoreSlim(1);
         Queue<OngoingItemModel>
             StandbyQueue = new Queue<OngoingItemModel>(),
             ScrewingQueue = new Queue<OngoingItemModel>(),
@@ -184,49 +184,36 @@ namespace AutoScrewing
             {
                 try
                 {
-                    await semaphore.WaitAsync();
+                    //await semaphore.WaitAsync();
                     if (CameraQueue.Count > 0 && !CameraQueue.Peek().isCameraCompleted && meshSend)
                     {
-                        var cmd1 = new PLCController.PLCItem("RD", "MR810", -1, "Read For Check if ready");
-                        string? valid = await plcController.Send(cmd1);
+                        PLCController.PLCItem[] commands = [
+                            new PLCController.PLCItem("RD", "MR810", -1, "Read For Check if ready"),
+                        new PLCController.PLCItem("RD", "R1004", -1, "Read Camera before read"),
+                            new PLCController.PLCItem("RD", "MR008", -1, "Read if stepper is running"),
 
+                        ];
+                        Task<string>[] Tasks = new Task<string>[3];
+                        for (int i = 0; i < commands.Length; i++)
+                            Tasks[i] = Task.Run(async () => await plcController.Send(commands[i]));
+                        await Task.WhenAll(Tasks);
+                        string[] valids = new string[3];
+                        for (int i = 0; i < commands.Length; i++)
+                            valids[i] = await Tasks[i];
                         var mdl = DashboardModel;
-                        if (valid != "1")
+                        if (valids[0] != "1" || valids[1] != "1" || valids[2] == "1")
                         {
                             mdl.isCameraReady = false;
                             await SetDashboardControl(mdl);
                             CameraQueue.Peek().isCameraCompleted = false;
-                            semaphore.Release();
-                            continue;
-                        }
-                        cmd1 = new PLCController.PLCItem("RD", "R1004", -1, "Read Camera before read");
-                        valid = await plcController.Send(cmd1);
-                        if (valid != "1")
-                        {
-
-                            mdl.isCameraReady = false;
-
-                            await SetDashboardControl(mdl);
-                            CameraQueue.Peek().isCameraCompleted = false;
-                            semaphore.Release();
-                            continue;
-                        }
-                        cmd1 = new PLCController.PLCItem("RD", "MR008", -1, "Read if stepper is running");
-                        valid = await plcController.Send(cmd1);
-                        if (valid == "1")
-                        {
-                            mdl.isCameraReady = false;
-
-                            await SetDashboardControl(mdl);
-                            CameraQueue.Peek().isCameraCompleted = false;
-                            semaphore.Release();
+                      //      semaphore.Release();
                             continue;
                         }
                         DashboardModel.StartCamera = DateTime.Now;
 
                         mdl.isCameraReady = true;
                         await SetDashboardControl(mdl);
-                        semaphore.Release();
+                    //    semaphore.Release();
                         PLCController.PLCItem[] cmd = [
                             new PLCController.PLCItem("RD", "MR500", -1, "Read For Reading Camera NG"),
                             new PLCController.PLCItem("RD", "MR501", -1, "Read For Reading Camera OK")
@@ -255,12 +242,12 @@ namespace AutoScrewing
                         //                        await Task.Delay(1000);
                         await ShiftCameraToFinal();
                     }
-                    semaphore.Release();
+                   // semaphore.Release();
                 }
 
                 catch (Exception ex)
                 {
-                    semaphore.Release();
+                    //semaphore.Release();
                     Debug.WriteLine(ex.Message + "|" + ex.StackTrace);
                 }
             }
