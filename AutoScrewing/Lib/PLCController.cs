@@ -43,6 +43,17 @@ namespace AutoScrewing.Lib
             await stream.ReadAsync(buffer, 0,buffer.Length);
             return  Encoding.ASCII.GetString(buffer);
         }
+        public async Task<string[]> Sends(PLCItem[] items)
+        {
+            Task<string>[] tasks = new Task<string>[items.Length];
+            for (int i=0;i<tasks.Length;i++)
+                tasks[i] = Task.Run(async ()=>await Send(items[i]));
+            await Task.WhenAll(tasks);
+            string[] res = new string[tasks.Length];
+            for (int i = 0; i < tasks.Length; i++)
+                res[i] = await tasks[i];
+            return res;
+        }
         public async Task<string> Send(PLCItem item)
         {
             await SemaphoreSlim.WaitAsync();

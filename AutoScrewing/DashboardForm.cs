@@ -304,34 +304,14 @@ namespace AutoScrewing
                         await SetDashboardControl(mdl);
                         continue;
                     }
-
-
-                    var cmd1 = new PLCController.PLCItem("RD", "MR810", -1, "Read For Check if ready");
-                    string? valid = await plcController.Send(cmd1);
-
-                    if (valid != "1" || LaserQueue.Count < 1 )
+                    PLCController.PLCItem[] commands = [
+                        new PLCController.PLCItem("RD", "MR810", -1, "Read For Check if ready"),
+                        new PLCController.PLCItem("RD", "R105", -1, "Read Laser before read"),
+                        new PLCController.PLCItem("RD", "MR008", -1, "Read if stepper running")
+                        ];
+                    string[] valids = await plcController.Sends(commands);
+                    if (valids[0] != "1" || valids[1] != "1" || valids[2] == "1")
                     {
-                        mdl.isLaseringReady = false;
-                        await SetDashboardControl(mdl);
-                        continue;
-                    }
-
-
-                    cmd1 = new PLCController.PLCItem("RD", "R105", -1, "Read Laser before read");
-                    valid = await plcController.Send(cmd1);
-                    if (valid != "1")
-                    {
-                        
-                        mdl.isLaseringReady = false;
-                        await SetDashboardControl(mdl);
-                        continue;
-                    }
-
-                    cmd1 = new PLCController.PLCItem("RD", "MR008", -1, "Read if stepper running");
-                    valid = await plcController.Send(cmd1);
-                    if (valid == "1" )
-                    {
-
                         mdl.isLaseringReady = false;
                         await SetDashboardControl(mdl);
                         continue;
