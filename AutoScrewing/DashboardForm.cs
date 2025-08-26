@@ -440,6 +440,13 @@ namespace AutoScrewing
                 NEW_CHECKSUM_SCREWING = data[7];
                 if (ScrewingQueue.Count > 0)
                 {
+                    var plcItem = new PLCController.PLCItem("RD", "R514", -1, "", false);
+                    string w = string.Empty;
+                    do
+                    {
+                        w = await plcController.Send(plcItem);
+                    }
+                    while (w != "0");
                     CHECKSUM_SCREWING = NEW_CHECKSUM_SCREWING;
                     var item = ScrewingQueue.Peek();
                     item.Torque = model.Torque;
