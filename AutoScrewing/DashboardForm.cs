@@ -453,6 +453,7 @@ namespace AutoScrewing
                     item.ScrewingResult = model.TighteningStatus.Contains("OK");
                     item.ScrewingTime = model.Time;
                     item.ThreadCount = model.Thread;
+                    item.isScrewingCompleted = true;
                     item.ScrewStartTime = model.StartScrewing;
                     item.ScrewEndTime = DateTime.Now;
                     item.CHECKSUM = data[7];
