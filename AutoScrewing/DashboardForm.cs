@@ -192,15 +192,9 @@ namespace AutoScrewing
 //                        new PLCController.PLCItem("RD", "R1004", -1, "Read Camera before read"),
   //                          new PLCController.PLCItem("RD", "MR008", -1, "Read if stepper is running"),
                         ];
-                        Task<string>[] Tasks = new Task<string>[3];
-                        for (int i = 0; i < commands.Length; i++)
-                            Tasks[i] = Task.Run(async () => await plcController.Send(commands[i]));
-                        await Task.WhenAll(Tasks);
-                        string[] valids = new string[3];
-                        for (int i = 0; i < commands.Length; i++)
-                            valids[i] = await Tasks[i];
+                        var valid = await plcController.Send(commands[0]);
                         var mdl = DashboardModel;
-                        if (valids[0] != "1" )
+                        if (valid != "1" )
                         {
                             mdl.isCameraReady = false;
                             await SetDashboardControl(mdl);
@@ -308,8 +302,8 @@ namespace AutoScrewing
                     //    new PLCController.PLCItem("RD", "R105", -1, "Read Laser before read"),
                       //  new PLCController.PLCItem("RD", "MR008", -1, "Read if stepper running")
                         ];
-                    string[] valids = await plcController.Sends(commands);
-                    if (valids[0] != "1" )
+                    string valids = await plcController.Send(commands[0]);
+                    if (valids != "1" )
                     {
                         mdl.isLaseringReady = false;
                         await SetDashboardControl(mdl);
