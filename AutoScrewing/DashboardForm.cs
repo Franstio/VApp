@@ -189,9 +189,8 @@ namespace AutoScrewing
                     {
                         PLCController.PLCItem[] commands = [
                             new PLCController.PLCItem("RD", "MR810", -1, "Read For Check if ready"),
-                        new PLCController.PLCItem("RD", "R1004", -1, "Read Camera before read"),
-                            new PLCController.PLCItem("RD", "MR008", -1, "Read if stepper is running"),
-
+//                        new PLCController.PLCItem("RD", "R1004", -1, "Read Camera before read"),
+  //                          new PLCController.PLCItem("RD", "MR008", -1, "Read if stepper is running"),
                         ];
                         Task<string>[] Tasks = new Task<string>[3];
                         for (int i = 0; i < commands.Length; i++)
@@ -306,8 +305,8 @@ namespace AutoScrewing
                     }
                     PLCController.PLCItem[] commands = [
                         new PLCController.PLCItem("RD", "MR810", -1, "Read For Check if ready"),
-                        new PLCController.PLCItem("RD", "R105", -1, "Read Laser before read"),
-                        new PLCController.PLCItem("RD", "MR008", -1, "Read if stepper running")
+                    //    new PLCController.PLCItem("RD", "R105", -1, "Read Laser before read"),
+                      //  new PLCController.PLCItem("RD", "MR008", -1, "Read if stepper running")
                         ];
                     string[] valids = await plcController.Sends(commands);
                     if (valids[0] != "1" || valids[1] != "1" || valids[2] == "1")
