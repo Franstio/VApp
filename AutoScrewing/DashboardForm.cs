@@ -200,7 +200,7 @@ namespace AutoScrewing
                         for (int i = 0; i < commands.Length; i++)
                             valids[i] = await Tasks[i];
                         var mdl = DashboardModel;
-                        if (valids[0] != "1" || valids[1] != "1" || valids[2] == "1")
+                        if (valids[0] != "1" )
                         {
                             mdl.isCameraReady = false;
                             await SetDashboardControl(mdl);
@@ -309,7 +309,7 @@ namespace AutoScrewing
                       //  new PLCController.PLCItem("RD", "MR008", -1, "Read if stepper running")
                         ];
                     string[] valids = await plcController.Sends(commands);
-                    if (valids[0] != "1" || valids[1] != "1" || valids[2] == "1")
+                    if (valids[0] != "1" )
                     {
                         mdl.isLaseringReady = false;
                         await SetDashboardControl(mdl);
