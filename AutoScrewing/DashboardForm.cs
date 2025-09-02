@@ -530,8 +530,8 @@ namespace AutoScrewing
         {
             if (LaserQueue.Count > 0 )
             {
-                if (!LaserQueue.Peek().isLaseringCompleted)
-                    return;
+                while (!LaserQueue.Peek().isLaseringCompleted)
+                    continue;
                 var item = LaserQueue.Dequeue();
                 var mdl = DashboardModel;
                 mdl.isCameraReady = false;
