@@ -710,11 +710,11 @@ namespace AutoScrewing
                             string res = await plcController.Send(shiftPlc);
                             shiftClear = res == "0";
                         }
-                        catch { }
+                        catch (Exception e ){ Console.WriteLine(e.Message + " " + e.StackTrace); }
                     }
                     while (!shiftClear);
                 }
-                catch { }
+                catch (Exception e) { Console.WriteLine(e.Message + " " + e.StackTrace); }
                 finally { }
             }
         }
