@@ -133,17 +133,17 @@ namespace AutoScrewing
             //    TighteningStatus = "3NG-F"
             //};
             //DashboardModel = data;
-            _ = Task.Run(() => CheckEmergency());
-            _ = Task.Run(() => ReadScrewingKilew());
-            _ = Task.Run(() => ReadLaserPLC());
-            _ = Task.Run(() => ReadCamera());
+            _ = Task.Run(() => CheckEmergency().Wait());
+            _ = Task.Run(() => ReadScrewingKilew().Wait());
+            _ = Task.Run(() => ReadLaserPLC().Wait());
+            _ = Task.Run(() => ReadCamera().Wait());
 
-            _ = Task.Run(() => OutputTransaction());
+            _ = Task.Run(() => OutputTransaction().Wait());
 //            _ = Task.Run(() => CheckReady());
-            _ = Task.Run(() => ShiftQueues());
+            _ = Task.Run(() => ShiftQueues().Wait());
 
-            _ = Task.Run(() => ShiftTrigger());
-            _ = Task.Run(CheckHandSensor);
+            _ = Task.Run(() => ShiftTrigger().Wait());
+            _ = Task.Run(()=>CheckHandSensor().Wait());
             await LoadData();
             //Task.Run(async () =>
             //{
@@ -702,11 +702,11 @@ namespace AutoScrewing
                             string res = await plcController.Send(shiftPlc);
                             shiftClear = res == "0";
                         }
-                        catch { }
+                        catch (Exception e ){ Console.WriteLine(e.Message + " " + e.StackTrace); }
                     }
                     while (!shiftClear);
                 }
-                catch { }
+                catch (Exception e) { Console.WriteLine(e.Message + " " + e.StackTrace); }
                 finally { }
             }
         }
