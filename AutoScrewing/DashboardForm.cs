@@ -53,6 +53,7 @@ namespace AutoScrewing
             CameraQueue = new Queue<OngoingItemModel>(),
             FinalQueue = new Queue<OngoingItemModel>(),
             RegisteredItem = new Queue<OngoingItemModel>();
+        List<Task> BackgroundTasks = new List<Task>();
         public Task<List<OngoingItemModel>> GetOngoingItems()
         {
             List<Queue<OngoingItemModel>> a = [StandbyQueue,ScrewingQueue, LaserQueue, CameraQueue, FinalQueue];
@@ -64,6 +65,13 @@ namespace AutoScrewing
             {
                 return Task.FromResult<List<OngoingItemModel>>([]);
             }
+        }
+        private async Task UpdateLabelQTY()
+        {
+            var data = await GetOngoingItems();
+            await qtyInputLabel.InvokeAsync(() => qtyInputLabel.Text = $"QTY INPUT: {data.Count}");
+            await qtyPassLabel.InvokeAsync(()=>qtyPassLabel.Text = $"QTY PASS: {data.Where(x=>x.FinalResult=="OK").Count()}");
+            await qtyNGLabel.InvokeAsync(() => qtyNGLabel.Text = $"QTY NG: {data.Where(x => x.FinalResult == "NG").Count()}");
         }
         private async Task LoadData()
         {
@@ -85,7 +93,7 @@ namespace AutoScrewing
                     if (item[finalResultColumnIndex] is not null && item[finalResultColumnIndex]?.ToString() != "-")
                     {
                         rowCell.Cells[finalResultColumnIndex].Style.BackColor = item[finalResultColumnIndex].ToString() == "NG" ? ColorTranslator.FromHtml("#EF4444") : ColorTranslator.FromHtml("#10B981");
-                        rowCell.Cells[finalResultColumnIndex].Style.ForeColor = button1.ForeColor;
+                        rowCell.Cells[finalResultColumnIndex].Style.ForeColor = Color.White;
                     }
                     else
                     {
@@ -133,17 +141,17 @@ namespace AutoScrewing
             //    TighteningStatus = "3NG-F"
             //};
             //DashboardModel = data;
-            _ = Task.Run(() => CheckEmergency());
-            _ = Task.Run(() => ReadScrewingKilew());
-            _ = Task.Run(() => ReadLaserPLC());
-            _ = Task.Run(() => ReadCamera());
+            BackgroundTasks.Add(Task.Run(() => CheckEmergency()));
+            BackgroundTasks.Add(Task.Run(() => ReadScrewingKilew()));
+            BackgroundTasks.Add(Task.Run(() => ReadLaserPLC())) ;
+            BackgroundTasks.Add(Task.Run(() => ReadCamera()));
 
-            _ = Task.Run(() => OutputTransaction());
+            BackgroundTasks.Add(Task.Run(() => OutputTransaction()));
 //            _ = Task.Run(() => CheckReady());
-            _ = Task.Run(() => ShiftQueues());
+            BackgroundTasks.Add(Task.Run(() => ShiftQueues()));
 
-            _ = Task.Run(() => ShiftTrigger());
-            _ = Task.Run(CheckHandSensor);
+            BackgroundTasks.Add(Task.Run(() => ShiftTrigger()));
+            BackgroundTasks.Add(Task.Run(CheckHandSensor));
             await LoadData();
             //Task.Run(async () =>
             //{
@@ -1021,8 +1029,8 @@ namespace AutoScrewing
                         msgDialogue.StartPosition = FormStartPosition.CenterParent;
                         await InvokeAsync(() => {
                             var res  = msgDialogue.ShowDialog();
-                            Task.Run(() => CheckEmergency());
                         });
+                        _ = Task.Run(() => CheckEmergency());
                         return;
                     }
                     await Task.Delay(100);
