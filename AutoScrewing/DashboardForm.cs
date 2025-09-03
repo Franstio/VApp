@@ -70,7 +70,7 @@ namespace AutoScrewing
         {
             try
             {
-                var data = await GetOngoingItems();
+                var data = RegisteredItem;
                 await qtyInputLabel.InvokeAsync(() => qtyInputLabel.Text = $"QTY INPUT: {data.Count}");
                 await qtyPassLabel.InvokeAsync(() => qtyPassLabel.Text = $"QTY PASS: {data.Where(x => x.FinalResult == "OK").Count()}");
                 await qtyNGLabel.InvokeAsync(() => qtyNGLabel.Text = $"QTY NG: {data.Where(x => x.FinalResult == "NG").Count()}");
