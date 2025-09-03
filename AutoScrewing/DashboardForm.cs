@@ -80,6 +80,7 @@ namespace AutoScrewing
             List<OngoingItemModel> combine = [.. list, .. finishedList.TakeLast(4 - list.Count)];
             var data = combine.OrderByDescending(x => x.StartTime is null ? DateTime.MaxValue : x.StartTime).Select(x => new object[] { x.Scan_ID, x.Scan_ID2, $"{(x.isScrewingCompleted ? x.TighteningStatus : "-")} {x.Torque}", x.isLaseringCompleted ? (x.LaserResult ? "OK" : "NG") : "-", x.isCameraCompleted ? (x.CameraResult ? "OK" : "NG") : "-", x.isScrewingCompleted && x.isLaseringCompleted && x.isCameraCompleted ? x.FinalResult : "-" }).ToArray();
             //    var transactionData = (await TransactionRepository.GetTransaction(1)).Select(x => new object[] { x.Scan_ID, x.Scan_ID2, $"{x.TighteningStatus} {x.Torque}", x.LaserResult ? "OK" : "NG", x.CameraResult ? "OK" : "NG", x.FinalResult });
+            await UpdateLabelQTY();
             await InvokeAsync(() =>
             {
                 dataGridView1.Rows.Clear();
@@ -240,7 +241,6 @@ namespace AutoScrewing
                         item.CameraResult = DashboardModel.CameraStatus;
                         item.isCameraCompleted = true;
                         string checkRes = string.Empty;
-                        await Task.Delay(1000);
                         do
                         {
                             await plcController.Send(new PLCController.PLCItem("WR", "MR006", 0, "Disabling Start Button", false));
@@ -423,7 +423,6 @@ namespace AutoScrewing
                 model.isLaseringReady = true;
                 await SetDashboardControl(model);
                 string checkRes = string.Empty;
-                await Task.Delay(1000);
                 do
                 {
                     await plcController.Send(new PLCController.PLCItem("WR", "MR006", 0, "Disabling Start Button", false));
