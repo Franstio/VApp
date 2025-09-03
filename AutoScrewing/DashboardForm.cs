@@ -243,7 +243,8 @@ namespace AutoScrewing
 
                         do
                         {
-                            checkRes = await plcController.Send(new PLCController.PLCItem("WR", "MR006", 0, "Disabling Start Button", false));
+                            await plcController.Send(new PLCController.PLCItem("WR", "MR006", 0, "Disabling Start Button", false));
+                            checkRes = await plcController.Send(new PLCController.PLCItem("RD", "MR006", -1, "reading Start Button", false));
                         }
                         while (checkRes != "0");
                         //                        await Task.Delay(1000);
@@ -425,7 +426,8 @@ namespace AutoScrewing
 
                 do
                 {
-                    checkRes = await plcController.Send(new PLCController.PLCItem("WR", "MR006", 0, "Disabling Start Button", false));
+                    await plcController.Send(new PLCController.PLCItem("WR", "MR006", 0, "Disabling Start Button", false));
+                    checkRes = await plcController.Send(new PLCController.PLCItem("RD", "MR006", -1, "reading Start Button", false));
                 }
                 while (checkRes != "0");
                 await LoadData();
