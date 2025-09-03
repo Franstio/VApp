@@ -68,10 +68,14 @@ namespace AutoScrewing
         }
         private async Task UpdateLabelQTY()
         {
-            var data = await GetOngoingItems();
-            await qtyInputLabel.InvokeAsync(() => qtyInputLabel.Text = $"QTY INPUT: {data.Count}");
-            await qtyPassLabel.InvokeAsync(()=>qtyPassLabel.Text = $"QTY PASS: {data.Where(x=>x.FinalResult=="OK").Count()}");
-            await qtyNGLabel.InvokeAsync(() => qtyNGLabel.Text = $"QTY NG: {data.Where(x => x.FinalResult == "NG").Count()}");
+            try
+            {
+                var data = await GetOngoingItems();
+                await qtyInputLabel.InvokeAsync(() => qtyInputLabel.Text = $"QTY INPUT: {data.Count}");
+                await qtyPassLabel.InvokeAsync(() => qtyPassLabel.Text = $"QTY PASS: {data.Where(x => x.FinalResult == "OK").Count()}");
+                await qtyNGLabel.InvokeAsync(() => qtyNGLabel.Text = $"QTY NG: {data.Where(x => x.FinalResult == "NG").Count()}");
+            }
+            catch { }
         }
         private async Task LoadData()
         {
