@@ -240,7 +240,7 @@ namespace AutoScrewing
                         item.CameraResult = DashboardModel.CameraStatus;
                         item.isCameraCompleted = true;
                         string checkRes = string.Empty;
-
+                        await Task.Delay(1000);
                         do
                         {
                             await plcController.Send(new PLCController.PLCItem("WR", "MR006", 0, "Disabling Start Button", false));
@@ -423,7 +423,7 @@ namespace AutoScrewing
                 model.isLaseringReady = true;
                 await SetDashboardControl(model);
                 string checkRes = string.Empty;
-
+                await Task.Delay(1000);
                 do
                 {
                     await plcController.Send(new PLCController.PLCItem("WR", "MR006", 0, "Disabling Start Button", false));
