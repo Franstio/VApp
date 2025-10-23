@@ -44,7 +44,7 @@ namespace AutoScrewing
         private bool runTrigger = false;
         private EmergencyDialogue msgDialogue = new EmergencyDialogue();
         private LogRepository logRepository = new LogRepository();
-        private SemaphoreSlim slim = new SemaphoreSlim(0,1);
+        private SemaphoreSlim slim = new SemaphoreSlim(1,1);
         private string CHECKSUM_SCREWING = "", NEW_CHECKSUM_SCREWING = "";
 //        SemaphoreSlim semaphore = new SemaphoreSlim(1);
         Queue<OngoingItemModel>
