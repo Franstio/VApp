@@ -74,7 +74,7 @@ namespace AutoScrewing.Dialogue.MaintenanceControls
                     bool val = status = res == "1";
                     await InvokeAsync(() =>
                     {
-                        button1.Enabled = (StateEnable && val) || !StateEnable;
+                        button1.Enabled = val;
                         pictureBox1.Image = val ? greenImage : redImage;
                     });
                 }
