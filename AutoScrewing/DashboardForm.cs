@@ -1040,6 +1040,7 @@ namespace AutoScrewing
             {
                 try
                 {
+                    await slim.WaitAsync();
                     Task<string>[] Tasks = [Task.Run(async () => await plcController.Send(plcReads[0])), Task.Run(async () => await plcController.Send(plcReads[1]))];
                     await Task.WhenAll(Tasks);
                     bool pause = (await Tasks[1]) == "1";
@@ -1048,7 +1049,6 @@ namespace AutoScrewing
                     {
                         msgDialogue = new EmergencyDialogue();
                         msgDialogue.StartPosition = FormStartPosition.CenterParent;
-                        await slim.WaitAsync();
                         await InvokeAsync(() => {
                             var res  = msgDialogue.ShowDialog(this);
                             slim.Release();
@@ -1057,6 +1057,7 @@ namespace AutoScrewing
                         return;
                     }
                     await Task.Delay(100);
+                    slim.Release();
                 }
                 catch { }
             }
