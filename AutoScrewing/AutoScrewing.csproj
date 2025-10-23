@@ -19,6 +19,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Dialogue\MaintenanceControls\ReleaseBoxControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Update="Dialogue\TransactionForm.cs">
       <SubType>Form</SubType>
     </Compile>

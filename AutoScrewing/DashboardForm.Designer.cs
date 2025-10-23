@@ -231,7 +231,7 @@
             timeLabel.ForeColor = Color.FromArgb(107, 114, 128);
             timeLabel.Location = new Point(1321, 30);
             timeLabel.Name = "timeLabel";
-            timeLabel.Size = new Size(133, 37);
+            timeLabel.Size = new Size(104, 51);
             timeLabel.TabIndex = 6;
             timeLabel.Text = "00:00 00.00";
             // 
@@ -558,7 +558,7 @@
             workNumberScanBox.Font = new Font("Sans Serif Collection", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             workNumberScanBox.Location = new Point(3, 36);
             workNumberScanBox.Name = "workNumberScanBox";
-            workNumberScanBox.Size = new Size(297, 39);
+            workNumberScanBox.Size = new Size(297, 42);
             workNumberScanBox.TabIndex = 13;
             workNumberScanBox.Tag = "Scan Work Order Number";
             workNumberScanBox.TextAlign = HorizontalAlignment.Center;
@@ -570,7 +570,7 @@
             scan2Box.Font = new Font("Sans Serif Collection", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             scan2Box.Location = new Point(912, 36);
             scan2Box.Name = "scan2Box";
-            scan2Box.Size = new Size(299, 39);
+            scan2Box.Size = new Size(299, 42);
             scan2Box.TabIndex = 12;
             scan2Box.Tag = "Scan Operation LotNo...";
             scan2Box.TextAlign = HorizontalAlignment.Center;
@@ -582,7 +582,7 @@
             scan1Box.Font = new Font("Sans Serif Collection", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             scan1Box.Location = new Point(609, 36);
             scan1Box.Name = "scan1Box";
-            scan1Box.Size = new Size(297, 39);
+            scan1Box.Size = new Size(297, 42);
             scan1Box.TabIndex = 11;
             scan1Box.Tag = "Scan Operation MaterialLotNo'";
             scan1Box.TextAlign = HorizontalAlignment.Center;
@@ -594,7 +594,7 @@
             userIdBox.Font = new Font("Sans Serif Collection", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             userIdBox.Location = new Point(306, 36);
             userIdBox.Name = "userIdBox";
-            userIdBox.Size = new Size(297, 39);
+            userIdBox.Size = new Size(297, 42);
             userIdBox.TabIndex = 10;
             userIdBox.Tag = "Scan Operation User SN...";
             userIdBox.TextAlign = HorizontalAlignment.Center;

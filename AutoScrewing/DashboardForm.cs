@@ -1046,7 +1046,7 @@ namespace AutoScrewing
                         msgDialogue = new EmergencyDialogue();
                         msgDialogue.StartPosition = FormStartPosition.CenterParent;
                         await InvokeAsync(() => {
-                            var res  = msgDialogue.ShowDialog();
+                            var res  = msgDialogue.ShowDialog(this);
                         });
                         _ = Task.Run(() => CheckEmergency());
                         return;

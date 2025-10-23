@@ -1,6 +1,6 @@
-﻿namespace AutoScrewing.Dialogue
+﻿namespace AutoScrewing.Dialogue.MaintenanceControls
 {
-    partial class MaintenanceBoxControl
+    partial class ReleaseBoxControl
     {
         /// <summary> 
         /// Required designer variable.
