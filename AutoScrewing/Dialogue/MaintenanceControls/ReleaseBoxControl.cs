@@ -69,7 +69,6 @@ namespace AutoScrewing.Dialogue.MaintenanceControls
             {
                 try
                 {
-                    bool d = StateEnable;
                     tokenCancel.Token.ThrowIfCancellationRequested();
                     var res = await plcController.Send(maintenanceData.InputCommand);
                     bool val = status = res == "1";
@@ -82,9 +81,10 @@ namespace AutoScrewing.Dialogue.MaintenanceControls
                             button1.ForeColor = Color.Black;
                         }
                         else
-                            StateEnable = d;
+                            StateEnable = StateEnable;
                         pictureBox1.Image = val ? greenImage : redImage;
                     });
+                    await Task.Delay(50);
                 }
                 catch (OperationCanceledException e)
                 {
