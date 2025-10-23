@@ -44,6 +44,7 @@ namespace AutoScrewing
         private bool runTrigger = false;
         private EmergencyDialogue msgDialogue = new EmergencyDialogue();
         private LogRepository logRepository = new LogRepository();
+        private SemaphoreSlim slim = new SemaphoreSlim(0,1);
         private string CHECKSUM_SCREWING = "", NEW_CHECKSUM_SCREWING = "";
 //        SemaphoreSlim semaphore = new SemaphoreSlim(1);
         Queue<OngoingItemModel>
@@ -1013,7 +1014,7 @@ namespace AutoScrewing
             await LoadScanToStart("1030422494", rnd.Next(10000, 99999).ToString("D5"), rnd.Next(10000, 99999).ToString("D5"), "BM249942942");
         }
 
-        private void maintenanceToolStripMenuItem_Click(object sender, EventArgs e)
+        private async void maintenanceToolStripMenuItem_Click(object sender, EventArgs e)
         {
             using (var frm = new LoginForm())
             {
@@ -1022,7 +1023,9 @@ namespace AutoScrewing
                 if (result == DialogResult.OK && usr != null)
                 {
                     var frm2 = new MaintenanceForm();
-                    frm2.ShowDialog();
+                    await slim.WaitAsync();
+                    frm2.ShowDialog(this);
+                    slim.Release();
                 }
             }
         }
@@ -1045,8 +1048,10 @@ namespace AutoScrewing
                     {
                         msgDialogue = new EmergencyDialogue();
                         msgDialogue.StartPosition = FormStartPosition.CenterParent;
+                        await slim.WaitAsync();
                         await InvokeAsync(() => {
                             var res  = msgDialogue.ShowDialog(this);
+                            slim.Release();
                         });
                         _ = Task.Run(() => CheckEmergency());
                         return;

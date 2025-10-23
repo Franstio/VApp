@@ -25,7 +25,12 @@ namespace AutoScrewing.Dialogue
         private void MaintenanceForm_Load(object sender, EventArgs e)
         {
             WindowState = FormWindowState.Maximized;
-            flowLayoutPanel1.Controls.AddRange(boxes.ToArray());
+            var s = boxes.Select(x =>
+            {
+                x.Width = flowLayoutPanel1.Width - 10;
+                return x;
+            }).ToArray();
+            flowLayoutPanel1.Controls.AddRange(s);
         }
 
         private void MaintenanceForm_FormClosing(object sender, FormClosingEventArgs e)
