@@ -1022,7 +1022,7 @@ namespace AutoScrewing
                 if (result == DialogResult.OK && usr != null)
                 {
                     var frm2 = new MaintenanceForm();
-                    frm2.Show();
+                    frm2.ShowDialog();
                 }
             }
         }
