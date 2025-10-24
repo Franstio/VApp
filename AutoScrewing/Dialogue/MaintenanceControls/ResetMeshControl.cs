@@ -44,7 +44,7 @@ namespace AutoScrewing.Dialogue.MaintenanceControls
 
         private async void button1_Click(object sender, EventArgs e)
         {
-            await plcController.Send(new PLCController.PLCItem("WR","MR910",1,"");
+            await plcController.Send(new PLCController.PLCItem("WR","MR910",1,""));
         }
     }
 }
