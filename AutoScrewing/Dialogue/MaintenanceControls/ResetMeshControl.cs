@@ -44,9 +44,22 @@ namespace AutoScrewing.Dialogue.MaintenanceControls
 
         private async void button1_Click(object sender, EventArgs e)
         {
+            string oldtext = button1.Text;
+            var oldColor = button1.BackColor;
+            await InvokeAsync(() =>
+            {
+                button1.BackColor = Color.Red;
+                button1.Text = "Trigger Running";
+            });
             await plcController.Send(new PLCController.PLCItem("WR","MR910",1,""));
             await Task.Delay(100);
             await plcController.Send(new PLCController.PLCItem("WR", "MR910", 0, ""));
+            await Task.Delay(500);
+            await InvokeAsync(() =>
+            {
+                button1.BackColor = oldColor;
+                button1.Text = oldtext;
+            });
         }
     }
 }
