@@ -50,7 +50,12 @@ namespace AutoScrewing.Dialogue
             {
                 try
                 {
-                    Task<string>[] Tasks = [Task.Run(async () => await plcController.Send(plcReads[0])), Task.Run(async () => await plcController.Send(plcReads[1]))];
+                    List<Task<string>> Tasks = [];
+                    for (int i=0;i<plcReads.Length;i++)
+                    {
+                        var data = plcReads[i];
+                        Tasks.Add(Task.Run(async () => await plcController.Send(plcReads[1])));
+                    }
                     await Task.WhenAll(Tasks);
                     bool pause = (await Tasks[1]) == "1";
                     bool emergency = (await Tasks[0]) == "0";
