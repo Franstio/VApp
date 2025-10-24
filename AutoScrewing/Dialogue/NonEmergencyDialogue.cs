@@ -17,17 +17,18 @@ namespace AutoScrewing.Dialogue
     {
         PLCController plcController;
         private CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-        public NonEmergencyDialogue()
+        public interface IEmergencyMonitor
+        {
+            Task CheckEmergency();
+        }
+        private IEmergencyMonitor monitor;
+        public NonEmergencyDialogue(IEmergencyMonitor monitor)
         {
             InitializeComponent();
             plcController = Program.ServiceProvider.GetRequiredService<PLCController>();
+            this.monitor = monitor;
         }
-        public NonEmergencyDialogue(string message)
-        {
-            InitializeComponent();
-            this.label1.Text = message;
-            plcController = Program.ServiceProvider.GetRequiredService<PLCController>();
-        }
+        
 
         private async Task WaitForComplete()
         {
@@ -66,6 +67,7 @@ namespace AutoScrewing.Dialogue
 
         private void EmergencyDialogue_FormClosing(object sender, FormClosingEventArgs e)
         {
+            _ = Task.Run(monitor.CheckEmergency);
             cancellationTokenSource.Cancel();
         }
     }

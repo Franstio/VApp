@@ -33,7 +33,7 @@ using Label = System.Windows.Forms.Label;
 
 namespace AutoScrewing
 {
-    public partial class DashboardForm : Form, DashboardForm.IDashboardOngoingItems, IOStatusForm.IOStatusAPI, QueueManual.IQueueManual
+    public partial class DashboardForm : Form, DashboardForm.IDashboardOngoingItems, IOStatusForm.IOStatusAPI, QueueManual.IQueueManual,NonEmergencyDialogue.IEmergencyMonitor
     {
         private TransactionRepository TransactionRepository = new TransactionRepository();
         private MESHController meshController;
@@ -1029,7 +1029,7 @@ namespace AutoScrewing
                 }
             }
         }
-        private async Task CheckEmergency()
+        public async Task CheckEmergency()
         {
             PLCController.PLCItem[] plcReads = [
                 new PLCController.PLCItem("RD", "R10", -1, "Read Emergency",false),
@@ -1054,12 +1054,19 @@ namespace AutoScrewing
                     bool jig  = (await Tasks[2]) == "1";
                     if (pause || emergency || jig)
                     {
-                        msgDialogue = jig ? new NonEmergencyDialogue() : new EmergencyDialogue();
+                        msgDialogue = jig ? new NonEmergencyDialogue(this) : new EmergencyDialogue();
                         msgDialogue.StartPosition = FormStartPosition.CenterParent;
                         await InvokeAsync(() => {
-                            var res  = msgDialogue.ShowDialog(this);
-                            _ = Task.Run(() => CheckEmergency());
-                            slim.Release();
+                            if (jig)
+                            {
+                                msgDialogue.Show();
+                            }
+                            else
+                            {
+                                var res = msgDialogue.ShowDialog(this);
+                                _ = Task.Run(() => CheckEmergency());
+                            }
+                                slim.Release();
                         });
                         return;
                     }
