@@ -30,13 +30,13 @@
         {
             tableLayoutPanel1 = new TableLayoutPanel();
             panel2 = new Panel();
+            tableLayoutPanel2 = new TableLayoutPanel();
             panel4 = new Panel();
             button1 = new Button();
-            tableLayoutPanel2 = new TableLayoutPanel();
             tableLayoutPanel1.SuspendLayout();
             panel2.SuspendLayout();
-            panel4.SuspendLayout();
             tableLayoutPanel2.SuspendLayout();
+            panel4.SuspendLayout();
             SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -64,6 +64,20 @@
             panel2.Size = new Size(777, 226);
             panel2.TabIndex = 1;
             // 
+            // tableLayoutPanel2
+            // 
+            tableLayoutPanel2.ColumnCount = 1;
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableLayoutPanel2.Controls.Add(panel4, 0, 0);
+            tableLayoutPanel2.Dock = DockStyle.Fill;
+            tableLayoutPanel2.Location = new Point(0, 0);
+            tableLayoutPanel2.Name = "tableLayoutPanel2";
+            tableLayoutPanel2.RowCount = 1;
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tableLayoutPanel2.Size = new Size(775, 224);
+            tableLayoutPanel2.TabIndex = 1;
+            // 
             // panel4
             // 
             panel4.Controls.Add(button1);
@@ -83,23 +97,9 @@
             button1.Name = "button1";
             button1.Size = new Size(745, 90);
             button1.TabIndex = 6;
-            button1.Text = "Trigger";
+            button1.Text = "Trigger Reset Mesh";
             button1.UseVisualStyleBackColor = false;
             button1.Click += button1_Click;
-            // 
-            // tableLayoutPanel2
-            // 
-            tableLayoutPanel2.ColumnCount = 1;
-            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tableLayoutPanel2.Controls.Add(panel4, 0, 0);
-            tableLayoutPanel2.Dock = DockStyle.Fill;
-            tableLayoutPanel2.Location = new Point(0, 0);
-            tableLayoutPanel2.Name = "tableLayoutPanel2";
-            tableLayoutPanel2.RowCount = 1;
-            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            tableLayoutPanel2.Size = new Size(775, 224);
-            tableLayoutPanel2.TabIndex = 1;
             // 
             // ResetMeshControl
             // 
@@ -113,8 +113,8 @@
             Size = new Size(803, 252);
             tableLayoutPanel1.ResumeLayout(false);
             panel2.ResumeLayout(false);
-            panel4.ResumeLayout(false);
             tableLayoutPanel2.ResumeLayout(false);
+            panel4.ResumeLayout(false);
             ResumeLayout(false);
         }
 
