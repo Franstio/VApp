@@ -1034,6 +1034,7 @@ namespace AutoScrewing
             PLCController.PLCItem[] plcReads = [
                 new PLCController.PLCItem("RD", "R10", -1, "Read Emergency",false),
                 new PLCController.PLCItem("RD", "R100", -1, "Read Pause",false),
+                new PLCController.PLCItem("RD","MR202",-1,"Read Jig",false)
             ];
 
             while (true)
@@ -1045,7 +1046,8 @@ namespace AutoScrewing
                     await Task.WhenAll(Tasks);
                     bool pause = (await Tasks[1]) == "1";
                     bool emergency = (await Tasks[0]) == "0";
-                    if (pause || emergency)
+                    bool jig  = (await Tasks[2]) == "1";
+                    if (pause || emergency || jig)
                     {
                         msgDialogue = new EmergencyDialogue();
                         msgDialogue.StartPosition = FormStartPosition.CenterParent;

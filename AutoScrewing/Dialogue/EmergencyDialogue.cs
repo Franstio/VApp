@@ -22,6 +22,12 @@ namespace AutoScrewing.Dialogue
             InitializeComponent();
             plcController = Program.ServiceProvider.GetRequiredService<PLCController>();
         }
+        public EmergencyDialogue(string message)
+        {
+            InitializeComponent();
+            this.label1.Text = message;
+            plcController = Program.ServiceProvider.GetRequiredService<PLCController>();
+        }
         private const int CP_NOCLOSE_BUTTON = 0x200;
         protected override CreateParams CreateParams
         {
@@ -37,6 +43,7 @@ namespace AutoScrewing.Dialogue
             PLCController.PLCItem[] plcReads = [
                 new PLCController.PLCItem("RD", "R10", -1, "Read Emergency",false),
                 new PLCController.PLCItem("RD", "R100", -1, "Read Pause",false),
+                new PLCController.PLCItem("RD", "MR202",-1,"Read Jig")
             ];
 
             while (!cancellationTokenSource.IsCancellationRequested)
@@ -47,6 +54,7 @@ namespace AutoScrewing.Dialogue
                     await Task.WhenAll(Tasks);
                     bool pause = (await Tasks[1]) == "1";
                     bool emergency = (await Tasks[0]) == "0";
+                    bool jig = (await Tasks[2]) == "1";
                     if (emergency)
                     {
                         await InvokeAsync(() => label1.Text = "Emergency Active");
@@ -54,6 +62,10 @@ namespace AutoScrewing.Dialogue
                     else if (pause)
                     {
                         await InvokeAsync(() => label1.Text = "Pause Active");
+                    }
+                    else if (jig)
+                    {
+                        await InvokeAsync(() => label1.Text = "Jig dalam kondisi nyangkut");
                     }
                     else
                         await InvokeAsync(() => this.Close());

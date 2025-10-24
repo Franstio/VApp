@@ -15,7 +15,8 @@ namespace AutoScrewing.Dialogue
     {
         private List<UserControl> boxes = [
 //            new MaintenanceBoxControl(new MaintenanceBoxControl.MaintenanceData(""))
-              new ReleaseBoxControl()
+              new ReleaseBoxControl(),
+            new ResetMeshControl()
             ];
         public MaintenanceForm()
         {
