@@ -50,7 +50,7 @@ namespace AutoScrewing.Dialogue
                     bool jig = (await Tasks[0]) == "1";
                     if (jig)
                     {
-                        await InvokeAsync(() => label1.Text = "Jig dalam kondisi nyangkut");
+                        await InvokeAsync(() => label1.Text = "Positioning Jig Failed,\r\nPlease check!");
                     }
                     else
                         await InvokeAsync(() => this.Close());
