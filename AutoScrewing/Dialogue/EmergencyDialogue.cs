@@ -54,7 +54,7 @@ namespace AutoScrewing.Dialogue
                     for (int i=0;i<plcReads.Length;i++)
                     {
                         var data = plcReads[i];
-                        Tasks.Add(Task.Run(async () => await plcController.Send(plcReads[1])));
+                        Tasks.Add(Task.Run(async () => await plcController.Send(plcReads[i])));
                     }
                     await Task.WhenAll(Tasks);
                     bool pause = (await Tasks[1]) == "1";
