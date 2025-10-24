@@ -1061,7 +1061,7 @@ namespace AutoScrewing
                     await Task.Delay(100);
                     slim.Release();
                 }
-                catch {
+                catch  (Exception ex){
                     slim.Release();
                 }
             }
