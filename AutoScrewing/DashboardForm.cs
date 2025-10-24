@@ -1042,9 +1042,9 @@ namespace AutoScrewing
                 try
                 {
                     await slim.WaitAsync();
-                    Task<string>[] Tasks = new Task<string>[plcReads.Length];
+                    List<Task<string>> Tasks = new List<Task<string>>();
                     for (int i = 0; i < plcReads.Length; i++)
-                        Tasks[i] = Task.Run(async () => await plcController.Send(plcReads[i]));
+                        Tasks.Add(Task.Run(async () => await plcController.Send(plcReads[i])));
                     await Task.WhenAll(Tasks);
                     bool pause = (await Tasks[1]) == "1";
                     bool emergency = (await Tasks[0]) == "0";
