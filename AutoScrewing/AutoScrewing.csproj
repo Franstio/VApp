@@ -19,6 +19,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Dialogue\NonEmergencyDialogue.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="Dialogue\MaintenanceControls\ResetMeshControl.cs">
       <SubType>UserControl</SubType>
     </Compile>

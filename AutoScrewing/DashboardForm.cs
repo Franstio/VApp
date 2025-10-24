@@ -42,7 +42,7 @@ namespace AutoScrewing
         private DashboardModel _dashboardmodel = new DashboardModel();
         private bool meshSend = false;
         private bool runTrigger = false;
-        private EmergencyDialogue msgDialogue = new EmergencyDialogue();
+        private Form msgDialogue = new EmergencyDialogue();
         private LogRepository logRepository = new LogRepository();
         private SemaphoreSlim slim = new SemaphoreSlim(1,1);
         private string CHECKSUM_SCREWING = "", NEW_CHECKSUM_SCREWING = "";
@@ -1054,7 +1054,7 @@ namespace AutoScrewing
                     bool jig  = (await Tasks[2]) == "1";
                     if (pause || emergency || jig)
                     {
-                        msgDialogue = new EmergencyDialogue();
+                        msgDialogue = jig ? new NonEmergencyDialogue() : new EmergencyDialogue();
                         msgDialogue.StartPosition = FormStartPosition.CenterParent;
                         await InvokeAsync(() => {
                             var res  = msgDialogue.ShowDialog(this);
