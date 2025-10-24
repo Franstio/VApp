@@ -1058,9 +1058,9 @@ namespace AutoScrewing
                         msgDialogue.StartPosition = FormStartPosition.CenterParent;
                         await InvokeAsync(() => {
                             var res  = msgDialogue.ShowDialog(this);
+                            _ = Task.Run(() => CheckEmergency());
                             slim.Release();
                         });
-                        _ = Task.Run(() => CheckEmergency());
                         return;
                     }
                     await Task.Delay(100);
