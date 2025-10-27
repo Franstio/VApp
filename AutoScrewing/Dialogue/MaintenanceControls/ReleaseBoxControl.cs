@@ -9,14 +9,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static AutoScrewing.Dialogue.MaintenanceControls.IMaintenanceControl;
 
 namespace AutoScrewing.Dialogue.MaintenanceControls
 {
     public partial class ReleaseBoxControl : UserControl,IMaintenanceControl
     {
-        public record MaintenanceData(string inputText,string outputText, PLCController.PLCItem OutputEnableCommand, PLCController.PLCItem OutputDisableCommand, PLCController.PLCItem InputCommand);
         private readonly Image redImage, greenImage;
-        private readonly MaintenanceData maintenanceData;
+        public MaintenanceData maintenanceData { get; private set; }
         private PLCController plcController;
         private CancellationTokenSource tokenCancel;
         private bool _stateEnable = true;
@@ -63,7 +63,7 @@ namespace AutoScrewing.Dialogue.MaintenanceControls
         {
 
         }
-        private async Task Read()
+        public async Task Read()
         {
             while (!tokenCancel.IsCancellationRequested)
             {

@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static AutoScrewing.Dialogue.MaintenanceControls.IMaintenanceControl;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
@@ -16,11 +17,10 @@ namespace AutoScrewing.Dialogue.MaintenanceControls
 {
     public partial class ResetMeshControl : UserControl,IMaintenanceControl
     {
-        public record MaintenanceData(string inputText, string outputText, PLCController.PLCItem OutputEnableCommand, PLCController.PLCItem OutputDisableCommand, PLCController.PLCItem InputCommand);
         private PLCController plcController;
         private CancellationTokenSource tokenCancel;
         private readonly Image redImage, greenImage;
-        private readonly MaintenanceData maintenanceData;
+        public MaintenanceData maintenanceData { get; private set; }
 
         public ResetMeshControl()
         {
@@ -52,7 +52,7 @@ namespace AutoScrewing.Dialogue.MaintenanceControls
         }
 
 
-        private async Task Read()
+        public async Task Read()
         {
             while (!tokenCancel.IsCancellationRequested)
             {
