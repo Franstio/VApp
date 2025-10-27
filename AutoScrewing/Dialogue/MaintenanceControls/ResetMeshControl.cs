@@ -9,21 +9,33 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace AutoScrewing.Dialogue.MaintenanceControls
 {
     public partial class ResetMeshControl : UserControl,IMaintenanceControl
     {
+        public record MaintenanceData(string inputText, string outputText, PLCController.PLCItem OutputEnableCommand, PLCController.PLCItem OutputDisableCommand, PLCController.PLCItem InputCommand);
         private PLCController plcController;
         private CancellationTokenSource tokenCancel;
-        
+        private readonly Image redImage, greenImage;
+        private readonly MaintenanceData maintenanceData;
+
         public ResetMeshControl()
         {
             InitializeComponent();
-            Random rnd = new Random();
-            bool isGreen = rnd.Next(0, 100) % 2 == 0;
+            maintenanceData = new MaintenanceData("Check MR006", "", new PLCController.PLCItem("RD", "MR901", 1, ""), new PLCController.PLCItem("WR", "MR901", 0, ""), new PLCController.PLCItem("RD", "MR006", -1, ""));
             plcController = Program.ServiceProvider.GetRequiredService<PLCController>();
             tokenCancel = new CancellationTokenSource();
+            redImage = LoadImage(Properties.Resources.red_circle);
+            greenImage = LoadImage(Properties.Resources.green_circle);
+            pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+            pictureBox1.Padding = new Padding(10);
+            inputLabel.Text = maintenanceData.inputText;
+            plcController = Program.ServiceProvider.GetRequiredService<PLCController>();
+            tokenCancel = new CancellationTokenSource();
+            _ = Task.Run(Read);
         }
         public void ClearTask()
         {
@@ -38,7 +50,33 @@ namespace AutoScrewing.Dialogue.MaintenanceControls
         {
 
         }
-        
+
+
+        private async Task Read()
+        {
+            while (!tokenCancel.IsCancellationRequested)
+            {
+                try
+                {
+                    tokenCancel.Token.ThrowIfCancellationRequested();
+                    var res = await plcController.Send(maintenanceData.InputCommand);
+                    bool val = res == "1";
+                    await InvokeAsync(() =>
+                    {
+                        pictureBox1.Image = val ? greenImage : redImage;
+                    });
+                    await Task.Delay(50);
+                }
+                catch (OperationCanceledException e)
+                {
+                    return;
+                }
+                catch (Exception _)
+                {
+                    continue;
+                }
+            }
+        }
 
 
 

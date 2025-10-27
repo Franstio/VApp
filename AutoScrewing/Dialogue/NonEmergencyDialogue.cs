@@ -67,7 +67,7 @@ namespace AutoScrewing.Dialogue
 
         private void EmergencyDialogue_FormClosing(object sender, FormClosingEventArgs e)
         {
-            _ = Task.Run(monitor.CheckEmergency);
+            _ = Task.Run(monitor.CheckEmergency);   
             cancellationTokenSource.Cancel();
         }
     }
