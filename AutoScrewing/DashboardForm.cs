@@ -288,6 +288,7 @@ namespace AutoScrewing
                             {
                                 listView1.Items.Add($"{DateTime.Now.ToString("HH:mm:ss")}\t{res.message}");
                                 listView1.Items[listView1.Items.Count - 1].ForeColor = res.code == -1 ? ColorTranslator.FromHtml("#EF4444") : Color.White;
+                                listView1.Items.Add("");
                             });
                         }
                     }
