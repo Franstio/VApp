@@ -31,6 +31,8 @@
             components = new System.ComponentModel.Container();
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            ListViewItem listViewItem1 = new ListViewItem("121221");
+            ListViewItem listViewItem2 = new ListViewItem("131313");
             tableLayoutPanel1 = new TableLayoutPanel();
             screwingResultLabel = new Label();
             screwingTimeLabel = new Label();
@@ -425,12 +427,14 @@
             listView1.BackColor = Color.FromArgb(31, 41, 55);
             listView1.Dock = DockStyle.Fill;
             listView1.ForeColor = Color.White;
+            listView1.Items.AddRange(new ListViewItem[] { listViewItem1, listViewItem2 });
             listView1.Location = new Point(400, 13);
             listView1.Name = "listView1";
             tableLayoutPanel4.SetRowSpan(listView1, 2);
             listView1.Size = new Size(160, 213);
             listView1.TabIndex = 3;
             listView1.UseCompatibleStateImageBehavior = false;
+            listView1.View = View.List;
             // 
             // timer1
             // 
