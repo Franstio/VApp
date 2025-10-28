@@ -294,7 +294,8 @@ namespace AutoScrewing
                             await InvokeAsync(() =>
                             {
                                 var item = new ListViewItem($"{DateTime.Now.ToString("HH:mm:ss")}\t{res.message}");
-                                item.ForeColor = res.code == -1 ? ColorTranslator.FromHtml("#EF4444") : Color.White;
+                                if (res.code==-1)
+                                    item.ForeColor = ColorTranslator.FromHtml("#EF4444") ;
                                 item.BackColor = listView1.BackColor;
                                 listView1.Items.Add(item);
                                 listView1.Items.Add(new ListViewItem(""));
