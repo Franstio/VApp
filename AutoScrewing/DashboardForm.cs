@@ -770,6 +770,7 @@ namespace AutoScrewing
                     f.ForeColor = res.code == -1 ? ColorTranslator.FromHtml("#EF4444") : Color.White;
                     f.BackColor = listView1.BackColor;
                     listView1.Items.Add(f);
+                    listView1.Items.Add(new ListViewItem(""));
                 }
                 if (res is not null)
                 {
