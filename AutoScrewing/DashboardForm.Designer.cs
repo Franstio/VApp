@@ -57,6 +57,7 @@
             tableLayoutPanel4 = new TableLayoutPanel();
             label2 = new Label();
             cameraResultLabel = new Label();
+            listView1 = new ListView();
             timer1 = new System.Windows.Forms.Timer(components);
             menuStrip1 = new MenuStrip();
             configToolStripMenuItem = new ToolStripMenuItem();
@@ -76,7 +77,6 @@
             scan1Box = new TextBox();
             userIdBox = new TextBox();
             label4 = new Label();
-            listView1 = new ListView();
             tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             tableLayoutPanel2.SuspendLayout();
@@ -420,6 +420,18 @@
             cameraResultLabel.TextChanged += screwingResultLabel_TextChanged;
             cameraResultLabel.Paint += screwingResultLabel_Paint;
             // 
+            // listView1
+            // 
+            listView1.BackColor = Color.FromArgb(31, 41, 55);
+            listView1.Dock = DockStyle.Fill;
+            listView1.ForeColor = Color.White;
+            listView1.Location = new Point(400, 13);
+            listView1.Name = "listView1";
+            tableLayoutPanel4.SetRowSpan(listView1, 2);
+            listView1.Size = new Size(160, 213);
+            listView1.TabIndex = 3;
+            listView1.UseCompatibleStateImageBehavior = false;
+            // 
             // timer1
             // 
             timer1.Enabled = true;
@@ -614,18 +626,6 @@
             label4.Size = new Size(297, 33);
             label4.TabIndex = 14;
             label4.Text = "Scan Work Number:";
-            // 
-            // listView1
-            // 
-            listView1.BackColor = Color.FromArgb(31, 41, 55);
-            listView1.Dock = DockStyle.Fill;
-            listView1.ForeColor = Color.White;
-            listView1.Location = new Point(400, 13);
-            listView1.Name = "listView1";
-            tableLayoutPanel4.SetRowSpan(listView1, 2);
-            listView1.Size = new Size(160, 213);
-            listView1.TabIndex = 3;
-            listView1.UseCompatibleStateImageBehavior = false;
             // 
             // DashboardForm
             // 
