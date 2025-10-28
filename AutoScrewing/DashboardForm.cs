@@ -33,7 +33,7 @@ using Label = System.Windows.Forms.Label;
 
 namespace AutoScrewing
 {
-    public partial class DashboardForm : Form, DashboardForm.IDashboardOngoingItems, IOStatusForm.IOStatusAPI, QueueManual.IQueueManual,NonEmergencyDialogue.IEmergencyMonitor
+    public partial class DashboardForm : Form, DashboardForm.IDashboardOngoingItems, IOStatusForm.IOStatusAPI, QueueManual.IQueueManual, NonEmergencyDialogue.IEmergencyMonitor
     {
         private TransactionRepository TransactionRepository = new TransactionRepository();
         private MESHController meshController;
@@ -44,9 +44,9 @@ namespace AutoScrewing
         private bool runTrigger = false;
         private Form msgDialogue = new EmergencyDialogue();
         private LogRepository logRepository = new LogRepository();
-        private SemaphoreSlim slim = new SemaphoreSlim(1,1);
+        private SemaphoreSlim slim = new SemaphoreSlim(1, 1);
         private string CHECKSUM_SCREWING = "", NEW_CHECKSUM_SCREWING = "";
-//        SemaphoreSlim semaphore = new SemaphoreSlim(1);
+        //        SemaphoreSlim semaphore = new SemaphoreSlim(1);
         Queue<OngoingItemModel>
             StandbyQueue = new Queue<OngoingItemModel>(),
             ScrewingQueue = new Queue<OngoingItemModel>(),
@@ -57,7 +57,7 @@ namespace AutoScrewing
         List<Task> BackgroundTasks = new List<Task>();
         public Task<List<OngoingItemModel>> GetOngoingItems()
         {
-            List<Queue<OngoingItemModel>> a = [StandbyQueue,ScrewingQueue, LaserQueue, CameraQueue, FinalQueue];
+            List<Queue<OngoingItemModel>> a = [StandbyQueue, ScrewingQueue, LaserQueue, CameraQueue, FinalQueue];
             try
             {
                 return Task.FromResult(a.SelectMany(x => x).OrderByDescending(x => x.TransactionTime).ToList());
@@ -92,7 +92,7 @@ namespace AutoScrewing
                 dataGridView1.Rows.Clear();
                 if (data.Length < 1)
                     return;
-                int finalResultColumnIndex = data[0].Length-1;
+                int finalResultColumnIndex = data[0].Length - 1;
                 foreach (var item in data)
                 {
                     dataGridView1.Rows.Add(item);
@@ -105,7 +105,7 @@ namespace AutoScrewing
                     else
                     {
                         rowCell.Cells[finalResultColumnIndex].Style.BackColor = rowCell.Cells[0].Style.BackColor;
-                        rowCell.Cells[finalResultColumnIndex].Style.ForeColor = rowCell.Cells[0].Style.ForeColor ;
+                        rowCell.Cells[finalResultColumnIndex].Style.ForeColor = rowCell.Cells[0].Style.ForeColor;
                     }
                 }
             });
@@ -150,16 +150,17 @@ namespace AutoScrewing
             //DashboardModel = data;
             BackgroundTasks.Add(Task.Run(() => CheckEmergency()));
             BackgroundTasks.Add(Task.Run(() => ReadScrewingKilew()));
-            BackgroundTasks.Add(Task.Run(() => ReadLaserPLC())) ;
+            BackgroundTasks.Add(Task.Run(() => ReadLaserPLC()));
             BackgroundTasks.Add(Task.Run(() => ReadCamera()));
 
             BackgroundTasks.Add(Task.Run(() => OutputTransaction()));
-//            _ = Task.Run(() => CheckReady());
+            //            _ = Task.Run(() => CheckReady());
             BackgroundTasks.Add(Task.Run(() => ShiftQueues()));
 
             BackgroundTasks.Add(Task.Run(() => ShiftTrigger()));
             BackgroundTasks.Add(Task.Run(CheckHandSensor));
             await LoadData();
+            await InvokeAsync(() => listView1.Items.Clear());
             //Task.Run(async () =>
             //{
             //    await Task.Delay(1000);
@@ -177,16 +178,16 @@ namespace AutoScrewing
             DashboardModel = model;
             try
             {
-                
+
                 await InvokeAsync(() =>
                 {
-                        try
-                        {
+                    try
+                    {
                         torqueLabel.Text = $"{model.Torque.ToString("0.0000")} {model.TorqueType}";
                         screwingResultLabel.Text = model.TighteningStatus;
                         screwingTimeLabel.Text = $"{model.Time} Seconds";
-                        laserResultLabel.Text = LaserQueue.Count > 0 &&   LaserQueue.Peek().isLaseringCompleted ? (LaserQueue.Peek().LaserResult ? "OK" : "NG") : (!model.isLaseringReady ? "Checking" : model.LaserStatus ? "OK" : "NG")  ;
-                        cameraResultLabel.Text = CameraQueue.Count > 0 && CameraQueue.Peek().isCameraCompleted ? (CameraQueue.Peek().CameraResult ? "OK" : "NG")  : ( !model.isCameraReady ? "Checking" : model.CameraStatus ? "OK" : "NG");
+                        laserResultLabel.Text = LaserQueue.Count > 0 && LaserQueue.Peek().isLaseringCompleted ? (LaserQueue.Peek().LaserResult ? "OK" : "NG") : (!model.isLaseringReady ? "Checking" : model.LaserStatus ? "OK" : "NG");
+                        cameraResultLabel.Text = CameraQueue.Count > 0 && CameraQueue.Peek().isCameraCompleted ? (CameraQueue.Peek().CameraResult ? "OK" : "NG") : (!model.isCameraReady ? "Checking" : model.CameraStatus ? "OK" : "NG");
                     }
                     catch { }
                 });
@@ -209,19 +210,19 @@ namespace AutoScrewing
                         ];
                         var valid = await plcController.Send(commands[0]);
                         var mdl = DashboardModel;
-                        if (valid != "1" )
+                        if (valid != "1")
                         {
                             mdl.isCameraReady = false;
                             await SetDashboardControl(mdl);
                             CameraQueue.Peek().isCameraCompleted = false;
-                      //      semaphore.Release();
+                            //      semaphore.Release();
                             continue;
                         }
                         DashboardModel.StartCamera = DateTime.Now;
 
                         mdl.isCameraReady = true;
                         await SetDashboardControl(mdl);
-                    //    semaphore.Release();
+                        //    semaphore.Release();
                         PLCController.PLCItem[] cmd = [
                             new PLCController.PLCItem("RD", "MR500", -1, "Read For Reading Camera NG"),
                             new PLCController.PLCItem("RD", "MR501", -1, "Read For Reading Camera OK")
@@ -256,7 +257,7 @@ namespace AutoScrewing
                         //                        await Task.Delay(1000);
                         await ShiftCameraToFinal();
                     }
-                   // semaphore.Release();
+                    // semaphore.Release();
                 }
 
                 catch (Exception ex)
@@ -279,7 +280,17 @@ namespace AutoScrewing
                     item.FinalResult = item.ScrewingResult && item.LaserResult && item.CameraResult ? "OK" : "NG";
                     item.CurrentStatus = "Completed";
                     if (Settings1.Default.mesActive)
-                        await meshController.Tracking(item.OperationUserSN, workNumberScanBox.Text, item.Scan_ID, item.Scan_ID2, item.FinalResult, item); ;
+                    {
+                        var res = await meshController.Tracking(item.OperationUserSN, workNumberScanBox.Text, item.Scan_ID, item.Scan_ID2, item.FinalResult, item); ;
+                        if (res is not null)
+                        {
+                            await InvokeAsync(() =>
+                            {
+                                listView1.Items.Add($"{DateTime.Now.ToString("HH:mm:ss")}\t{res.message}");
+                                listView1.Items[listView1.Items.Count - 1].BackColor = res.code == -1 ? ColorTranslator.FromHtml("#EF4444") : Color.White;
+                            });
+                        }
+                    }
                     await TransactionRepository.CreateTransaction(item);
                     RegisteredItem.Enqueue(FinalQueue.Dequeue());
                     await LoadData();
@@ -324,7 +335,7 @@ namespace AutoScrewing
                       //  new PLCController.PLCItem("RD", "MR008", -1, "Read if stepper running")
                         ];
                     string valids = await plcController.Send(commands[0]);
-                    if (valids != "1" )
+                    if (valids != "1")
                     {
                         mdl.isLaseringReady = false;
                         await SetDashboardControl(mdl);
@@ -522,7 +533,7 @@ namespace AutoScrewing
                     //                    await OutputTransaction();
                     //                    await ShiftCamera();
 
-//                    _ = Task.Run(() => ShiftTrigger());
+                    //                    _ = Task.Run(() => ShiftTrigger());
                     //                    await ShiftLaserToCamera();
                     //                    await ShiftScrewingToLaser();
                     meshSend = true;
@@ -547,7 +558,7 @@ namespace AutoScrewing
         }
         private async Task ShiftLaserToCamera()
         {
-            if (LaserQueue.Count > 0 )
+            if (LaserQueue.Count > 0)
             {
                 while (!LaserQueue.Peek().isLaseringCompleted)
                     continue;
@@ -729,7 +740,7 @@ namespace AutoScrewing
                             string res = await plcController.Send(shiftPlc);
                             shiftClear = res == "0";
                         }
-                        catch (Exception e ){ Console.WriteLine(e.Message + " " + e.StackTrace); }
+                        catch (Exception e) { Console.WriteLine(e.Message + " " + e.StackTrace); }
                     }
                     while (!shiftClear);
                 }
@@ -739,10 +750,16 @@ namespace AutoScrewing
         }
         private async Task LoadScanToStart(string operationusersn, string scan, string scan2, string worknumberorer)
         {
-            var item = new OngoingItemModel() { Scan_ID = scan, Scan_ID2 = scan2, WorkNumber = worknumberorer,isScrewingCompleted=false, OperationUserSN = operationusersn, OperationId = Settings1.Default.OPERATION_ID, CurrentStatus = "Screwing" };
+            var item = new OngoingItemModel() { Scan_ID = scan, Scan_ID2 = scan2, WorkNumber = worknumberorer, isScrewingCompleted = false, OperationUserSN = operationusersn, OperationId = Settings1.Default.OPERATION_ID, CurrentStatus = "Screwing" };
             try
             {
-                MesResponse? res = Settings1.Default.mesActive ? await meshController.Checking(operationusersn,worknumberorer, scan, scan2) : new MesResponse() { code = 1, data = "", message = "" };
+                MesResponse? res = Settings1.Default.mesActive ? await meshController.Checking(operationusersn, worknumberorer, scan, scan2) : new MesResponse() { code = 1, data = "", message = "" };
+                if (res is not null)
+                {
+
+                    listView1.Items.Add($"{DateTime.Now.ToString("HH:mm:ss")}\t{res.message}");
+                    listView1.Items[listView1.Items.Count - 1].BackColor = res.code == -1 ? ColorTranslator.FromHtml("#EF4444") : Color.White;
+                }
                 if (res is not null)
                 {
                     if (res.code == 1)
@@ -1051,12 +1068,13 @@ namespace AutoScrewing
                     await Task.WhenAll(Tasks);
                     bool pause = (await Tasks[1]) == "1";
                     bool emergency = (await Tasks[0]) == "0";
-                    bool jig  = (await Tasks[2]) == "1";
+                    bool jig = (await Tasks[2]) == "1";
                     if (pause || emergency || jig)
                     {
                         msgDialogue = jig ? new NonEmergencyDialogue(this) : new EmergencyDialogue();
                         msgDialogue.StartPosition = FormStartPosition.CenterParent;
-                        await InvokeAsync(() => {
+                        await InvokeAsync(() =>
+                        {
                             if (jig)
                             {
                                 msgDialogue.Show();
@@ -1066,17 +1084,23 @@ namespace AutoScrewing
                                 var res = msgDialogue.ShowDialog(this);
                                 _ = Task.Run(() => CheckEmergency());
                             }
-                                slim.Release();
+                            slim.Release();
                         });
                         return;
                     }
                     await Task.Delay(100);
                     slim.Release();
                 }
-                catch  (Exception ex){
+                catch (Exception ex)
+                {
                     slim.Release();
                 }
             }
+        }
+
+        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
 
         public interface IDashboardOngoingItems

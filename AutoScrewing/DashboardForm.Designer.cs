@@ -76,6 +76,7 @@
             scan1Box = new TextBox();
             userIdBox = new TextBox();
             label4 = new Label();
+            listView1 = new ListView();
             tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             tableLayoutPanel2.SuspendLayout();
@@ -377,11 +378,13 @@
             // tableLayoutPanel4
             // 
             tableLayoutPanel4.BackColor = Color.White;
-            tableLayoutPanel4.ColumnCount = 1;
+            tableLayoutPanel4.ColumnCount = 2;
             tableLayoutPanel2.SetColumnSpan(tableLayoutPanel4, 2);
-            tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+            tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 70F));
+            tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30F));
             tableLayoutPanel4.Controls.Add(label2, 0, 0);
             tableLayoutPanel4.Controls.Add(cameraResultLabel, 0, 1);
+            tableLayoutPanel4.Controls.Add(listView1, 1, 0);
             tableLayoutPanel4.Dock = DockStyle.Fill;
             tableLayoutPanel4.Location = new Point(869, 3);
             tableLayoutPanel4.Name = "tableLayoutPanel4";
@@ -389,6 +392,7 @@
             tableLayoutPanel4.RowCount = 2;
             tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Percent, 15F));
             tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Percent, 85F));
+            tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             tableLayoutPanel4.Size = new Size(573, 239);
             tableLayoutPanel4.TabIndex = 5;
             // 
@@ -399,7 +403,7 @@
             label2.ForeColor = Color.FromArgb(31, 41, 55);
             label2.Location = new Point(13, 10);
             label2.Name = "label2";
-            label2.Size = new Size(547, 32);
+            label2.Size = new Size(381, 32);
             label2.TabIndex = 2;
             label2.Text = "CAMERA";
             // 
@@ -409,7 +413,7 @@
             cameraResultLabel.Font = new Font("Sans Serif Collection", 36F, FontStyle.Bold);
             cameraResultLabel.Location = new Point(13, 42);
             cameraResultLabel.Name = "cameraResultLabel";
-            cameraResultLabel.Size = new Size(547, 187);
+            cameraResultLabel.Size = new Size(381, 187);
             cameraResultLabel.TabIndex = 1;
             cameraResultLabel.Text = "NG";
             cameraResultLabel.TextAlign = ContentAlignment.MiddleCenter;
@@ -611,6 +615,18 @@
             label4.TabIndex = 14;
             label4.Text = "Scan Work Number:";
             // 
+            // listView1
+            // 
+            listView1.BackColor = Color.FromArgb(31, 41, 55);
+            listView1.Dock = DockStyle.Fill;
+            listView1.ForeColor = Color.White;
+            listView1.Location = new Point(400, 13);
+            listView1.Name = "listView1";
+            tableLayoutPanel4.SetRowSpan(listView1, 2);
+            listView1.Size = new Size(160, 213);
+            listView1.TabIndex = 3;
+            listView1.UseCompatibleStateImageBehavior = false;
+            // 
             // DashboardForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -692,5 +708,6 @@
         private Label qtyPassLabel;
         private Label qtyInputLabel;
         private Button button1;
+        private ListView listView1;
     }
 }
