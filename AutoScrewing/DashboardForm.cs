@@ -290,10 +290,11 @@ namespace AutoScrewing
                         {
                             await InvokeAsync(() =>
                             {
-                                listView1.Items.Add(new ListViewItem($"{DateTime.Now.ToString("HH:mm:ss")}\t{res.message}"));
-                                listView1.Items[listView1.Items.Count - 1].ForeColor = res.code == -1 ? ColorTranslator.FromHtml("#EF4444") : Color.White;
-                                listView1.Items[listView1.Items.Count - 1].BackColor = listView1.BackColor;
-                                listView1.Items.Add("");
+                                var item = new ListViewItem($"{DateTime.Now.ToString("HH:mm:ss")}\t{res.message}");
+                                item.ForeColor = res.code == -1 ? ColorTranslator.FromHtml("#EF4444") : Color.White;
+                                item.BackColor = listView1.BackColor;
+                                listView1.Items.Add(item);
+                                listView1.Items.Add(new ListViewItem(""));
                             });
                         }
                     }
