@@ -294,8 +294,7 @@ namespace AutoScrewing
                             await InvokeAsync(() =>
                             {
                                 var item = new ListViewItem($"{DateTime.Now.ToString("HH:mm:ss")}\t{res.message}");
-                                if (res.code==-1)
-                                    item.ForeColor = ColorTranslator.FromHtml("#EF4444") ;
+                                item.ForeColor = res.code == -1 ? ColorTranslator.FromHtml("#EF4444") : Color.White;
                                 item.BackColor = listView1.BackColor;
                                 listView1.Items.Add(item);
                                 listView1.Items.Add(new ListViewItem(""));
@@ -767,9 +766,10 @@ namespace AutoScrewing
                 MesResponse? res = Settings1.Default.mesActive ? await meshController.Checking(operationusersn, worknumberorer, scan, scan2) : new MesResponse() { code = 1, data = "", message = "" };
                 if (res is not null)
                 {
-
-                    listView1.Items.Add($"{DateTime.Now.ToString("HH:mm:ss")}\t{res.message}");
-                    listView1.Items[listView1.Items.Count - 1].BackColor = res.code == -1 ? ColorTranslator.FromHtml("#EF4444") : Color.White;
+                    var f = new ListViewItem($"{DateTime.Now.ToString("HH:mm:ss")}\t{res.message}");
+                    f.ForeColor = res.code == -1 ? ColorTranslator.FromHtml("#EF4444") : Color.White;
+                    f.BackColor = listView1.BackColor;
+                    listView1.Items.Add(f);
                 }
                 if (res is not null)
                 {
