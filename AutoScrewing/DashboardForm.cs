@@ -163,10 +163,10 @@ namespace AutoScrewing
             await InvokeAsync(() =>
             {
                 listView1.Items.Clear();
-                listView1.View = View.List;
-                var item = new ListViewItem($"{DateTime.Now.ToString("HH:mm:ss")}\t{""}");
-                item.ForeColor = Color.White;
-                listView1.Items.Add(item);
+                //listView1.View = View.List;
+                //var item = new ListViewItem($"{DateTime.Now.ToString("HH:mm:ss")}\t{""}");
+                //item.ForeColor = Color.White;
+                //listView1.Items.Add(item);
             });
             //Task.Run(async () =>
             //{
