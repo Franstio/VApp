@@ -160,7 +160,6 @@ namespace AutoScrewing
             BackgroundTasks.Add(Task.Run(() => ShiftTrigger()));
             BackgroundTasks.Add(Task.Run(CheckHandSensor));
             await LoadData();
-            await InvokeAsync(() => listView1.Items.Clear());
             //Task.Run(async () =>
             //{
             //    await Task.Delay(1000);
