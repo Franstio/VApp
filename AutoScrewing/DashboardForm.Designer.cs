@@ -39,9 +39,6 @@
             laserResultLabel = new Label();
             timeLabel = new Label();
             tableLayoutPanel2 = new TableLayoutPanel();
-            qtyNGLabel = new Label();
-            qtyPassLabel = new Label();
-            qtyInputLabel = new Label();
             tableLayoutPanel5 = new TableLayoutPanel();
             label3 = new Label();
             panel1 = new Panel();
@@ -58,9 +55,6 @@
             Laser = new DataGridViewTextBoxColumn();
             Camera = new DataGridViewTextBoxColumn();
             Judgement = new DataGridViewTextBoxColumn();
-            tableLayoutPanel8 = new TableLayoutPanel();
-            button2 = new Button();
-            button1 = new Button();
             timer1 = new System.Windows.Forms.Timer(components);
             menuStrip1 = new MenuStrip();
             configToolStripMenuItem = new ToolStripMenuItem();
@@ -84,6 +78,13 @@
             time = new DataGridViewTextBoxColumn();
             msg = new DataGridViewTextBoxColumn();
             code = new DataGridViewTextBoxColumn();
+            tableLayoutPanel8 = new TableLayoutPanel();
+            qtyNGLabel = new Label();
+            qtyPassLabel = new Label();
+            qtyInputLabel = new Label();
+            tableLayoutPanel9 = new TableLayoutPanel();
+            button2 = new Button();
+            button1 = new Button();
             tableLayoutPanel1.SuspendLayout();
             tableLayoutPanel2.SuspendLayout();
             tableLayoutPanel5.SuspendLayout();
@@ -92,11 +93,12 @@
             tableLayoutPanel4.SuspendLayout();
             tableLayoutPanel7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
-            tableLayoutPanel8.SuspendLayout();
             menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)inputFileWatcher).BeginInit();
             tableLayoutPanel6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView2).BeginInit();
+            tableLayoutPanel8.SuspendLayout();
+            tableLayoutPanel9.SuspendLayout();
             SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -160,7 +162,7 @@
             laserResultLabel.Font = new Font("Sans Serif Collection", 36F, FontStyle.Bold);
             laserResultLabel.Location = new Point(13, 42);
             laserResultLabel.Name = "laserResultLabel";
-            laserResultLabel.Size = new Size(184, 187);
+            laserResultLabel.Size = new Size(257, 187);
             laserResultLabel.TabIndex = 0;
             laserResultLabel.Text = "OK";
             laserResultLabel.TextAlign = ContentAlignment.MiddleCenter;
@@ -184,64 +186,23 @@
             tableLayoutPanel2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             tableLayoutPanel2.ColumnCount = 4;
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30F));
-            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15F));
-            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15F));
-            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 40F));
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30F));
             tableLayoutPanel2.Controls.Add(dataGridView2, 3, 0);
-            tableLayoutPanel2.Controls.Add(qtyNGLabel, 2, 2);
-            tableLayoutPanel2.Controls.Add(qtyPassLabel, 1, 2);
-            tableLayoutPanel2.Controls.Add(qtyInputLabel, 0, 2);
             tableLayoutPanel2.Controls.Add(tableLayoutPanel5, 1, 0);
             tableLayoutPanel2.Controls.Add(panel1, 0, 0);
             tableLayoutPanel2.Controls.Add(tableLayoutPanel4, 2, 0);
             tableLayoutPanel2.Controls.Add(tableLayoutPanel7, 0, 1);
-            tableLayoutPanel2.Controls.Add(tableLayoutPanel8, 3, 2);
+            tableLayoutPanel2.Controls.Add(tableLayoutPanel8, 0, 2);
             tableLayoutPanel2.Location = new Point(12, 117);
             tableLayoutPanel2.Name = "tableLayoutPanel2";
             tableLayoutPanel2.RowCount = 3;
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 43F));
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 46F));
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 11F));
-            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
-            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             tableLayoutPanel2.Size = new Size(1445, 570);
             tableLayoutPanel2.TabIndex = 7;
-            // 
-            // qtyNGLabel
-            // 
-            qtyNGLabel.AutoSize = true;
-            qtyNGLabel.Dock = DockStyle.Fill;
-            qtyNGLabel.Font = new Font("Sans Serif Collection", 18F, FontStyle.Bold);
-            qtyNGLabel.Location = new Point(652, 507);
-            qtyNGLabel.Name = "qtyNGLabel";
-            qtyNGLabel.Size = new Size(210, 63);
-            qtyNGLabel.TabIndex = 9;
-            qtyNGLabel.Text = "QTY NG: 0";
-            qtyNGLabel.TextAlign = ContentAlignment.MiddleCenter;
-            // 
-            // qtyPassLabel
-            // 
-            qtyPassLabel.AutoSize = true;
-            qtyPassLabel.Dock = DockStyle.Fill;
-            qtyPassLabel.Font = new Font("Sans Serif Collection", 18F, FontStyle.Bold);
-            qtyPassLabel.Location = new Point(436, 507);
-            qtyPassLabel.Name = "qtyPassLabel";
-            qtyPassLabel.Size = new Size(210, 63);
-            qtyPassLabel.TabIndex = 8;
-            qtyPassLabel.Text = "QTY PASS: 0";
-            qtyPassLabel.TextAlign = ContentAlignment.MiddleCenter;
-            // 
-            // qtyInputLabel
-            // 
-            qtyInputLabel.AutoSize = true;
-            qtyInputLabel.Dock = DockStyle.Fill;
-            qtyInputLabel.Font = new Font("Sans Serif Collection", 18F, FontStyle.Bold);
-            qtyInputLabel.Location = new Point(3, 507);
-            qtyInputLabel.Name = "qtyInputLabel";
-            qtyInputLabel.Size = new Size(427, 63);
-            qtyInputLabel.TabIndex = 7;
-            qtyInputLabel.Text = "QTY INPUT: 0";
-            qtyInputLabel.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // tableLayoutPanel5
             // 
@@ -257,7 +218,7 @@
             tableLayoutPanel5.RowCount = 2;
             tableLayoutPanel5.RowStyles.Add(new RowStyle(SizeType.Percent, 15F));
             tableLayoutPanel5.RowStyles.Add(new RowStyle(SizeType.Percent, 85F));
-            tableLayoutPanel5.Size = new Size(210, 239);
+            tableLayoutPanel5.Size = new Size(283, 239);
             tableLayoutPanel5.TabIndex = 6;
             // 
             // label3
@@ -267,7 +228,7 @@
             label3.ForeColor = Color.FromArgb(31, 41, 55);
             label3.Location = new Point(13, 10);
             label3.Name = "label3";
-            label3.Size = new Size(184, 32);
+            label3.Size = new Size(257, 32);
             label3.TabIndex = 2;
             label3.Text = "SENSOR LASER";
             // 
@@ -316,13 +277,13 @@
             tableLayoutPanel4.Controls.Add(label2, 0, 0);
             tableLayoutPanel4.Controls.Add(cameraResultLabel, 0, 1);
             tableLayoutPanel4.Dock = DockStyle.Fill;
-            tableLayoutPanel4.Location = new Point(652, 3);
+            tableLayoutPanel4.Location = new Point(725, 3);
             tableLayoutPanel4.Name = "tableLayoutPanel4";
             tableLayoutPanel4.Padding = new Padding(10);
             tableLayoutPanel4.RowCount = 2;
             tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Percent, 15F));
             tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Percent, 85F));
-            tableLayoutPanel4.Size = new Size(210, 239);
+            tableLayoutPanel4.Size = new Size(283, 239);
             tableLayoutPanel4.TabIndex = 5;
             // 
             // label2
@@ -332,7 +293,7 @@
             label2.ForeColor = Color.FromArgb(31, 41, 55);
             label2.Location = new Point(13, 10);
             label2.Name = "label2";
-            label2.Size = new Size(184, 32);
+            label2.Size = new Size(257, 32);
             label2.TabIndex = 2;
             label2.Text = "CAMERA";
             // 
@@ -342,10 +303,10 @@
             cameraResultLabel.Font = new Font("Sans Serif Collection", 36F, FontStyle.Bold);
             cameraResultLabel.Location = new Point(13, 42);
             cameraResultLabel.Name = "cameraResultLabel";
-            cameraResultLabel.Size = new Size(184, 187);
+            cameraResultLabel.Size = new Size(257, 187);
             cameraResultLabel.TabIndex = 1;
             cameraResultLabel.Text = "NG";
-            cameraResultLabel.TextAlign = ContentAlignment.BottomCenter;
+            cameraResultLabel.TextAlign = ContentAlignment.MiddleCenter;
             cameraResultLabel.TextChanged += screwingResultLabel_TextChanged;
             cameraResultLabel.Paint += screwingResultLabel_Paint;
             // 
@@ -432,48 +393,6 @@
             Judgement.HeaderText = "Judgement";
             Judgement.Name = "Judgement";
             Judgement.ReadOnly = true;
-            // 
-            // tableLayoutPanel8
-            // 
-            tableLayoutPanel8.ColumnCount = 2;
-            tableLayoutPanel8.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tableLayoutPanel8.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tableLayoutPanel8.Controls.Add(button2, 1, 0);
-            tableLayoutPanel8.Controls.Add(button1, 0, 0);
-            tableLayoutPanel8.Dock = DockStyle.Fill;
-            tableLayoutPanel8.Location = new Point(868, 510);
-            tableLayoutPanel8.Name = "tableLayoutPanel8";
-            tableLayoutPanel8.RowCount = 1;
-            tableLayoutPanel8.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel8.Size = new Size(574, 57);
-            tableLayoutPanel8.TabIndex = 13;
-            // 
-            // button2
-            // 
-            button2.BackColor = Color.Orange;
-            button2.Dock = DockStyle.Fill;
-            button2.Font = new Font("Sans Serif Collection", 11F, FontStyle.Bold);
-            button2.ForeColor = Color.White;
-            button2.Location = new Point(290, 3);
-            button2.Name = "button2";
-            button2.Size = new Size(281, 51);
-            button2.TabIndex = 13;
-            button2.Text = "RESET";
-            button2.UseVisualStyleBackColor = false;
-            button2.Click += button2_Click;
-            // 
-            // button1
-            // 
-            button1.BackColor = Color.FromArgb(59, 130, 246);
-            button1.Dock = DockStyle.Fill;
-            button1.Font = new Font("Sans Serif Collection", 11F, FontStyle.Bold);
-            button1.ForeColor = Color.White;
-            button1.Location = new Point(3, 3);
-            button1.Name = "button1";
-            button1.Size = new Size(281, 51);
-            button1.TabIndex = 12;
-            button1.Text = "STATUS";
-            button1.UseVisualStyleBackColor = false;
             // 
             // timer1
             // 
@@ -693,10 +612,10 @@
             dataGridView2.DefaultCellStyle = dataGridViewCellStyle1;
             dataGridView2.Dock = DockStyle.Fill;
             dataGridView2.GridColor = Color.White;
-            dataGridView2.Location = new Point(868, 3);
+            dataGridView2.Location = new Point(1014, 3);
             dataGridView2.Name = "dataGridView2";
             dataGridView2.RowHeadersVisible = false;
-            dataGridView2.Size = new Size(574, 239);
+            dataGridView2.Size = new Size(428, 239);
             dataGridView2.TabIndex = 14;
             // 
             // time
@@ -719,6 +638,103 @@
             code.Name = "code";
             code.Visible = false;
             // 
+            // tableLayoutPanel8
+            // 
+            tableLayoutPanel8.ColumnCount = 4;
+            tableLayoutPanel2.SetColumnSpan(tableLayoutPanel8, 4);
+            tableLayoutPanel8.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30F));
+            tableLayoutPanel8.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30F));
+            tableLayoutPanel8.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30F));
+            tableLayoutPanel8.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10F));
+            tableLayoutPanel8.Controls.Add(qtyNGLabel, 0, 0);
+            tableLayoutPanel8.Controls.Add(qtyPassLabel, 1, 0);
+            tableLayoutPanel8.Controls.Add(qtyInputLabel, 2, 0);
+            tableLayoutPanel8.Controls.Add(tableLayoutPanel9, 3, 0);
+            tableLayoutPanel8.Dock = DockStyle.Fill;
+            tableLayoutPanel8.Location = new Point(3, 510);
+            tableLayoutPanel8.Name = "tableLayoutPanel8";
+            tableLayoutPanel8.RowCount = 1;
+            tableLayoutPanel8.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            tableLayoutPanel8.Size = new Size(1439, 57);
+            tableLayoutPanel8.TabIndex = 15;
+            // 
+            // qtyNGLabel
+            // 
+            qtyNGLabel.AutoSize = true;
+            qtyNGLabel.Dock = DockStyle.Fill;
+            qtyNGLabel.Font = new Font("Sans Serif Collection", 18F, FontStyle.Bold);
+            qtyNGLabel.Location = new Point(3, 0);
+            qtyNGLabel.Name = "qtyNGLabel";
+            qtyNGLabel.Size = new Size(425, 57);
+            qtyNGLabel.TabIndex = 16;
+            qtyNGLabel.Text = "QTY NG: 0";
+            qtyNGLabel.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // qtyPassLabel
+            // 
+            qtyPassLabel.AutoSize = true;
+            qtyPassLabel.Dock = DockStyle.Fill;
+            qtyPassLabel.Font = new Font("Sans Serif Collection", 18F, FontStyle.Bold);
+            qtyPassLabel.Location = new Point(434, 0);
+            qtyPassLabel.Name = "qtyPassLabel";
+            qtyPassLabel.Size = new Size(425, 57);
+            qtyPassLabel.TabIndex = 15;
+            qtyPassLabel.Text = "QTY PASS: 0";
+            qtyPassLabel.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // qtyInputLabel
+            // 
+            qtyInputLabel.AutoSize = true;
+            qtyInputLabel.Dock = DockStyle.Fill;
+            qtyInputLabel.Font = new Font("Sans Serif Collection", 18F, FontStyle.Bold);
+            qtyInputLabel.Location = new Point(865, 0);
+            qtyInputLabel.Name = "qtyInputLabel";
+            qtyInputLabel.Size = new Size(425, 57);
+            qtyInputLabel.TabIndex = 14;
+            qtyInputLabel.Text = "QTY INPUT: 0";
+            qtyInputLabel.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // tableLayoutPanel9
+            // 
+            tableLayoutPanel9.ColumnCount = 2;
+            tableLayoutPanel9.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableLayoutPanel9.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableLayoutPanel9.Controls.Add(button2, 1, 0);
+            tableLayoutPanel9.Controls.Add(button1, 0, 0);
+            tableLayoutPanel9.Dock = DockStyle.Fill;
+            tableLayoutPanel9.Location = new Point(1296, 3);
+            tableLayoutPanel9.Name = "tableLayoutPanel9";
+            tableLayoutPanel9.RowCount = 1;
+            tableLayoutPanel9.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            tableLayoutPanel9.Size = new Size(140, 51);
+            tableLayoutPanel9.TabIndex = 17;
+            // 
+            // button2
+            // 
+            button2.BackColor = Color.Orange;
+            button2.Dock = DockStyle.Fill;
+            button2.Font = new Font("Sans Serif Collection", 11F, FontStyle.Bold);
+            button2.ForeColor = Color.White;
+            button2.Location = new Point(73, 3);
+            button2.Name = "button2";
+            button2.Size = new Size(64, 45);
+            button2.TabIndex = 13;
+            button2.Text = "RESET";
+            button2.UseVisualStyleBackColor = false;
+            // 
+            // button1
+            // 
+            button1.BackColor = Color.FromArgb(59, 130, 246);
+            button1.Dock = DockStyle.Fill;
+            button1.Font = new Font("Sans Serif Collection", 11F, FontStyle.Bold);
+            button1.ForeColor = Color.White;
+            button1.Location = new Point(3, 3);
+            button1.Name = "button1";
+            button1.Size = new Size(64, 45);
+            button1.TabIndex = 12;
+            button1.Text = "STATUS";
+            button1.UseVisualStyleBackColor = false;
+            // 
             // DashboardForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -739,20 +755,21 @@
             Load += DashboardForm_Load;
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel2.ResumeLayout(false);
-            tableLayoutPanel2.PerformLayout();
             tableLayoutPanel5.ResumeLayout(false);
             panel1.ResumeLayout(false);
             tableLayoutPanel3.ResumeLayout(false);
             tableLayoutPanel4.ResumeLayout(false);
             tableLayoutPanel7.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
-            tableLayoutPanel8.ResumeLayout(false);
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)inputFileWatcher).EndInit();
             tableLayoutPanel6.ResumeLayout(false);
             tableLayoutPanel6.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView2).EndInit();
+            tableLayoutPanel8.ResumeLayout(false);
+            tableLayoutPanel8.PerformLayout();
+            tableLayoutPanel9.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -792,9 +809,6 @@
         private Label label6;
         private Label label5;
         private ToolStripMenuItem maintenanceToolStripMenuItem;
-        private Label qtyNGLabel;
-        private Label qtyPassLabel;
-        private Label qtyInputLabel;
         private TableLayoutPanel tableLayoutPanel7;
         private DataGridView dataGridView1;
         private DataGridViewTextBoxColumn MatLotNo;
@@ -803,12 +817,16 @@
         private DataGridViewTextBoxColumn Laser;
         private DataGridViewTextBoxColumn Camera;
         private DataGridViewTextBoxColumn Judgement;
-        private TableLayoutPanel tableLayoutPanel8;
-        private Button button2;
-        private Button button1;
         private DataGridView dataGridView2;
         private DataGridViewTextBoxColumn time;
         private DataGridViewTextBoxColumn msg;
         private DataGridViewTextBoxColumn code;
+        private TableLayoutPanel tableLayoutPanel8;
+        private Label qtyNGLabel;
+        private Label qtyPassLabel;
+        private Label qtyInputLabel;
+        private TableLayoutPanel tableLayoutPanel9;
+        private Button button2;
+        private Button button1;
     }
 }
