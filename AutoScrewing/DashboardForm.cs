@@ -164,10 +164,10 @@ namespace AutoScrewing
             await InvokeAsync(() =>
             {
                 dataGridView2.Rows.Clear();
-                for (int i = 0; i < 20; i++)
-                {
-                    dataGridView2.Rows.Add([DateTime.Now.ToString("HH:mm:ss"), "tttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttssssssssssssssssssss", 1]);
-                }
+                //for (int i = 0; i < 20; i++)
+                //{
+                //    dataGridView2.Rows.Add([DateTime.Now.ToString("HH:mm:ss"), "tttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttssssssssssssssssssss", 1]);
+                //}
             });
             //Task.Run(async () =>
             //{
