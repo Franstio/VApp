@@ -614,6 +614,7 @@
             dataGridView2.GridColor = Color.White;
             dataGridView2.Location = new Point(1014, 3);
             dataGridView2.Name = "dataGridView2";
+            dataGridView2.ReadOnly = true;
             dataGridView2.RowHeadersVisible = false;
             dataGridView2.Size = new Size(428, 239);
             dataGridView2.TabIndex = 14;
@@ -636,6 +637,7 @@
             // 
             code.HeaderText = "code";
             code.Name = "code";
+            code.ReadOnly = true;
             code.Visible = false;
             // 
             // tableLayoutPanel8
