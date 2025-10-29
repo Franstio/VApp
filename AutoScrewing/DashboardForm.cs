@@ -163,10 +163,15 @@ namespace AutoScrewing
             await InvokeAsync(() =>
             {
                 listView1.Items.Clear();
-                //listView1.View = View.List;
-                //var item = new ListViewItem($"{DateTime.Now.ToString("HH:mm:ss")}\t{""}");
-                //item.ForeColor = Color.White;
-                //listView1.Items.Add(item);
+                //for (int i = 0; i < 100; i++)
+                //{
+                //    listView1.View = View.Details;
+                //    var item = new ListViewItem($"{DateTime.Now.ToString("HH:mm:ss")}\ttttttttttttttttttttttttttttttttttt");
+                //    item.ForeColor = Color.White;
+                //    var subitem = new ListViewItem.ListViewSubItem(item, "Test", item.ForeColor, item.BackColor, item.Font);
+                //    item.SubItems.Add(subitem);
+                //    listView1.Items.Add(item);
+                //}
             });
             //Task.Run(async () =>
             //{
@@ -293,9 +298,11 @@ namespace AutoScrewing
                         {
                             await InvokeAsync(() =>
                             {
-                                var item = new ListViewItem($"{DateTime.Now.ToString("HH:mm:ss")}\t{res.message}");
+                                var item = new ListViewItem($"{DateTime.Now.ToString("HH:mm:ss")}");
                                 item.ForeColor = res.code == -1 ? ColorTranslator.FromHtml("#EF4444") : Color.White;
                                 item.BackColor = listView1.BackColor;
+                                var subitem = new ListViewItem.ListViewSubItem(item, res.message, item.ForeColor, item.BackColor, item.Font);
+                                item.SubItems.Add(subitem);
                                 listView1.Items.Add(item);
                                 listView1.Items.Add(new ListViewItem(""));
                             });
@@ -766,9 +773,11 @@ namespace AutoScrewing
                 MesResponse? res = Settings1.Default.mesActive ? await meshController.Checking(operationusersn, worknumberorer, scan, scan2) : new MesResponse() { code = 1, data = "", message = "" };
                 if (res is not null)
                 {
-                    var f = new ListViewItem($"{DateTime.Now.ToString("HH:mm:ss")}\t{res.message}");
+                    var f = new ListViewItem($"{DateTime.Now.ToString("HH:mm:ss")}");
                     f.ForeColor = res.code == -1 ? ColorTranslator.FromHtml("#EF4444") : Color.White;
                     f.BackColor = listView1.BackColor;
+                    var subitem = new ListViewItem.ListViewSubItem(f, res.message, f.ForeColor, f.BackColor, f.Font);
+                    f.SubItems.Add(subitem);
                     listView1.Items.Add(f);
                     listView1.Items.Add(new ListViewItem(""));
                 }

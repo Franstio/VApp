@@ -31,7 +31,7 @@
             components = new System.ComponentModel.Container();
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
-            ListViewItem listViewItem1 = new ListViewItem("121221");
+            ListViewItem listViewItem1 = new ListViewItem(new string[] { "121221", "test" }, -1);
             ListViewItem listViewItem2 = new ListViewItem("131313");
             tableLayoutPanel1 = new TableLayoutPanel();
             screwingResultLabel = new Label();
@@ -60,6 +60,8 @@
             label2 = new Label();
             cameraResultLabel = new Label();
             listView1 = new ListView();
+            time = new ColumnHeader();
+            msg = new ColumnHeader();
             timer1 = new System.Windows.Forms.Timer(components);
             menuStrip1 = new MenuStrip();
             configToolStripMenuItem = new ToolStripMenuItem();
@@ -425,8 +427,10 @@
             // listView1
             // 
             listView1.BackColor = Color.FromArgb(31, 41, 55);
+            listView1.Columns.AddRange(new ColumnHeader[] { time, msg });
             listView1.Dock = DockStyle.Fill;
             listView1.ForeColor = Color.White;
+            listView1.HeaderStyle = ColumnHeaderStyle.None;
             listView1.Items.AddRange(new ListViewItem[] { listViewItem1, listViewItem2 });
             listView1.Location = new Point(400, 13);
             listView1.Name = "listView1";
@@ -434,7 +438,16 @@
             listView1.Size = new Size(160, 213);
             listView1.TabIndex = 3;
             listView1.UseCompatibleStateImageBehavior = false;
-            listView1.View = View.List;
+            listView1.View = View.Details;
+            // 
+            // time
+            // 
+            time.Text = "";
+            time.Width = 50;
+            // 
+            // msg
+            // 
+            msg.Width = 50;
             // 
             // timer1
             // 
@@ -713,5 +726,7 @@
         private Label qtyInputLabel;
         private Button button1;
         private ListView listView1;
+        private ColumnHeader time;
+        private ColumnHeader msg;
     }
 }
