@@ -1132,7 +1132,10 @@ namespace AutoScrewing
             {
                 var data = dataGridView2.Rows[e.RowIndex].Cells["code"].Value?.ToString();
                 if (data is not null)
+                {
                     e.CellStyle.ForeColor = data == "-1" ? ColorTranslator.FromHtml("#EF4444") : Color.White;
+                    e.CellStyle.SelectionForeColor =  data == "-1" ? ColorTranslator.FromHtml("#EF4444") : Color.White;
+                }
             }
         }
 
