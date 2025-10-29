@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             tableLayoutPanel1 = new TableLayoutPanel();
             screwingResultLabel = new Label();
             screwingTimeLabel = new Label();
@@ -39,7 +39,6 @@
             laserResultLabel = new Label();
             timeLabel = new Label();
             tableLayoutPanel2 = new TableLayoutPanel();
-            button1 = new Button();
             qtyNGLabel = new Label();
             qtyPassLabel = new Label();
             qtyInputLabel = new Label();
@@ -50,10 +49,6 @@
             label1 = new Label();
             tableLayoutPanel4 = new TableLayoutPanel();
             label2 = new Label();
-            dataGridView2 = new DataGridView();
-            time = new DataGridViewTextBoxColumn();
-            msg = new DataGridViewTextBoxColumn();
-            code = new DataGridViewTextBoxColumn();
             cameraResultLabel = new Label();
             tableLayoutPanel7 = new TableLayoutPanel();
             dataGridView1 = new DataGridView();
@@ -63,6 +58,9 @@
             Laser = new DataGridViewTextBoxColumn();
             Camera = new DataGridViewTextBoxColumn();
             Judgement = new DataGridViewTextBoxColumn();
+            tableLayoutPanel8 = new TableLayoutPanel();
+            button2 = new Button();
+            button1 = new Button();
             timer1 = new System.Windows.Forms.Timer(components);
             menuStrip1 = new MenuStrip();
             configToolStripMenuItem = new ToolStripMenuItem();
@@ -82,18 +80,23 @@
             scan1Box = new TextBox();
             userIdBox = new TextBox();
             label4 = new Label();
+            dataGridView2 = new DataGridView();
+            time = new DataGridViewTextBoxColumn();
+            msg = new DataGridViewTextBoxColumn();
+            code = new DataGridViewTextBoxColumn();
             tableLayoutPanel1.SuspendLayout();
             tableLayoutPanel2.SuspendLayout();
             tableLayoutPanel5.SuspendLayout();
             panel1.SuspendLayout();
             tableLayoutPanel3.SuspendLayout();
             tableLayoutPanel4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dataGridView2).BeginInit();
             tableLayoutPanel7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            tableLayoutPanel8.SuspendLayout();
             menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)inputFileWatcher).BeginInit();
             tableLayoutPanel6.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridView2).BeginInit();
             SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -157,7 +160,7 @@
             laserResultLabel.Font = new Font("Sans Serif Collection", 36F, FontStyle.Bold);
             laserResultLabel.Location = new Point(13, 42);
             laserResultLabel.Name = "laserResultLabel";
-            laserResultLabel.Size = new Size(401, 187);
+            laserResultLabel.Size = new Size(184, 187);
             laserResultLabel.TabIndex = 0;
             laserResultLabel.Text = "OK";
             laserResultLabel.TextAlign = ContentAlignment.MiddleCenter;
@@ -181,10 +184,10 @@
             tableLayoutPanel2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             tableLayoutPanel2.ColumnCount = 4;
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30F));
-            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30F));
-            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30F));
-            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10F));
-            tableLayoutPanel2.Controls.Add(button1, 3, 2);
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15F));
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15F));
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 40F));
+            tableLayoutPanel2.Controls.Add(dataGridView2, 3, 0);
             tableLayoutPanel2.Controls.Add(qtyNGLabel, 2, 2);
             tableLayoutPanel2.Controls.Add(qtyPassLabel, 1, 2);
             tableLayoutPanel2.Controls.Add(qtyInputLabel, 0, 2);
@@ -192,6 +195,7 @@
             tableLayoutPanel2.Controls.Add(panel1, 0, 0);
             tableLayoutPanel2.Controls.Add(tableLayoutPanel4, 2, 0);
             tableLayoutPanel2.Controls.Add(tableLayoutPanel7, 0, 1);
+            tableLayoutPanel2.Controls.Add(tableLayoutPanel8, 3, 2);
             tableLayoutPanel2.Location = new Point(12, 117);
             tableLayoutPanel2.Name = "tableLayoutPanel2";
             tableLayoutPanel2.RowCount = 3;
@@ -199,30 +203,18 @@
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 46F));
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 11F));
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             tableLayoutPanel2.Size = new Size(1445, 570);
             tableLayoutPanel2.TabIndex = 7;
-            // 
-            // button1
-            // 
-            button1.BackColor = Color.FromArgb(59, 130, 246);
-            button1.Dock = DockStyle.Fill;
-            button1.Font = new Font("Sans Serif Collection", 11F, FontStyle.Bold);
-            button1.ForeColor = Color.White;
-            button1.Location = new Point(1302, 510);
-            button1.Name = "button1";
-            button1.Size = new Size(140, 57);
-            button1.TabIndex = 11;
-            button1.Text = "STATUS";
-            button1.UseVisualStyleBackColor = false;
             // 
             // qtyNGLabel
             // 
             qtyNGLabel.AutoSize = true;
             qtyNGLabel.Dock = DockStyle.Fill;
             qtyNGLabel.Font = new Font("Sans Serif Collection", 18F, FontStyle.Bold);
-            qtyNGLabel.Location = new Point(869, 507);
+            qtyNGLabel.Location = new Point(652, 507);
             qtyNGLabel.Name = "qtyNGLabel";
-            qtyNGLabel.Size = new Size(427, 63);
+            qtyNGLabel.Size = new Size(210, 63);
             qtyNGLabel.TabIndex = 9;
             qtyNGLabel.Text = "QTY NG: 0";
             qtyNGLabel.TextAlign = ContentAlignment.MiddleCenter;
@@ -234,7 +226,7 @@
             qtyPassLabel.Font = new Font("Sans Serif Collection", 18F, FontStyle.Bold);
             qtyPassLabel.Location = new Point(436, 507);
             qtyPassLabel.Name = "qtyPassLabel";
-            qtyPassLabel.Size = new Size(427, 63);
+            qtyPassLabel.Size = new Size(210, 63);
             qtyPassLabel.TabIndex = 8;
             qtyPassLabel.Text = "QTY PASS: 0";
             qtyPassLabel.TextAlign = ContentAlignment.MiddleCenter;
@@ -265,7 +257,7 @@
             tableLayoutPanel5.RowCount = 2;
             tableLayoutPanel5.RowStyles.Add(new RowStyle(SizeType.Percent, 15F));
             tableLayoutPanel5.RowStyles.Add(new RowStyle(SizeType.Percent, 85F));
-            tableLayoutPanel5.Size = new Size(427, 239);
+            tableLayoutPanel5.Size = new Size(210, 239);
             tableLayoutPanel5.TabIndex = 6;
             // 
             // label3
@@ -275,7 +267,7 @@
             label3.ForeColor = Color.FromArgb(31, 41, 55);
             label3.Location = new Point(13, 10);
             label3.Name = "label3";
-            label3.Size = new Size(401, 32);
+            label3.Size = new Size(184, 32);
             label3.TabIndex = 2;
             label3.Text = "SENSOR LASER";
             // 
@@ -319,21 +311,18 @@
             // tableLayoutPanel4
             // 
             tableLayoutPanel4.BackColor = Color.White;
-            tableLayoutPanel4.ColumnCount = 2;
-            tableLayoutPanel2.SetColumnSpan(tableLayoutPanel4, 2);
-            tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30F));
-            tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 70F));
+            tableLayoutPanel4.ColumnCount = 1;
+            tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             tableLayoutPanel4.Controls.Add(label2, 0, 0);
-            tableLayoutPanel4.Controls.Add(dataGridView2, 1, 0);
             tableLayoutPanel4.Controls.Add(cameraResultLabel, 0, 1);
             tableLayoutPanel4.Dock = DockStyle.Fill;
-            tableLayoutPanel4.Location = new Point(869, 3);
+            tableLayoutPanel4.Location = new Point(652, 3);
             tableLayoutPanel4.Name = "tableLayoutPanel4";
             tableLayoutPanel4.Padding = new Padding(10);
             tableLayoutPanel4.RowCount = 2;
             tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Percent, 15F));
             tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Percent, 85F));
-            tableLayoutPanel4.Size = new Size(573, 239);
+            tableLayoutPanel4.Size = new Size(210, 239);
             tableLayoutPanel4.TabIndex = 5;
             // 
             // label2
@@ -343,62 +332,9 @@
             label2.ForeColor = Color.FromArgb(31, 41, 55);
             label2.Location = new Point(13, 10);
             label2.Name = "label2";
-            label2.Size = new Size(159, 32);
+            label2.Size = new Size(184, 32);
             label2.TabIndex = 2;
             label2.Text = "CAMERA";
-            // 
-            // dataGridView2
-            // 
-            dataGridView2.AllowUserToAddRows = false;
-            dataGridView2.AllowUserToDeleteRows = false;
-            dataGridView2.AllowUserToResizeColumns = false;
-            dataGridView2.AllowUserToResizeRows = false;
-            dataGridView2.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridView2.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
-            dataGridView2.BackgroundColor = Color.FromArgb(31, 41, 55);
-            dataGridView2.CellBorderStyle = DataGridViewCellBorderStyle.SingleVertical;
-            dataGridView2.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView2.ColumnHeadersVisible = false;
-            dataGridView2.Columns.AddRange(new DataGridViewColumn[] { time, msg, code });
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = Color.FromArgb(31, 41, 55);
-            dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F);
-            dataGridViewCellStyle1.ForeColor = Color.FromArgb(31, 41, 55);
-            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
-            dataGridView2.DefaultCellStyle = dataGridViewCellStyle1;
-            dataGridView2.Dock = DockStyle.Fill;
-            dataGridView2.GridColor = Color.White;
-            dataGridView2.Location = new Point(178, 13);
-            dataGridView2.Name = "dataGridView2";
-            dataGridView2.RowHeadersVisible = false;
-            tableLayoutPanel4.SetRowSpan(dataGridView2, 2);
-            dataGridView2.Size = new Size(382, 213);
-            dataGridView2.TabIndex = 5;
-            dataGridView2.CellFormatting += dataGridView2_CellFormatting;
-            dataGridView2.RowPostPaint += dataGridView2_RowPostPaint;
-            dataGridView2.RowsAdded += dataGridView2_RowsAdded;
-            // 
-            // time
-            // 
-            time.FillWeight = 20F;
-            time.HeaderText = "time";
-            time.Name = "time";
-            time.ReadOnly = true;
-            // 
-            // msg
-            // 
-            msg.FillWeight = 80F;
-            msg.HeaderText = "msg";
-            msg.Name = "msg";
-            msg.ReadOnly = true;
-            // 
-            // code
-            // 
-            code.HeaderText = "code";
-            code.Name = "code";
-            code.Visible = false;
             // 
             // cameraResultLabel
             // 
@@ -406,7 +342,7 @@
             cameraResultLabel.Font = new Font("Sans Serif Collection", 36F, FontStyle.Bold);
             cameraResultLabel.Location = new Point(13, 42);
             cameraResultLabel.Name = "cameraResultLabel";
-            cameraResultLabel.Size = new Size(159, 187);
+            cameraResultLabel.Size = new Size(184, 187);
             cameraResultLabel.TabIndex = 1;
             cameraResultLabel.Text = "NG";
             cameraResultLabel.TextAlign = ContentAlignment.BottomCenter;
@@ -496,6 +432,48 @@
             Judgement.HeaderText = "Judgement";
             Judgement.Name = "Judgement";
             Judgement.ReadOnly = true;
+            // 
+            // tableLayoutPanel8
+            // 
+            tableLayoutPanel8.ColumnCount = 2;
+            tableLayoutPanel8.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableLayoutPanel8.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableLayoutPanel8.Controls.Add(button2, 1, 0);
+            tableLayoutPanel8.Controls.Add(button1, 0, 0);
+            tableLayoutPanel8.Dock = DockStyle.Fill;
+            tableLayoutPanel8.Location = new Point(868, 510);
+            tableLayoutPanel8.Name = "tableLayoutPanel8";
+            tableLayoutPanel8.RowCount = 1;
+            tableLayoutPanel8.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            tableLayoutPanel8.Size = new Size(574, 57);
+            tableLayoutPanel8.TabIndex = 13;
+            // 
+            // button2
+            // 
+            button2.BackColor = Color.Orange;
+            button2.Dock = DockStyle.Fill;
+            button2.Font = new Font("Sans Serif Collection", 11F, FontStyle.Bold);
+            button2.ForeColor = Color.White;
+            button2.Location = new Point(290, 3);
+            button2.Name = "button2";
+            button2.Size = new Size(281, 51);
+            button2.TabIndex = 13;
+            button2.Text = "RESET";
+            button2.UseVisualStyleBackColor = false;
+            button2.Click += button2_Click;
+            // 
+            // button1
+            // 
+            button1.BackColor = Color.FromArgb(59, 130, 246);
+            button1.Dock = DockStyle.Fill;
+            button1.Font = new Font("Sans Serif Collection", 11F, FontStyle.Bold);
+            button1.ForeColor = Color.White;
+            button1.Location = new Point(3, 3);
+            button1.Name = "button1";
+            button1.Size = new Size(281, 51);
+            button1.TabIndex = 12;
+            button1.Text = "STATUS";
+            button1.UseVisualStyleBackColor = false;
             // 
             // timer1
             // 
@@ -692,6 +670,55 @@
             label4.TabIndex = 14;
             label4.Text = "Scan Work Number:";
             // 
+            // dataGridView2
+            // 
+            dataGridView2.AllowUserToAddRows = false;
+            dataGridView2.AllowUserToDeleteRows = false;
+            dataGridView2.AllowUserToResizeColumns = false;
+            dataGridView2.AllowUserToResizeRows = false;
+            dataGridView2.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridView2.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            dataGridView2.BackgroundColor = Color.FromArgb(31, 41, 55);
+            dataGridView2.CellBorderStyle = DataGridViewCellBorderStyle.SingleVertical;
+            dataGridView2.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridView2.ColumnHeadersVisible = false;
+            dataGridView2.Columns.AddRange(new DataGridViewColumn[] { time, msg, code });
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = Color.FromArgb(31, 41, 55);
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle1.ForeColor = Color.FromArgb(31, 41, 55);
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            dataGridView2.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridView2.Dock = DockStyle.Fill;
+            dataGridView2.GridColor = Color.White;
+            dataGridView2.Location = new Point(868, 3);
+            dataGridView2.Name = "dataGridView2";
+            dataGridView2.RowHeadersVisible = false;
+            dataGridView2.Size = new Size(574, 239);
+            dataGridView2.TabIndex = 14;
+            // 
+            // time
+            // 
+            time.FillWeight = 20F;
+            time.HeaderText = "time";
+            time.Name = "time";
+            time.ReadOnly = true;
+            // 
+            // msg
+            // 
+            msg.FillWeight = 80F;
+            msg.HeaderText = "msg";
+            msg.Name = "msg";
+            msg.ReadOnly = true;
+            // 
+            // code
+            // 
+            code.HeaderText = "code";
+            code.Name = "code";
+            code.Visible = false;
+            // 
             // DashboardForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -717,14 +744,15 @@
             panel1.ResumeLayout(false);
             tableLayoutPanel3.ResumeLayout(false);
             tableLayoutPanel4.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)dataGridView2).EndInit();
             tableLayoutPanel7.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            tableLayoutPanel8.ResumeLayout(false);
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)inputFileWatcher).EndInit();
             tableLayoutPanel6.ResumeLayout(false);
             tableLayoutPanel6.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridView2).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -767,7 +795,6 @@
         private Label qtyNGLabel;
         private Label qtyPassLabel;
         private Label qtyInputLabel;
-        private Button button1;
         private TableLayoutPanel tableLayoutPanel7;
         private DataGridView dataGridView1;
         private DataGridViewTextBoxColumn MatLotNo;
@@ -776,6 +803,9 @@
         private DataGridViewTextBoxColumn Laser;
         private DataGridViewTextBoxColumn Camera;
         private DataGridViewTextBoxColumn Judgement;
+        private TableLayoutPanel tableLayoutPanel8;
+        private Button button2;
+        private Button button1;
         private DataGridView dataGridView2;
         private DataGridViewTextBoxColumn time;
         private DataGridViewTextBoxColumn msg;

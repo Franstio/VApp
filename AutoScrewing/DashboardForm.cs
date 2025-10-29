@@ -56,6 +56,7 @@ namespace AutoScrewing
             FinalQueue = new Queue<OngoingItemModel>(),
             RegisteredItem = new Queue<OngoingItemModel>();
         List<Task> BackgroundTasks = new List<Task>();
+        private QtyModel qtyModel = new QtyModel();
         public Task<ConcurrentBag<OngoingItemModel>> GetOngoingItems()
         {
             List<Queue<OngoingItemModel>> a = [StandbyQueue, ScrewingQueue, LaserQueue, CameraQueue, FinalQueue];
@@ -74,9 +75,13 @@ namespace AutoScrewing
             {
                 var data = RegisteredItem;
                 var ttl = data.Count + (await GetOngoingItems()).Count;
-                await qtyInputLabel.InvokeAsync(() => qtyInputLabel.Text = $"QTY INPUT: {ttl}");
-                await qtyPassLabel.InvokeAsync(() => qtyPassLabel.Text = $"QTY PASS: {data.Where(x => x.FinalResult == "OK").Count()}");
-                await qtyNGLabel.InvokeAsync(() => qtyNGLabel.Text = $"QTY NG: {data.Where(x => x.FinalResult == "NG").Count()}");
+                qtyModel.Input += ttl;
+                qtyModel.Pass += data.Where(x => x.FinalResult == "OK").Count();
+                qtyModel.NG += data.Where(x => x.FinalResult == "NG").Count();
+                await qtyInputLabel.InvokeAsync(() => qtyInputLabel.Text = $"QTY INPUT: {qtyModel.Input}");
+                await qtyPassLabel.InvokeAsync(() => qtyPassLabel.Text = $"QTY PASS: {qtyModel.Pass}");
+                await qtyNGLabel.InvokeAsync(() => qtyNGLabel.Text = $"QTY NG: {qtyModel.NG}");
+                await qtyRepository.SetQty(qtyModel);
             }
             catch { }
         }
@@ -114,6 +119,7 @@ namespace AutoScrewing
         }
 
         private List<DashboardModel> listRunning = new List<DashboardModel>();
+        private QtyRepository qtyRepository;
         private DashboardModel DashboardModel
         {
             get => _dashboardmodel; set
@@ -127,11 +133,22 @@ namespace AutoScrewing
             meshController = Program.ServiceProvider.GetRequiredService<MESHController>();
             plcController = Program.ServiceProvider.GetRequiredService<PLCController>();
             kilewController = Program.ServiceProvider.GetRequiredService<KilewController>();
+            qtyRepository = Program.ServiceProvider.GetRequiredService<QtyRepository>();
 
         }
-
+        async Task InitQty()
+        {
+            var data = await qtyRepository.GetQty();
+            if (data is null)
+            {
+                await qtyRepository.CreateQty();
+                data = await qtyRepository.GetQty();
+            }
+            qtyModel = data!;
+        }
         private async void DashboardForm_Load(object sender, EventArgs e)
         {
+            await InitQty();
             //DashboardModel data = new DashboardModel()
             //{
             //    DeviceID = "001",
@@ -1133,6 +1150,12 @@ namespace AutoScrewing
             {
                 dataGridView2.FirstDisplayedScrollingRowIndex = dataGridView2.RowCount - 1;
             }
+        }
+
+        private async void button2_Click(object sender, EventArgs e)
+        {
+            await qtyRepository.SetQty(new QtyModel() { NG = 0, Input = 0, Pass = 0 });
+            await UpdateLabelQTY();
         }
 
         public interface IDashboardOngoingItems

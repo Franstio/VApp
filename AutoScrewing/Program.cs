@@ -28,7 +28,7 @@ namespace AutoScrewing
         }
         private static void addCommonServices(this IServiceCollection serviceCollection)
         {
-            Type[] types = [typeof(MESHController), typeof(KilewController),typeof(PLCController),typeof(TransactionRepository),typeof(ConfigRepository),typeof(LogRepository)];
+            Type[] types = [typeof(MESHController), typeof(KilewController),typeof(PLCController),typeof(TransactionRepository),typeof(ConfigRepository),typeof(LogRepository),typeof(QtyRepository)];
             for (int i = 0; i < types.Length; i++)
                 serviceCollection.AddScoped(types[i]);
             serviceCollection.AddHttpClient().ConfigureHttpClientDefaults(config =>
