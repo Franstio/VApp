@@ -1,5 +1,6 @@
 ﻿using AutoScrewing.Models;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -13,7 +14,7 @@ namespace AutoScrewing.Dialogue
 {
     public partial class RunningQueue : Form
     {
-        List<OngoingItemModel> ongoingItems = [];
+        ConcurrentBag<OngoingItemModel> ongoingItems = [];
         DashboardForm.IDashboardOngoingItems ongoingItemsAPI;
         private CancellationTokenSource cts = new CancellationTokenSource();
         public RunningQueue(DashboardForm.IDashboardOngoingItems ongoingItemsAPI)

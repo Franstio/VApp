@@ -5,6 +5,7 @@ using AutoScrewing.Lib;
 using AutoScrewing.Models;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -55,16 +56,16 @@ namespace AutoScrewing
             FinalQueue = new Queue<OngoingItemModel>(),
             RegisteredItem = new Queue<OngoingItemModel>();
         List<Task> BackgroundTasks = new List<Task>();
-        public Task<List<OngoingItemModel>> GetOngoingItems()
+        public Task<ConcurrentBag<OngoingItemModel>> GetOngoingItems()
         {
             List<Queue<OngoingItemModel>> a = [StandbyQueue, ScrewingQueue, LaserQueue, CameraQueue, FinalQueue];
             try
             {
-                return Task.FromResult(a.SelectMany(x => x).OrderByDescending(x => x.TransactionTime).ToList());
+                return Task.FromResult(new ConcurrentBag<OngoingItemModel>(a.SelectMany(x => x).OrderByDescending(x => x.TransactionTime).ToList()));
             }
             catch
             {
-                return Task.FromResult<List<OngoingItemModel>>([]);
+                return Task.FromResult<ConcurrentBag<OngoingItemModel>>([]);
             }
         }
         private async Task UpdateLabelQTY()
@@ -162,16 +163,11 @@ namespace AutoScrewing
             await LoadData();
             await InvokeAsync(() =>
             {
-                listView1.Items.Clear();
-                //for (int i = 0; i < 100; i++)
-                //{
-                //    listView1.View = View.Details;
-                //    var item = new ListViewItem($"{DateTime.Now.ToString("HH:mm:ss")}\ttttttttttttttttttttttttttttttttttt");
-                //    item.ForeColor = Color.White;
-                //    var subitem = new ListViewItem.ListViewSubItem(item, "Test", item.ForeColor, item.BackColor, item.Font);
-                //    item.SubItems.Add(subitem);
-                //    listView1.Items.Add(item);
-                //}
+                dataGridView2.Rows.Clear();
+                for (int i = 0; i < 20; i++)
+                {
+                    dataGridView2.Rows.Add([DateTime.Now.ToString("HH:mm:ss"), "tttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttssssssssssssssssssss", 1]);
+                }
             });
             //Task.Run(async () =>
             //{
@@ -298,13 +294,7 @@ namespace AutoScrewing
                         {
                             await InvokeAsync(() =>
                             {
-                                var item = new ListViewItem($"{DateTime.Now.ToString("HH:mm:ss")}");
-                                item.ForeColor = res.code == -1 ? ColorTranslator.FromHtml("#EF4444") : Color.White;
-                                item.BackColor = listView1.BackColor;
-                                var subitem = new ListViewItem.ListViewSubItem(item, res.message, item.ForeColor, item.BackColor, item.Font);
-                                item.SubItems.Add(subitem);
-                                listView1.Items.Add(item);
-                                listView1.Items.Add(new ListViewItem(""));
+                                dataGridView2.Rows.Add([DateTime.Now.ToString("HH:mm:ss"), res.message ?? "-", res.code]);
                             });
                         }
                     }
@@ -773,13 +763,7 @@ namespace AutoScrewing
                 MesResponse? res = Settings1.Default.mesActive ? await meshController.Checking(operationusersn, worknumberorer, scan, scan2) : new MesResponse() { code = 1, data = "", message = "" };
                 if (res is not null)
                 {
-                    var f = new ListViewItem($"{DateTime.Now.ToString("HH:mm:ss")}");
-                    f.ForeColor = res.code == -1 ? ColorTranslator.FromHtml("#EF4444") : Color.White;
-                    f.BackColor = listView1.BackColor;
-                    var subitem = new ListViewItem.ListViewSubItem(f, res.message, f.ForeColor, f.BackColor, f.Font);
-                    f.SubItems.Add(subitem);
-                    listView1.Items.Add(f);
-                    listView1.Items.Add(new ListViewItem(""));
+                    dataGridView2.Rows.Add([DateTime.Now.ToString("HH:mm:ss"), res.message ?? "-", res.code]);
                 }
                 if (res is not null)
                 {
@@ -1124,9 +1108,36 @@ namespace AutoScrewing
 
         }
 
+        private void dataGridView2_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            e.CellStyle.ForeColor = Color.White;
+            if (e.ColumnIndex == 1)
+            {
+                var data = dataGridView2.Rows[e.RowIndex].Cells["code"].Value?.ToString();
+                if (data is not null)
+                    e.CellStyle.ForeColor = data == "-1" ? ColorTranslator.FromHtml("#EF4444") : Color.White;
+            }
+        }
+
+        private void dataGridView2_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
+        {
+            if (e.RowCount > 1)
+            {
+                dataGridView2.FirstDisplayedScrollingRowIndex = e.RowCount - 1;
+            }
+        }
+
+        private void dataGridView2_RowPostPaint(object sender, DataGridViewRowPostPaintEventArgs e)
+        {
+            if (dataGridView2.RowCount > 1)
+            {
+                dataGridView2.FirstDisplayedScrollingRowIndex = dataGridView2.RowCount - 1;
+            }
+        }
+
         public interface IDashboardOngoingItems
         {
-            Task<List<OngoingItemModel>> GetOngoingItems();
+            Task<ConcurrentBag<OngoingItemModel>> GetOngoingItems();
         }
     }
 }

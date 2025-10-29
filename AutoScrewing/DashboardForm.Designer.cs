@@ -29,22 +29,14 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
-            ListViewItem listViewItem1 = new ListViewItem(new string[] { "121221", "test" }, -1);
-            ListViewItem listViewItem2 = new ListViewItem("131313");
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             tableLayoutPanel1 = new TableLayoutPanel();
             screwingResultLabel = new Label();
             screwingTimeLabel = new Label();
             torqueLabel = new Label();
             laserResultLabel = new Label();
-            dataGridView1 = new DataGridView();
-            MatLotNo = new DataGridViewTextBoxColumn();
-            LotNo = new DataGridViewTextBoxColumn();
-            Screwing = new DataGridViewTextBoxColumn();
-            Laser = new DataGridViewTextBoxColumn();
-            Camera = new DataGridViewTextBoxColumn();
-            Judgement = new DataGridViewTextBoxColumn();
             timeLabel = new Label();
             tableLayoutPanel2 = new TableLayoutPanel();
             button1 = new Button();
@@ -59,9 +51,18 @@
             tableLayoutPanel4 = new TableLayoutPanel();
             label2 = new Label();
             cameraResultLabel = new Label();
-            listView1 = new ListView();
-            time = new ColumnHeader();
-            msg = new ColumnHeader();
+            tableLayoutPanel7 = new TableLayoutPanel();
+            dataGridView1 = new DataGridView();
+            MatLotNo = new DataGridViewTextBoxColumn();
+            LotNo = new DataGridViewTextBoxColumn();
+            Screwing = new DataGridViewTextBoxColumn();
+            Laser = new DataGridViewTextBoxColumn();
+            Camera = new DataGridViewTextBoxColumn();
+            Judgement = new DataGridViewTextBoxColumn();
+            dataGridView2 = new DataGridView();
+            time = new DataGridViewTextBoxColumn();
+            msg = new DataGridViewTextBoxColumn();
+            code = new DataGridViewTextBoxColumn();
             timer1 = new System.Windows.Forms.Timer(components);
             menuStrip1 = new MenuStrip();
             configToolStripMenuItem = new ToolStripMenuItem();
@@ -82,12 +83,14 @@
             userIdBox = new TextBox();
             label4 = new Label();
             tableLayoutPanel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             tableLayoutPanel2.SuspendLayout();
             tableLayoutPanel5.SuspendLayout();
             panel1.SuspendLayout();
             tableLayoutPanel3.SuspendLayout();
             tableLayoutPanel4.SuspendLayout();
+            tableLayoutPanel7.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dataGridView2).BeginInit();
             menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)inputFileWatcher).BeginInit();
             tableLayoutPanel6.SuspendLayout();
@@ -161,73 +164,6 @@
             laserResultLabel.TextChanged += screwingResultLabel_TextChanged;
             laserResultLabel.Paint += screwingResultLabel_Paint;
             // 
-            // dataGridView1
-            // 
-            dataGridView1.AllowUserToAddRows = false;
-            dataGridView1.AllowUserToDeleteRows = false;
-            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCells;
-            dataGridView1.BackgroundColor = Color.White;
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = Color.FromArgb(229, 231, 235);
-            dataGridViewCellStyle1.Font = new Font("Sans Serif Collection", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle1.ForeColor = Color.FromArgb(31, 41, 55);
-            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
-            dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Columns.AddRange(new DataGridViewColumn[] { MatLotNo, LotNo, Screwing, Laser, Camera, Judgement });
-            tableLayoutPanel2.SetColumnSpan(dataGridView1, 4);
-            dataGridView1.Dock = DockStyle.Fill;
-            dataGridView1.GridColor = Color.FromArgb(209, 213, 219);
-            dataGridView1.Location = new Point(3, 248);
-            dataGridView1.Name = "dataGridView1";
-            dataGridView1.ReadOnly = true;
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = Color.White;
-            dataGridViewCellStyle2.Font = new Font("Sans Serif Collection", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle2.ForeColor = Color.FromArgb(55, 65, 81);
-            dataGridView1.RowsDefaultCellStyle = dataGridViewCellStyle2;
-            dataGridView1.Size = new Size(1439, 256);
-            dataGridView1.TabIndex = 3;
-            // 
-            // MatLotNo
-            // 
-            MatLotNo.HeaderText = "Material Lot No";
-            MatLotNo.Name = "MatLotNo";
-            MatLotNo.ReadOnly = true;
-            // 
-            // LotNo
-            // 
-            LotNo.HeaderText = "Lot No";
-            LotNo.Name = "LotNo";
-            LotNo.ReadOnly = true;
-            // 
-            // Screwing
-            // 
-            Screwing.HeaderText = "Screwing";
-            Screwing.Name = "Screwing";
-            Screwing.ReadOnly = true;
-            // 
-            // Laser
-            // 
-            Laser.HeaderText = "Laser";
-            Laser.Name = "Laser";
-            Laser.ReadOnly = true;
-            // 
-            // Camera
-            // 
-            Camera.HeaderText = "Camera";
-            Camera.Name = "Camera";
-            Camera.ReadOnly = true;
-            // 
-            // Judgement
-            // 
-            Judgement.HeaderText = "Judgement";
-            Judgement.Name = "Judgement";
-            Judgement.ReadOnly = true;
-            // 
             // timeLabel
             // 
             timeLabel.Anchor = AnchorStyles.Top | AnchorStyles.Right;
@@ -253,15 +189,16 @@
             tableLayoutPanel2.Controls.Add(qtyPassLabel, 1, 2);
             tableLayoutPanel2.Controls.Add(qtyInputLabel, 0, 2);
             tableLayoutPanel2.Controls.Add(tableLayoutPanel5, 1, 0);
-            tableLayoutPanel2.Controls.Add(dataGridView1, 0, 1);
             tableLayoutPanel2.Controls.Add(panel1, 0, 0);
             tableLayoutPanel2.Controls.Add(tableLayoutPanel4, 2, 0);
+            tableLayoutPanel2.Controls.Add(tableLayoutPanel7, 0, 1);
             tableLayoutPanel2.Location = new Point(12, 117);
             tableLayoutPanel2.Name = "tableLayoutPanel2";
             tableLayoutPanel2.RowCount = 3;
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 43F));
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 46F));
             tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 11F));
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             tableLayoutPanel2.Size = new Size(1445, 570);
             tableLayoutPanel2.TabIndex = 7;
             // 
@@ -384,11 +321,11 @@
             tableLayoutPanel4.BackColor = Color.White;
             tableLayoutPanel4.ColumnCount = 2;
             tableLayoutPanel2.SetColumnSpan(tableLayoutPanel4, 2);
-            tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 70F));
             tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30F));
+            tableLayoutPanel4.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 70F));
             tableLayoutPanel4.Controls.Add(label2, 0, 0);
+            tableLayoutPanel4.Controls.Add(dataGridView2, 1, 0);
             tableLayoutPanel4.Controls.Add(cameraResultLabel, 0, 1);
-            tableLayoutPanel4.Controls.Add(listView1, 1, 0);
             tableLayoutPanel4.Dock = DockStyle.Fill;
             tableLayoutPanel4.Location = new Point(869, 3);
             tableLayoutPanel4.Name = "tableLayoutPanel4";
@@ -396,7 +333,6 @@
             tableLayoutPanel4.RowCount = 2;
             tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Percent, 15F));
             tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Percent, 85F));
-            tableLayoutPanel4.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
             tableLayoutPanel4.Size = new Size(573, 239);
             tableLayoutPanel4.TabIndex = 5;
             // 
@@ -407,7 +343,7 @@
             label2.ForeColor = Color.FromArgb(31, 41, 55);
             label2.Location = new Point(13, 10);
             label2.Name = "label2";
-            label2.Size = new Size(381, 32);
+            label2.Size = new Size(159, 32);
             label2.TabIndex = 2;
             label2.Text = "CAMERA";
             // 
@@ -417,37 +353,149 @@
             cameraResultLabel.Font = new Font("Sans Serif Collection", 36F, FontStyle.Bold);
             cameraResultLabel.Location = new Point(13, 42);
             cameraResultLabel.Name = "cameraResultLabel";
-            cameraResultLabel.Size = new Size(381, 187);
+            cameraResultLabel.Size = new Size(159, 187);
             cameraResultLabel.TabIndex = 1;
             cameraResultLabel.Text = "NG";
             cameraResultLabel.TextAlign = ContentAlignment.MiddleCenter;
             cameraResultLabel.TextChanged += screwingResultLabel_TextChanged;
             cameraResultLabel.Paint += screwingResultLabel_Paint;
             // 
-            // listView1
+            // tableLayoutPanel7
             // 
-            listView1.BackColor = Color.FromArgb(31, 41, 55);
-            listView1.Columns.AddRange(new ColumnHeader[] { time, msg });
-            listView1.Dock = DockStyle.Fill;
-            listView1.ForeColor = Color.White;
-            listView1.HeaderStyle = ColumnHeaderStyle.None;
-            listView1.Items.AddRange(new ListViewItem[] { listViewItem1, listViewItem2 });
-            listView1.Location = new Point(400, 13);
-            listView1.Name = "listView1";
-            tableLayoutPanel4.SetRowSpan(listView1, 2);
-            listView1.Size = new Size(160, 213);
-            listView1.TabIndex = 3;
-            listView1.UseCompatibleStateImageBehavior = false;
-            listView1.View = View.Details;
+            tableLayoutPanel7.ColumnCount = 1;
+            tableLayoutPanel2.SetColumnSpan(tableLayoutPanel7, 4);
+            tableLayoutPanel7.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableLayoutPanel7.Controls.Add(dataGridView1, 0, 0);
+            tableLayoutPanel7.Dock = DockStyle.Fill;
+            tableLayoutPanel7.Location = new Point(3, 248);
+            tableLayoutPanel7.Name = "tableLayoutPanel7";
+            tableLayoutPanel7.RowCount = 2;
+            tableLayoutPanel7.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            tableLayoutPanel7.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            tableLayoutPanel7.Size = new Size(1439, 256);
+            tableLayoutPanel7.TabIndex = 12;
+            // 
+            // dataGridView1
+            // 
+            dataGridView1.AllowUserToAddRows = false;
+            dataGridView1.AllowUserToDeleteRows = false;
+            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCells;
+            dataGridView1.BackgroundColor = Color.White;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = Color.FromArgb(229, 231, 235);
+            dataGridViewCellStyle2.Font = new Font("Sans Serif Collection", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle2.ForeColor = Color.FromArgb(31, 41, 55);
+            dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
+            dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridView1.Columns.AddRange(new DataGridViewColumn[] { MatLotNo, LotNo, Screwing, Laser, Camera, Judgement });
+            tableLayoutPanel7.SetColumnSpan(dataGridView1, 4);
+            dataGridView1.Dock = DockStyle.Fill;
+            dataGridView1.GridColor = Color.FromArgb(209, 213, 219);
+            dataGridView1.Location = new Point(3, 3);
+            dataGridView1.Name = "dataGridView1";
+            dataGridView1.ReadOnly = true;
+            dataGridView1.RowHeadersVisible = false;
+            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = Color.White;
+            dataGridViewCellStyle3.Font = new Font("Sans Serif Collection", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle3.ForeColor = Color.FromArgb(55, 65, 81);
+            dataGridView1.RowsDefaultCellStyle = dataGridViewCellStyle3;
+            tableLayoutPanel7.SetRowSpan(dataGridView1, 2);
+            dataGridView1.Size = new Size(1433, 250);
+            dataGridView1.TabIndex = 4;
+            // 
+            // MatLotNo
+            // 
+            MatLotNo.HeaderText = "Material Lot No";
+            MatLotNo.Name = "MatLotNo";
+            MatLotNo.ReadOnly = true;
+            // 
+            // LotNo
+            // 
+            LotNo.HeaderText = "Lot No";
+            LotNo.Name = "LotNo";
+            LotNo.ReadOnly = true;
+            // 
+            // Screwing
+            // 
+            Screwing.HeaderText = "Screwing";
+            Screwing.Name = "Screwing";
+            Screwing.ReadOnly = true;
+            // 
+            // Laser
+            // 
+            Laser.HeaderText = "Laser";
+            Laser.Name = "Laser";
+            Laser.ReadOnly = true;
+            // 
+            // Camera
+            // 
+            Camera.HeaderText = "Camera";
+            Camera.Name = "Camera";
+            Camera.ReadOnly = true;
+            // 
+            // Judgement
+            // 
+            Judgement.HeaderText = "Judgement";
+            Judgement.Name = "Judgement";
+            Judgement.ReadOnly = true;
+            // 
+            // dataGridView2
+            // 
+            dataGridView2.AllowUserToAddRows = false;
+            dataGridView2.AllowUserToDeleteRows = false;
+            dataGridView2.AllowUserToResizeColumns = false;
+            dataGridView2.AllowUserToResizeRows = false;
+            dataGridView2.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridView2.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            dataGridView2.BackgroundColor = Color.FromArgb(31, 41, 55);
+            dataGridView2.CellBorderStyle = DataGridViewCellBorderStyle.SingleVertical;
+            dataGridView2.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridView2.ColumnHeadersVisible = false;
+            dataGridView2.Columns.AddRange(new DataGridViewColumn[] { time, msg, code });
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = Color.FromArgb(31, 41, 55);
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle1.ForeColor = Color.FromArgb(31, 41, 55);
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            dataGridView2.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridView2.Dock = DockStyle.Fill;
+            dataGridView2.GridColor = Color.White;
+            dataGridView2.Location = new Point(178, 13);
+            dataGridView2.Name = "dataGridView2";
+            dataGridView2.RowHeadersVisible = false;
+            tableLayoutPanel4.SetRowSpan(dataGridView2, 2);
+            dataGridView2.Size = new Size(382, 213);
+            dataGridView2.TabIndex = 5;
+            dataGridView2.CellFormatting += dataGridView2_CellFormatting;
+            dataGridView2.RowPostPaint += dataGridView2_RowPostPaint;
+            dataGridView2.RowsAdded += dataGridView2_RowsAdded;
             // 
             // time
             // 
-            time.Text = "";
-            time.Width = 50;
+            time.FillWeight = 20F;
+            time.HeaderText = "time";
+            time.Name = "time";
+            time.ReadOnly = true;
             // 
             // msg
             // 
-            msg.Width = 50;
+            msg.FillWeight = 80F;
+            msg.HeaderText = "msg";
+            msg.Name = "msg";
+            msg.ReadOnly = true;
+            // 
+            // code
+            // 
+            code.HeaderText = "code";
+            code.Name = "code";
+            code.Visible = false;
             // 
             // timer1
             // 
@@ -663,13 +711,15 @@
             WindowState = FormWindowState.Maximized;
             Load += DashboardForm_Load;
             tableLayoutPanel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             tableLayoutPanel2.ResumeLayout(false);
             tableLayoutPanel2.PerformLayout();
             tableLayoutPanel5.ResumeLayout(false);
             panel1.ResumeLayout(false);
             tableLayoutPanel3.ResumeLayout(false);
             tableLayoutPanel4.ResumeLayout(false);
+            tableLayoutPanel7.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dataGridView2).EndInit();
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)inputFileWatcher).EndInit();
@@ -684,7 +734,6 @@
         private Label screwingTimeLabel;
         private Label torqueLabel;
         private Label laserResultLabel;
-        private DataGridView dataGridView1;
         private TableLayoutPanel tableLayoutPanel2;
         private Label timeLabel;
         private System.Windows.Forms.Timer timer1;
@@ -710,12 +759,6 @@
         private TextBox scan2Box;
         private TextBox scan1Box;
         private TextBox workNumberScanBox;
-        private DataGridViewTextBoxColumn MatLotNo;
-        private DataGridViewTextBoxColumn LotNo;
-        private DataGridViewTextBoxColumn Screwing;
-        private DataGridViewTextBoxColumn Laser;
-        private DataGridViewTextBoxColumn Camera;
-        private DataGridViewTextBoxColumn Judgement;
         private Label label4;
         private Label label7;
         private Label label6;
@@ -725,8 +768,17 @@
         private Label qtyPassLabel;
         private Label qtyInputLabel;
         private Button button1;
-        private ListView listView1;
-        private ColumnHeader time;
-        private ColumnHeader msg;
+        private TableLayoutPanel tableLayoutPanel7;
+        private DataGridView dataGridView1;
+        private DataGridViewTextBoxColumn MatLotNo;
+        private DataGridViewTextBoxColumn LotNo;
+        private DataGridViewTextBoxColumn Screwing;
+        private DataGridViewTextBoxColumn Laser;
+        private DataGridViewTextBoxColumn Camera;
+        private DataGridViewTextBoxColumn Judgement;
+        private DataGridView dataGridView2;
+        private DataGridViewTextBoxColumn time;
+        private DataGridViewTextBoxColumn msg;
+        private DataGridViewTextBoxColumn code;
     }
 }
