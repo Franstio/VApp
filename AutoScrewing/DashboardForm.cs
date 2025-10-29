@@ -74,12 +74,13 @@ namespace AutoScrewing
             try
             {
                 var data = RegisteredItem;
-                var ttl = data.Count + (await GetOngoingItems()).Count;
-                qtyModel.Input += ttl;
-                qtyModel.Pass += data.Where(x => x.FinalResult == "OK").Count();
-                qtyModel.NG += data.Where(x => x.FinalResult == "NG").Count();
+                var c = new QtyModel();
+                var ttl = data.Count + (await GetOngoingItems()).Count + qtyModel.Input;
+                c.Input = ttl;
+                c.Pass = data.Where(x => x.FinalResult == "OK").Count() + qtyModel.Pass;
+                c.NG = data.Where(x => x.FinalResult == "NG").Count() + qtyModel.NG;
                 await qtyInputLabel.InvokeAsync(() => qtyInputLabel.Text = $"QTY INPUT: {qtyModel.Input}");
-                await qtyPassLabel.InvokeAsync(() => qtyPassLabel.Text = $"QTY PASS: {qtyModel.Pass}");
+                await qtyPassLabel.InvokeAsync(() => qtyPassLabel.Text = $"QTY PASS: {c.Pass}");
                 await qtyNGLabel.InvokeAsync(() => qtyNGLabel.Text = $"QTY NG: {qtyModel.NG}");
                 await qtyRepository.SetQty(qtyModel);
             }
