@@ -1158,6 +1158,7 @@ namespace AutoScrewing
         private async void button2_Click(object sender, EventArgs e)
         {
             await qtyRepository.SetQty(new QtyModel() { NG = 0, Input = 0, Pass = 0 });
+            await InitQty();
             await UpdateLabelQTY();
         }
 
