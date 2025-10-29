@@ -79,9 +79,9 @@ namespace AutoScrewing
                 c.Input = ttl;
                 c.Pass = data.Where(x => x.FinalResult == "OK").Count() + qtyModel.Pass;
                 c.NG = data.Where(x => x.FinalResult == "NG").Count() + qtyModel.NG;
-                await qtyInputLabel.InvokeAsync(() => qtyInputLabel.Text = $"QTY INPUT: {qtyModel.Input}");
+                await qtyInputLabel.InvokeAsync(() => qtyInputLabel.Text = $"QTY INPUT: {c.Input}");
                 await qtyPassLabel.InvokeAsync(() => qtyPassLabel.Text = $"QTY PASS: {c.Pass}");
-                await qtyNGLabel.InvokeAsync(() => qtyNGLabel.Text = $"QTY NG: {qtyModel.NG}");
+                await qtyNGLabel.InvokeAsync(() => qtyNGLabel.Text = $"QTY NG: {c.NG}");
                 await qtyRepository.SetQty(qtyModel);
             }
             catch { }
