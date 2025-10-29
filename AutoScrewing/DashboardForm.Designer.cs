@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             tableLayoutPanel1 = new TableLayoutPanel();
             screwingResultLabel = new Label();
             screwingTimeLabel = new Label();
@@ -50,6 +50,10 @@
             label1 = new Label();
             tableLayoutPanel4 = new TableLayoutPanel();
             label2 = new Label();
+            dataGridView2 = new DataGridView();
+            time = new DataGridViewTextBoxColumn();
+            msg = new DataGridViewTextBoxColumn();
+            code = new DataGridViewTextBoxColumn();
             cameraResultLabel = new Label();
             tableLayoutPanel7 = new TableLayoutPanel();
             dataGridView1 = new DataGridView();
@@ -59,10 +63,6 @@
             Laser = new DataGridViewTextBoxColumn();
             Camera = new DataGridViewTextBoxColumn();
             Judgement = new DataGridViewTextBoxColumn();
-            dataGridView2 = new DataGridView();
-            time = new DataGridViewTextBoxColumn();
-            msg = new DataGridViewTextBoxColumn();
-            code = new DataGridViewTextBoxColumn();
             timer1 = new System.Windows.Forms.Timer(components);
             menuStrip1 = new MenuStrip();
             configToolStripMenuItem = new ToolStripMenuItem();
@@ -88,9 +88,9 @@
             panel1.SuspendLayout();
             tableLayoutPanel3.SuspendLayout();
             tableLayoutPanel4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridView2).BeginInit();
             tableLayoutPanel7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)dataGridView2).BeginInit();
             menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)inputFileWatcher).BeginInit();
             tableLayoutPanel6.SuspendLayout();
@@ -347,6 +347,59 @@
             label2.TabIndex = 2;
             label2.Text = "CAMERA";
             // 
+            // dataGridView2
+            // 
+            dataGridView2.AllowUserToAddRows = false;
+            dataGridView2.AllowUserToDeleteRows = false;
+            dataGridView2.AllowUserToResizeColumns = false;
+            dataGridView2.AllowUserToResizeRows = false;
+            dataGridView2.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridView2.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            dataGridView2.BackgroundColor = Color.FromArgb(31, 41, 55);
+            dataGridView2.CellBorderStyle = DataGridViewCellBorderStyle.SingleVertical;
+            dataGridView2.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridView2.ColumnHeadersVisible = false;
+            dataGridView2.Columns.AddRange(new DataGridViewColumn[] { time, msg, code });
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = Color.FromArgb(31, 41, 55);
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle1.ForeColor = Color.FromArgb(31, 41, 55);
+            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            dataGridView2.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridView2.Dock = DockStyle.Fill;
+            dataGridView2.GridColor = Color.White;
+            dataGridView2.Location = new Point(178, 13);
+            dataGridView2.Name = "dataGridView2";
+            dataGridView2.RowHeadersVisible = false;
+            tableLayoutPanel4.SetRowSpan(dataGridView2, 2);
+            dataGridView2.Size = new Size(382, 213);
+            dataGridView2.TabIndex = 5;
+            dataGridView2.CellFormatting += dataGridView2_CellFormatting;
+            dataGridView2.RowPostPaint += dataGridView2_RowPostPaint;
+            dataGridView2.RowsAdded += dataGridView2_RowsAdded;
+            // 
+            // time
+            // 
+            time.FillWeight = 20F;
+            time.HeaderText = "time";
+            time.Name = "time";
+            time.ReadOnly = true;
+            // 
+            // msg
+            // 
+            msg.FillWeight = 80F;
+            msg.HeaderText = "msg";
+            msg.Name = "msg";
+            msg.ReadOnly = true;
+            // 
+            // code
+            // 
+            code.HeaderText = "code";
+            code.Name = "code";
+            code.Visible = false;
+            // 
             // cameraResultLabel
             // 
             cameraResultLabel.Dock = DockStyle.Fill;
@@ -356,7 +409,7 @@
             cameraResultLabel.Size = new Size(159, 187);
             cameraResultLabel.TabIndex = 1;
             cameraResultLabel.Text = "NG";
-            cameraResultLabel.TextAlign = ContentAlignment.MiddleCenter;
+            cameraResultLabel.TextAlign = ContentAlignment.BottomCenter;
             cameraResultLabel.TextChanged += screwingResultLabel_TextChanged;
             cameraResultLabel.Paint += screwingResultLabel_Paint;
             // 
@@ -443,59 +496,6 @@
             Judgement.HeaderText = "Judgement";
             Judgement.Name = "Judgement";
             Judgement.ReadOnly = true;
-            // 
-            // dataGridView2
-            // 
-            dataGridView2.AllowUserToAddRows = false;
-            dataGridView2.AllowUserToDeleteRows = false;
-            dataGridView2.AllowUserToResizeColumns = false;
-            dataGridView2.AllowUserToResizeRows = false;
-            dataGridView2.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridView2.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
-            dataGridView2.BackgroundColor = Color.FromArgb(31, 41, 55);
-            dataGridView2.CellBorderStyle = DataGridViewCellBorderStyle.SingleVertical;
-            dataGridView2.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView2.ColumnHeadersVisible = false;
-            dataGridView2.Columns.AddRange(new DataGridViewColumn[] { time, msg, code });
-            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = Color.FromArgb(31, 41, 55);
-            dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F);
-            dataGridViewCellStyle1.ForeColor = Color.FromArgb(31, 41, 55);
-            dataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
-            dataGridView2.DefaultCellStyle = dataGridViewCellStyle1;
-            dataGridView2.Dock = DockStyle.Fill;
-            dataGridView2.GridColor = Color.White;
-            dataGridView2.Location = new Point(178, 13);
-            dataGridView2.Name = "dataGridView2";
-            dataGridView2.RowHeadersVisible = false;
-            tableLayoutPanel4.SetRowSpan(dataGridView2, 2);
-            dataGridView2.Size = new Size(382, 213);
-            dataGridView2.TabIndex = 5;
-            dataGridView2.CellFormatting += dataGridView2_CellFormatting;
-            dataGridView2.RowPostPaint += dataGridView2_RowPostPaint;
-            dataGridView2.RowsAdded += dataGridView2_RowsAdded;
-            // 
-            // time
-            // 
-            time.FillWeight = 20F;
-            time.HeaderText = "time";
-            time.Name = "time";
-            time.ReadOnly = true;
-            // 
-            // msg
-            // 
-            msg.FillWeight = 80F;
-            msg.HeaderText = "msg";
-            msg.Name = "msg";
-            msg.ReadOnly = true;
-            // 
-            // code
-            // 
-            code.HeaderText = "code";
-            code.Name = "code";
-            code.Visible = false;
             // 
             // timer1
             // 
@@ -717,9 +717,9 @@
             panel1.ResumeLayout(false);
             tableLayoutPanel3.ResumeLayout(false);
             tableLayoutPanel4.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)dataGridView2).EndInit();
             tableLayoutPanel7.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
-            ((System.ComponentModel.ISupportInitialize)dataGridView2).EndInit();
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)inputFileWatcher).EndInit();
