@@ -235,6 +235,9 @@
             dataGridView2.RowsDefaultCellStyle = dataGridViewCellStyle2;
             dataGridView2.Size = new Size(428, 239);
             dataGridView2.TabIndex = 14;
+            dataGridView2.CellFormatting += dataGridView2_CellFormatting;
+            dataGridView2.RowPostPaint += dataGridView2_RowPostPaint;
+            dataGridView2.RowsAdded += dataGridView2_RowsAdded;
             // 
             // time
             // 
