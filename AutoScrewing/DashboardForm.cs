@@ -82,7 +82,7 @@ namespace AutoScrewing
                 await qtyInputLabel.InvokeAsync(() => qtyInputLabel.Text = $"QTY INPUT: {c.Input}");
                 await qtyPassLabel.InvokeAsync(() => qtyPassLabel.Text = $"QTY PASS: {c.Pass}");
                 await qtyNGLabel.InvokeAsync(() => qtyNGLabel.Text = $"QTY NG: {c.NG}");
-                await qtyRepository.SetQty(qtyModel);
+                await qtyRepository.SetQty(c);
             }
             catch { }
         }
@@ -1128,6 +1128,7 @@ namespace AutoScrewing
 
         private void dataGridView2_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
+            e.CellStyle.ForeColor = Color.White;
             e.CellStyle.ForeColor = Color.White;
             if (e.ColumnIndex == 1)
             {
