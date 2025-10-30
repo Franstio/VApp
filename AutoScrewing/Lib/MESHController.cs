@@ -95,15 +95,14 @@ namespace AutoScrewing.Lib
                     try
                     {
                         res = await base.SendAsync(request, new CancellationToken());
+                        log.result = await res.Content.ReadAsStringAsync();
                         res.EnsureSuccessStatusCode();
                         log.status += "-Success";
-                        log.result = await res.Content.ReadAsStringAsync();
                         break;
                     }
                     catch (HttpRequestException ex)
                     {
-                        log.status += $"-Failed - {ex.StatusCode}";
-                        log.result = $"{ex.Message} {ex.HttpRequestError}";
+                        log.status += $"-Failed - {ex.StatusCode} {ex.Message} {ex.HttpRequestError}";
                         res = new HttpResponseMessage(ex.StatusCode ?? System.Net.HttpStatusCode.ServiceUnavailable);
                     }
                     catch (Exception ex)
