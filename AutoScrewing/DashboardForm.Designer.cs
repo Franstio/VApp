@@ -230,6 +230,7 @@
             dataGridView2.GridColor = Color.White;
             dataGridView2.Location = new Point(1014, 3);
             dataGridView2.Name = "dataGridView2";
+            dataGridView2.ReadOnly = true;
             dataGridView2.RowHeadersVisible = false;
             dataGridViewCellStyle2.ForeColor = Color.White;
             dataGridView2.RowsDefaultCellStyle = dataGridViewCellStyle2;
@@ -244,17 +245,20 @@
             time.FillWeight = 20F;
             time.HeaderText = "time";
             time.Name = "time";
+            time.ReadOnly = true;
             // 
             // msg
             // 
             msg.FillWeight = 80F;
             msg.HeaderText = "msg";
             msg.Name = "msg";
+            msg.ReadOnly = true;
             // 
             // code
             // 
             code.HeaderText = "code";
             code.Name = "code";
+            code.ReadOnly = true;
             code.Visible = false;
             // 
             // tableLayoutPanel5
