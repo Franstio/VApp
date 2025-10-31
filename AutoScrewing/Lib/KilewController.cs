@@ -42,7 +42,16 @@ namespace AutoScrewing.Lib
             string command = $"{{{cmd},{dt.Year},{dt.Month},{dt.Day},{dt.Hour},{dt.Minute},{dt.Second},{checksum},{checksum + 5438},1,1,}}\n\r";
             return command;
         }
-
+        public bool OpenConnection()
+        {
+            var ports = SerialPort.GetPortNames();
+            if (!ports.Contains(baseAddress))
+                throw new Exception($"Port {baseAddress} Not Detected");
+            if (_client.IsOpen)
+                return true;
+            _client.Open();
+            return _client.IsOpen;
+        }
         public async Task<string> Send(string cmd, [CallerMemberName] string? methodName = null, [CallerFilePath] string? filePath = null, [CallerLineNumber] int lineNumber = 0)
         {
             LogModel log = new LogModel("Kilew", "Kilew Controller", $"Called by `{methodName}` in `{System.IO.Path.GetFileName(filePath)}` at line `{lineNumber}`", "Send");
@@ -52,8 +61,8 @@ namespace AutoScrewing.Lib
 
             try
             {
-                if (!_client.IsOpen)
-                    _client.Open();
+                if (!OpenConnection())
+                    throw new Exception("Connection Failed");
                 byte[] buffer = Encoding.ASCII.GetBytes(cmd);
                 _client.Write(buffer, 0, buffer.Length);
                 await Task.Delay(1000);
