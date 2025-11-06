@@ -42,6 +42,7 @@ namespace AutoScrewing
         private PLCController plcController;
         private DashboardModel _dashboardmodel = new DashboardModel();
         private bool meshSend = false;
+        private bool jigrelease = false;
         private bool runTrigger = false;
         private Form msgDialogue = new EmergencyDialogue();
         private LogRepository logRepository = new LogRepository();
@@ -1136,7 +1137,7 @@ namespace AutoScrewing
                 if (data is not null)
                 {
                     e.CellStyle.ForeColor = data == "-1" ? ColorTranslator.FromHtml("#EF4444") : Color.White;
-                    e.CellStyle.SelectionForeColor =  data == "-1" ? ColorTranslator.FromHtml("#EF4444") : Color.White;
+                    e.CellStyle.SelectionForeColor = data == "-1" ? ColorTranslator.FromHtml("#EF4444") : Color.White;
                 }
             }
         }
@@ -1162,6 +1163,13 @@ namespace AutoScrewing
             await qtyRepository.SetQty(new QtyModel() { NG = 0, Input = 0, Pass = 0 });
             await InitQty();
             await UpdateLabelQTY();
+        }
+
+        private async void button3_Click(object sender, EventArgs e)
+        {
+            PLCController.PLCItem cmd = new PLCController.PLCItem("WR", "MR905", jigrelease ? 0 : 1, "");
+            await plcController.Send(cmd);
+            jigrelease = !jigrelease;
         }
 
         public interface IDashboardOngoingItems
