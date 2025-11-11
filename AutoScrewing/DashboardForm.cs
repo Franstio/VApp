@@ -174,7 +174,7 @@ namespace AutoScrewing
             BackgroundTasks.Add(Task.Run(() => ReadScrewingKilew()));
             BackgroundTasks.Add(Task.Run(() => ReadLaserPLC()));
             BackgroundTasks.Add(Task.Run(() => ReadCamera()));
-
+            BackgroundTasks.Add(Task.Run(() => CheckDoor()));
             BackgroundTasks.Add(Task.Run(() => OutputTransaction()));
             //            _ = Task.Run(() => CheckReady());
             BackgroundTasks.Add(Task.Run(() => ShiftQueues()));
@@ -1072,6 +1072,28 @@ namespace AutoScrewing
                 }
             }
         }
+        private async Task CheckDoor()
+        {
+            PLCController.PLCItem[] plcReads = [
+                new PLCController.PLCItem("RD", "R100", -1, "Read Pause",false),
+            ];
+            while (true)
+            {
+                string res = await plcController.Send(plcReads[0]);
+                bool pause = res == "1";
+
+                await pictureBox1.InvokeAsync(() =>
+                {
+                    pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+                    pictureBox1.Image = pause ? greenImage : redImage;
+                });
+                await button3.InvokeAsync(() =>
+                {
+                    button3.Enabled = pause;
+                });
+                await Task.Delay(500);
+            }
+        }
         public async Task CheckEmergency()
         {
             PLCController.PLCItem[] plcReads = [
@@ -1095,15 +1117,7 @@ namespace AutoScrewing
                     bool pause = (await Tasks[1]) == "1";
                     bool emergency = (await Tasks[0]) == "0";
                     bool jig = (await Tasks[2]) == "1";
-                    await pictureBox1.InvokeAsync(() =>
-                    {
-                        pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
-                        pictureBox1.Image = pause ? greenImage : redImage;
-                    });
-                    await button3.InvokeAsync(() =>
-                    {
-                        button3.Enabled = pause;
-                    });
+                    
                     if (pause || emergency || jig)
                     {
                         msgDialogue = jig ? new NonEmergencyDialogue(this) : new EmergencyDialogue();
