@@ -9,23 +9,28 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static AutoScrewing.Dialogue.NonEmergencyDialogue;
 
 namespace AutoScrewing.Dialogue
 {
 
     public partial class EmergencyDialogue : Form
     {
+        private IEmergencyMonitor monitor;
         PLCController plcController;
+
         private CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-        public EmergencyDialogue()
+        public EmergencyDialogue(IEmergencyMonitor emergencyMonitor)
         {
             InitializeComponent();
+            monitor  = emergencyMonitor;
             plcController = Program.ServiceProvider.GetRequiredService<PLCController>();
         }
-        public EmergencyDialogue(string message)
+        public EmergencyDialogue(string message,IEmergencyMonitor monitor)
         {
             InitializeComponent();
             this.label1.Text = message;
+            this.monitor = monitor;
             plcController = Program.ServiceProvider.GetRequiredService<PLCController>();
         }
         private const int CP_NOCLOSE_BUTTON = 0x200;
@@ -87,6 +92,7 @@ namespace AutoScrewing.Dialogue
 
         private void EmergencyDialogue_FormClosing(object sender, FormClosingEventArgs e)
         {
+            _ = Task.Run(monitor.CheckEmergency);
             cancellationTokenSource.Cancel();
         }
     }

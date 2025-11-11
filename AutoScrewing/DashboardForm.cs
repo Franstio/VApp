@@ -45,7 +45,7 @@ namespace AutoScrewing
         private bool meshSend = false;
         private bool jigrelease = false;
         private bool runTrigger = false;
-        private Form msgDialogue = new EmergencyDialogue();
+        private Form msgDialogue;
         private LogRepository logRepository = new LogRepository();
         private SemaphoreSlim slim = new SemaphoreSlim(1, 1);
         private string CHECKSUM_SCREWING = "", NEW_CHECKSUM_SCREWING = "";
@@ -1139,7 +1139,7 @@ namespace AutoScrewing
 
                     if (pause || emergency || jig)
                     {
-                        msgDialogue = jig ? new NonEmergencyDialogue(this) : new EmergencyDialogue();
+                        msgDialogue = jig ? new NonEmergencyDialogue(this) : new EmergencyDialogue(this);
                         msgDialogue.StartPosition = FormStartPosition.CenterScreen;
                         msgDialogue.TopMost = true;
                         await InvokeAsync(() =>
@@ -1153,7 +1153,7 @@ namespace AutoScrewing
                             else
                             {
                                 msgDialogue.Show();
-                                _ = Task.Run(() => CheckEmergency());
+//                                _ = Task.Run(() => CheckEmergency());
                             }
                             slim.Release();
                         });
