@@ -1085,12 +1085,21 @@ namespace AutoScrewing
                 await pictureBox1.InvokeAsync(() =>
                 {
                     pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
-                    pictureBox1.Image = pause ? greenImage : redImage;
+                    pictureBox1.BackColor = pause ? Color.Green : Color.Red;
                 });
                 await button3.InvokeAsync(() =>
                 {
-                    button3.Enabled = pause;
-                    button3.BackColor = pause ? Color.Green : Color.Orange;
+                    if (jigrelease)
+                    {
+                        button3.Text = "Locking...";
+                        button3.Enabled = true;
+                        button3.BackColor = Color.Red;
+                    }
+                    else
+                    {
+                        button3.Enabled = pause;
+                        button3.BackColor = pause ? Color.Green : Color.Orange;
+                    }
                 });
                 await Task.Delay(1000);
             }
