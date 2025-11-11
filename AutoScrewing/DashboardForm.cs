@@ -1093,7 +1093,7 @@ namespace AutoScrewing
                     {
                         button3.Text = "Locking...";
                         button3.Enabled = pause;
-                        button3.BackColor = Color.Red;
+                        button3.BackColor = pause ? Color.Red : Color.Gray;
                     }
                     else
                     {
