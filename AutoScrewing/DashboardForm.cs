@@ -1097,7 +1097,7 @@ namespace AutoScrewing
                     }
                     else
                     {
-                        button3.Text = "Release"
+                        button3.Text = "Release";
                         button3.Enabled = pause;
                         button3.BackColor = pause ? Color.Green : Color.Orange;
                     }
