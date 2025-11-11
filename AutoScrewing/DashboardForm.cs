@@ -1100,6 +1100,10 @@ namespace AutoScrewing
                         pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
                         pictureBox1.Image = pause ? greenImage : redImage;
                     });
+                    await button3.InvokeAsync(() =>
+                    {
+                        button3.Enabled = pause;
+                    })
                     if (pause || emergency || jig)
                     {
                         msgDialogue = jig ? new NonEmergencyDialogue(this) : new EmergencyDialogue();
