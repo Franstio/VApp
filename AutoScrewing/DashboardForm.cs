@@ -40,6 +40,7 @@ namespace AutoScrewing
         private MESHController meshController;
         private KilewController kilewController;
         private PLCController plcController;
+        private System.Drawing.Image greenImage, redImage;
         private DashboardModel _dashboardmodel = new DashboardModel();
         private bool meshSend = false;
         private bool jigrelease = false;
@@ -136,7 +137,8 @@ namespace AutoScrewing
             plcController = Program.ServiceProvider.GetRequiredService<PLCController>();
             kilewController = Program.ServiceProvider.GetRequiredService<KilewController>();
             qtyRepository = Program.ServiceProvider.GetRequiredService<QtyRepository>();
-
+            redImage = LoadImage(Properties.Resources.red_circle);
+            greenImage = LoadImage(Properties.Resources.green_circle);
         }
         async Task InitQty()
         {
@@ -1093,10 +1095,17 @@ namespace AutoScrewing
                     bool pause = (await Tasks[1]) == "1";
                     bool emergency = (await Tasks[0]) == "0";
                     bool jig = (await Tasks[2]) == "1";
+                    await pictureBox1.InvokeAsync(() =>
+                    {
+                        pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+                        pictureBox1.Image = pause ? greenImage : redImage;
+                    });
                     if (pause || emergency || jig)
                     {
                         msgDialogue = jig ? new NonEmergencyDialogue(this) : new EmergencyDialogue();
                         msgDialogue.StartPosition = FormStartPosition.CenterParent;
+                        msgDialogue.Parent = this;
+                        msgDialogue.TopMost = true;
                         await InvokeAsync(() =>
                         {
                             if (jig)
@@ -1105,7 +1114,7 @@ namespace AutoScrewing
                             }
                             else
                             {
-                                var res = msgDialogue.ShowDialog(this);
+                                msgDialogue.Show();
                                 _ = Task.Run(() => CheckEmergency());
                             }
                             slim.Release();
@@ -1157,7 +1166,11 @@ namespace AutoScrewing
                 dataGridView2.FirstDisplayedScrollingRowIndex = dataGridView2.RowCount - 1;
             }
         }
-
+        System.Drawing.Image LoadImage(byte[] data)
+        {
+            using (var ms = new MemoryStream(data))
+                return System.Drawing.Image.FromStream(ms);
+        }
         private async void button2_Click(object sender, EventArgs e)
         {
             await qtyRepository.SetQty(new QtyModel() { NG = 0, Input = 0, Pass = 0 });
@@ -1171,7 +1184,6 @@ namespace AutoScrewing
             await plcController.Send(cmd);
             jigrelease = !jigrelease;
         }
-
         public interface IDashboardOngoingItems
         {
             Task<ConcurrentBag<OngoingItemModel>> GetOngoingItems();
