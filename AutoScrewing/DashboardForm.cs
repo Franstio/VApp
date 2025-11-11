@@ -1105,15 +1105,13 @@ namespace AutoScrewing
                 await Task.Delay(1000);
             }
         }
-        private async Task SetInputState(bool state)
+        private void SetInputState(bool state)
         {
-            await InvokeAsync(() =>
-            {
                 workNumberScanBox.Enabled = state;
                 userIdBox.Enabled = state;
                 scan1Box.Enabled = state;
                 scan2Box.Enabled = state;
-            });
+           
         }
         public async Task CheckEmergency()
         {
@@ -1144,9 +1142,10 @@ namespace AutoScrewing
                         msgDialogue = jig ? new NonEmergencyDialogue(this) : new EmergencyDialogue();
                         msgDialogue.StartPosition = FormStartPosition.CenterScreen;
                         msgDialogue.TopMost = true;
-                        await SetInputState(false);
                         await InvokeAsync(() =>
                         {
+                            SetInputState(false);
+
                             if (jig)
                             {
                                 msgDialogue.Show();
@@ -1161,7 +1160,7 @@ namespace AutoScrewing
                         return;
                     }
                     else
-                        await SetInputState(true);
+                        await InvokeAsync(()=>SetInputState(true));
                     await Task.Delay(100);
                     slim.Release();
                 }
