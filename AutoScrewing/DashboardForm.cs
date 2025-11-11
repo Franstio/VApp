@@ -1090,8 +1090,9 @@ namespace AutoScrewing
                 await button3.InvokeAsync(() =>
                 {
                     button3.Enabled = pause;
+                    button3.BackColor = pause ? Color.Green : Color.Orange;
                 });
-                await Task.Delay(500);
+                await Task.Delay(1000);
             }
         }
         public async Task CheckEmergency()
