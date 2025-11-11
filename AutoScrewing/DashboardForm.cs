@@ -1095,6 +1095,16 @@ namespace AutoScrewing
                 await Task.Delay(1000);
             }
         }
+        private async Task SetInputState(bool state)
+        {
+            await InvokeAsync(() =>
+            {
+                workNumberScanBox.Enabled = state;
+                userIdBox.Enabled = state;
+                scan1Box.Enabled = state;
+                scan2Box.Enabled = state;
+            });
+        }
         public async Task CheckEmergency()
         {
             PLCController.PLCItem[] plcReads = [
@@ -1118,12 +1128,13 @@ namespace AutoScrewing
                     bool pause = (await Tasks[1]) == "1";
                     bool emergency = (await Tasks[0]) == "0";
                     bool jig = (await Tasks[2]) == "1";
-                    
+
                     if (pause || emergency || jig)
                     {
                         msgDialogue = jig ? new NonEmergencyDialogue(this) : new EmergencyDialogue();
                         msgDialogue.StartPosition = FormStartPosition.CenterScreen;
                         msgDialogue.TopMost = true;
+                        await SetInputState(false);
                         await InvokeAsync(() =>
                         {
                             if (jig)
@@ -1139,6 +1150,8 @@ namespace AutoScrewing
                         });
                         return;
                     }
+                    else
+                        await SetInputState(true);
                     await Task.Delay(100);
                     slim.Release();
                 }
