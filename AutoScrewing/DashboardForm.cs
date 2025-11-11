@@ -1103,7 +1103,7 @@ namespace AutoScrewing
                     await button3.InvokeAsync(() =>
                     {
                         button3.Enabled = pause;
-                    })
+                    });
                     if (pause || emergency || jig)
                     {
                         msgDialogue = jig ? new NonEmergencyDialogue(this) : new EmergencyDialogue();
