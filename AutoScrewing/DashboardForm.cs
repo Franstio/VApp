@@ -1123,7 +1123,6 @@ namespace AutoScrewing
                     {
                         msgDialogue = jig ? new NonEmergencyDialogue(this) : new EmergencyDialogue();
                         msgDialogue.StartPosition = FormStartPosition.CenterParent;
-                        msgDialogue.Parent = this;
                         msgDialogue.TopMost = true;
                         await InvokeAsync(() =>
                         {
