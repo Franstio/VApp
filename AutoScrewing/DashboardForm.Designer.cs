@@ -68,8 +68,9 @@
             button2 = new Button();
             button1 = new Button();
             tableLayoutPanel10 = new TableLayoutPanel();
-            pictureBox1 = new PictureBox();
             button3 = new Button();
+            panel2 = new Panel();
+            label8 = new Label();
             timer1 = new System.Windows.Forms.Timer(components);
             menuStrip1 = new MenuStrip();
             configToolStripMenuItem = new ToolStripMenuItem();
@@ -101,7 +102,7 @@
             tableLayoutPanel8.SuspendLayout();
             tableLayoutPanel9.SuspendLayout();
             tableLayoutPanel10.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            panel2.SuspendLayout();
             menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)inputFileWatcher).BeginInit();
             tableLayoutPanel6.SuspendLayout();
@@ -561,8 +562,8 @@
             tableLayoutPanel10.ColumnCount = 2;
             tableLayoutPanel10.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tableLayoutPanel10.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tableLayoutPanel10.Controls.Add(pictureBox1, 1, 0);
             tableLayoutPanel10.Controls.Add(button3, 0, 0);
+            tableLayoutPanel10.Controls.Add(panel2, 1, 0);
             tableLayoutPanel10.Dock = DockStyle.Fill;
             tableLayoutPanel10.Location = new Point(3, 3);
             tableLayoutPanel10.Name = "tableLayoutPanel10";
@@ -570,16 +571,6 @@
             tableLayoutPanel10.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             tableLayoutPanel10.Size = new Size(281, 51);
             tableLayoutPanel10.TabIndex = 18;
-            // 
-            // pictureBox1
-            // 
-            pictureBox1.Dock = DockStyle.Fill;
-            pictureBox1.Location = new Point(143, 3);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(135, 45);
-            pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
-            pictureBox1.TabIndex = 20;
-            pictureBox1.TabStop = false;
             // 
             // button3
             // 
@@ -594,6 +585,28 @@
             button3.Text = "RELASE JIG";
             button3.UseVisualStyleBackColor = false;
             button3.Click += button3_Click;
+            // 
+            // panel2
+            // 
+            panel2.Controls.Add(label8);
+            panel2.Dock = DockStyle.Fill;
+            panel2.Location = new Point(143, 3);
+            panel2.Name = "panel2";
+            panel2.Size = new Size(135, 45);
+            panel2.TabIndex = 20;
+            // 
+            // label8
+            // 
+            label8.BackColor = Color.Green;
+            label8.Dock = DockStyle.Fill;
+            label8.Font = new Font("Sans Serif Collection", 14.2499981F, FontStyle.Bold);
+            label8.ForeColor = Color.White;
+            label8.Location = new Point(0, 0);
+            label8.Name = "label8";
+            label8.Size = new Size(135, 45);
+            label8.TabIndex = 3;
+            label8.Text = "DOOR";
+            label8.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // timer1
             // 
@@ -821,7 +834,7 @@
             tableLayoutPanel8.PerformLayout();
             tableLayoutPanel9.ResumeLayout(false);
             tableLayoutPanel10.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            panel2.ResumeLayout(false);
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)inputFileWatcher).EndInit();
@@ -887,6 +900,7 @@
         private Button button1;
         private TableLayoutPanel tableLayoutPanel10;
         private Button button3;
-        private PictureBox pictureBox1;
+        private Panel panel2;
+        private Label label8;
     }
 }

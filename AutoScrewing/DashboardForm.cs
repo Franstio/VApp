@@ -1082,10 +1082,9 @@ namespace AutoScrewing
                 string res = await plcController.Send(plcReads[0]);
                 bool pause = res == "1";
 
-                await pictureBox1.InvokeAsync(() =>
+                await label8.InvokeAsync(() =>
                 {
-                    pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
-                    pictureBox1.BackColor = pause ? Color.Green : Color.Red;
+                    label8.BackColor = pause ? Color.Green : Color.Red;
                 });
                 await button3.InvokeAsync(() =>
                 {
