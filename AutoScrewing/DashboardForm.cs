@@ -1231,9 +1231,9 @@ namespace AutoScrewing
 
         private async void button4_Click(object sender, EventArgs e)
         {
-            await plcController.Send(new PLCController.PLCItem("WR", "MR905", 1, ""));
+            await plcController.Send(new PLCController.PLCItem("WR", "MR910", 1, ""));
             await Task.Delay(100);
-            await plcController.Send(new PLCController.PLCItem("WR", "MR905", 0, ""));
+            await plcController.Send(new PLCController.PLCItem("WR", "MR910", 0, ""));
         }
 
         public interface IDashboardOngoingItems
