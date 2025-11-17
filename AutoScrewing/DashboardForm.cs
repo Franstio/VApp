@@ -1106,11 +1106,11 @@ namespace AutoScrewing
         }
         private void SetInputState(bool state)
         {
-                workNumberScanBox.Enabled = state;
-                userIdBox.Enabled = state;
-                scan1Box.Enabled = state;
-                scan2Box.Enabled = state;
-           
+            workNumberScanBox.Enabled = state;
+            userIdBox.Enabled = state;
+            scan1Box.Enabled = state;
+            scan2Box.Enabled = state;
+
         }
         public async Task CheckEmergency()
         {
@@ -1152,14 +1152,14 @@ namespace AutoScrewing
                             else
                             {
                                 msgDialogue.Show();
-//                                _ = Task.Run(() => CheckEmergency());
+                                //                                _ = Task.Run(() => CheckEmergency());
                             }
                             slim.Release();
                         });
                         return;
                     }
                     else
-                        await InvokeAsync(()=>SetInputState(true));
+                        await InvokeAsync(() => SetInputState(true));
                     await Task.Delay(100);
                     slim.Release();
                 }
@@ -1223,6 +1223,19 @@ namespace AutoScrewing
             await plcController.Send(cmd);
             jigrelease = !jigrelease;
         }
+
+        private void label8_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private async void button4_Click(object sender, EventArgs e)
+        {
+            await plcController.Send(new PLCController.PLCItem("WR", "MR905", 1, ""));
+            await Task.Delay(100);
+            await plcController.Send(new PLCController.PLCItem("WR", "MR905", 0, ""));
+        }
+
         public interface IDashboardOngoingItems
         {
             Task<ConcurrentBag<OngoingItemModel>> GetOngoingItems();
