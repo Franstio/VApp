@@ -1231,6 +1231,9 @@ namespace AutoScrewing
 
         private async void button4_Click(object sender, EventArgs e)
         {
+            var dialog = MessageBox.Show("Are you sure want to reset?", "Reset Confirmation", MessageBoxButtons.YesNo,MessageBoxIcon.Warning,MessageBoxDefaultButton.Button2);
+            if (dialog != DialogResult.Yes)
+                return;
             await button4.InvokeAsync(() =>
             {
                 button4.BackColor = Color.Gray;
