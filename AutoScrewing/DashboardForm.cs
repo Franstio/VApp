@@ -1231,9 +1231,21 @@ namespace AutoScrewing
 
         private async void button4_Click(object sender, EventArgs e)
         {
+            await button4.InvokeAsync(() =>
+            {
+                button4.BackColor = Color.Gray;
+                button4.ForeColor = Color.Black;
+            });
             await plcController.Send(new PLCController.PLCItem("WR", "MR910", 1, ""));
             await Task.Delay(100);
-            await plcController.Send(new PLCController.PLCItem("WR", "MR910", 0, ""));
+            await plcController.Send(new PLCController.PLCItem("WR", "MR910", 0, "")); 
+
+
+            await button4.InvokeAsync(() =>
+            {
+                button4.BackColor = Color.FromArgb(59, 130, 246);
+                button4.ForeColor = Color.White;
+            });
         }
 
         public interface IDashboardOngoingItems

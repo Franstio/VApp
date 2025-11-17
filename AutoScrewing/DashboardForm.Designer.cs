@@ -29,10 +29,10 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            DataGridViewCellStyle dataGridViewCellStyle13 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle14 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle15 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle16 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
             tableLayoutPanel1 = new TableLayoutPanel();
             screwingResultLabel = new Label();
             screwingTimeLabel = new Label();
@@ -68,6 +68,7 @@
             button2 = new Button();
             button1 = new Button();
             tableLayoutPanel10 = new TableLayoutPanel();
+            button4 = new Button();
             button3 = new Button();
             panel2 = new Panel();
             label8 = new Label();
@@ -90,7 +91,6 @@
             scan1Box = new TextBox();
             userIdBox = new TextBox();
             label4 = new Label();
-            button4 = new Button();
             tableLayoutPanel1.SuspendLayout();
             tableLayoutPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView2).BeginInit();
@@ -225,22 +225,22 @@
             dataGridView2.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView2.ColumnHeadersVisible = false;
             dataGridView2.Columns.AddRange(new DataGridViewColumn[] { time, msg, code });
-            dataGridViewCellStyle13.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle13.BackColor = Color.FromArgb(31, 41, 55);
-            dataGridViewCellStyle13.Font = new Font("Segoe UI", 9F);
-            dataGridViewCellStyle13.ForeColor = Color.FromArgb(31, 41, 55);
-            dataGridViewCellStyle13.SelectionBackColor = Color.FromArgb(31, 41, 55);
-            dataGridViewCellStyle13.SelectionForeColor = Color.White;
-            dataGridViewCellStyle13.WrapMode = DataGridViewTriState.True;
-            dataGridView2.DefaultCellStyle = dataGridViewCellStyle13;
+            dataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = Color.FromArgb(31, 41, 55);
+            dataGridViewCellStyle1.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle1.ForeColor = Color.FromArgb(31, 41, 55);
+            dataGridViewCellStyle1.SelectionBackColor = Color.FromArgb(31, 41, 55);
+            dataGridViewCellStyle1.SelectionForeColor = Color.White;
+            dataGridViewCellStyle1.WrapMode = DataGridViewTriState.True;
+            dataGridView2.DefaultCellStyle = dataGridViewCellStyle1;
             dataGridView2.Dock = DockStyle.Fill;
             dataGridView2.GridColor = Color.White;
             dataGridView2.Location = new Point(1014, 3);
             dataGridView2.Name = "dataGridView2";
             dataGridView2.ReadOnly = true;
             dataGridView2.RowHeadersVisible = false;
-            dataGridViewCellStyle14.ForeColor = Color.White;
-            dataGridView2.RowsDefaultCellStyle = dataGridViewCellStyle14;
+            dataGridViewCellStyle2.ForeColor = Color.White;
+            dataGridView2.RowsDefaultCellStyle = dataGridViewCellStyle2;
             dataGridView2.Size = new Size(428, 239);
             dataGridView2.TabIndex = 14;
             dataGridView2.CellFormatting += dataGridView2_CellFormatting;
@@ -396,14 +396,14 @@
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCells;
             dataGridView1.BackgroundColor = Color.White;
-            dataGridViewCellStyle15.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle15.BackColor = Color.FromArgb(229, 231, 235);
-            dataGridViewCellStyle15.Font = new Font("Sans Serif Collection", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle15.ForeColor = Color.FromArgb(31, 41, 55);
-            dataGridViewCellStyle15.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle15.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle15.WrapMode = DataGridViewTriState.True;
-            dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle15;
+            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = Color.FromArgb(229, 231, 235);
+            dataGridViewCellStyle3.Font = new Font("Sans Serif Collection", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle3.ForeColor = Color.FromArgb(31, 41, 55);
+            dataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.True;
+            dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView1.Columns.AddRange(new DataGridViewColumn[] { MatLotNo, LotNo, Screwing, Laser, Camera, Judgement });
             tableLayoutPanel7.SetColumnSpan(dataGridView1, 4);
@@ -413,11 +413,11 @@
             dataGridView1.Name = "dataGridView1";
             dataGridView1.ReadOnly = true;
             dataGridView1.RowHeadersVisible = false;
-            dataGridViewCellStyle16.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle16.BackColor = Color.White;
-            dataGridViewCellStyle16.Font = new Font("Sans Serif Collection", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle16.ForeColor = Color.FromArgb(55, 65, 81);
-            dataGridView1.RowsDefaultCellStyle = dataGridViewCellStyle16;
+            dataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = Color.White;
+            dataGridViewCellStyle4.Font = new Font("Sans Serif Collection", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle4.ForeColor = Color.FromArgb(55, 65, 81);
+            dataGridView1.RowsDefaultCellStyle = dataGridViewCellStyle4;
             tableLayoutPanel7.SetRowSpan(dataGridView1, 2);
             dataGridView1.Size = new Size(1433, 250);
             dataGridView1.TabIndex = 4;
@@ -574,6 +574,20 @@
             tableLayoutPanel10.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             tableLayoutPanel10.Size = new Size(353, 51);
             tableLayoutPanel10.TabIndex = 18;
+            // 
+            // button4
+            // 
+            button4.BackColor = Color.FromArgb(59, 130, 246);
+            button4.Dock = DockStyle.Fill;
+            button4.Font = new Font("Sans Serif Collection", 11F, FontStyle.Bold);
+            button4.ForeColor = SystemColors.Window;
+            button4.Location = new Point(249, 3);
+            button4.Name = "button4";
+            button4.Size = new Size(101, 45);
+            button4.TabIndex = 21;
+            button4.Text = "Scanner";
+            button4.UseVisualStyleBackColor = false;
+            button4.Click += button4_Click;
             // 
             // button3
             // 
@@ -806,20 +820,6 @@
             label4.Size = new Size(297, 33);
             label4.TabIndex = 14;
             label4.Text = "Scan Work Number:";
-            // 
-            // button4
-            // 
-            button4.BackColor = Color.FromArgb(59, 130, 246);
-            button4.Dock = DockStyle.Fill;
-            button4.Font = new Font("Sans Serif Collection", 11F, FontStyle.Bold);
-            button4.ForeColor = SystemColors.Window;
-            button4.Location = new Point(249, 3);
-            button4.Name = "button4";
-            button4.Size = new Size(101, 45);
-            button4.TabIndex = 21;
-            button4.Text = "Scanner";
-            button4.UseVisualStyleBackColor = false;
-            button4.Click += button4_Click;
             // 
             // DashboardForm
             // 
