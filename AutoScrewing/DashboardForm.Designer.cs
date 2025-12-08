@@ -81,6 +81,7 @@
             logToolStripMenuItem = new ToolStripMenuItem();
             manualToolStripMenuItem = new ToolStripMenuItem();
             maintenanceToolStripMenuItem = new ToolStripMenuItem();
+            testFormToolStripMenuItem = new ToolStripMenuItem();
             inputFileWatcher = new FileSystemWatcher();
             tableLayoutPanel6 = new TableLayoutPanel();
             label7 = new Label();
@@ -91,7 +92,6 @@
             scan1Box = new TextBox();
             userIdBox = new TextBox();
             label4 = new Label();
-            testFormToolStripMenuItem = new ToolStripMenuItem();
             tableLayoutPanel1.SuspendLayout();
             tableLayoutPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView2).BeginInit();
@@ -699,6 +699,14 @@
             maintenanceToolStripMenuItem.Text = "Maintenance";
             maintenanceToolStripMenuItem.Click += maintenanceToolStripMenuItem_Click;
             // 
+            // testFormToolStripMenuItem
+            // 
+            testFormToolStripMenuItem.ForeColor = Color.FromArgb(249, 250, 251);
+            testFormToolStripMenuItem.Name = "testFormToolStripMenuItem";
+            testFormToolStripMenuItem.Size = new Size(83, 20);
+            testFormToolStripMenuItem.Text = "Manual Test";
+            testFormToolStripMenuItem.Click += testFormToolStripMenuItem_Click;
+            // 
             // inputFileWatcher
             // 
             inputFileWatcher.EnableRaisingEvents = true;
@@ -821,13 +829,6 @@
             label4.Size = new Size(297, 33);
             label4.TabIndex = 14;
             label4.Text = "Scan Work Number:";
-            // 
-            // testFormToolStripMenuItem
-            // 
-            testFormToolStripMenuItem.Name = "testFormToolStripMenuItem";
-            testFormToolStripMenuItem.Size = new Size(83, 20);
-            testFormToolStripMenuItem.Text = "Manual Test";
-            testFormToolStripMenuItem.Click += testFormToolStripMenuItem_Click;
             // 
             // DashboardForm
             // 
