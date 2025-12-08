@@ -29,8 +29,11 @@ namespace AutoScrewing
         private static void addCommonServices(this IServiceCollection serviceCollection)
         {
             Type[] types = [typeof(MESHController), typeof(KilewController),typeof(PLCController),typeof(TransactionRepository),typeof(ConfigRepository),typeof(LogRepository),typeof(QtyRepository)];
+            Type[] forms = [typeof(TestManualForm)];
             for (int i = 0; i < types.Length; i++)
                 serviceCollection.AddScoped(types[i]);
+            for (int i = 0; i < forms.Length; i++)
+                serviceCollection.AddScoped(forms[i]);
             serviceCollection.AddHttpClient().ConfigureHttpClientDefaults(config =>
             {
                 config.AddHttpMessageHandler<MESHController.MESH_HTTP_HANDLER>();

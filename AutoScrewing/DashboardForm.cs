@@ -1231,7 +1231,7 @@ namespace AutoScrewing
 
         private async void button4_Click(object sender, EventArgs e)
         {
-            var dialog = MessageBox.Show("Are you sure want to reset?", "Reset Confirmation", MessageBoxButtons.YesNo,MessageBoxIcon.Warning,MessageBoxDefaultButton.Button2);
+            var dialog = MessageBox.Show("Are you sure want to reset?", "Reset Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
             if (dialog != DialogResult.Yes)
                 return;
             await button4.InvokeAsync(() =>
@@ -1241,7 +1241,7 @@ namespace AutoScrewing
             });
             await plcController.Send(new PLCController.PLCItem("WR", "MR910", 1, ""));
             await Task.Delay(100);
-            await plcController.Send(new PLCController.PLCItem("WR", "MR910", 0, "")); 
+            await plcController.Send(new PLCController.PLCItem("WR", "MR910", 0, ""));
 
 
             await button4.InvokeAsync(() =>
@@ -1249,6 +1249,12 @@ namespace AutoScrewing
                 button4.BackColor = Color.FromArgb(59, 130, 246);
                 button4.ForeColor = Color.White;
             });
+        }
+
+        private void testFormToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var frm = Program.ServiceProvider.GetRequiredService<TestManualForm>();
+            frm.ShowDialog();
         }
 
         public interface IDashboardOngoingItems

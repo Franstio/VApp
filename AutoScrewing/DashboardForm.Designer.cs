@@ -91,6 +91,7 @@
             scan1Box = new TextBox();
             userIdBox = new TextBox();
             label4 = new Label();
+            testFormToolStripMenuItem = new ToolStripMenuItem();
             tableLayoutPanel1.SuspendLayout();
             tableLayoutPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView2).BeginInit();
@@ -635,7 +636,7 @@
             // menuStrip1
             // 
             menuStrip1.BackColor = Color.FromArgb(30, 58, 138);
-            menuStrip1.Items.AddRange(new ToolStripItem[] { configToolStripMenuItem, runningQueueToolStripMenuItem, statusToolStripMenuItem, sampleToolStripMenuItem, logToolStripMenuItem, manualToolStripMenuItem, maintenanceToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { configToolStripMenuItem, runningQueueToolStripMenuItem, statusToolStripMenuItem, sampleToolStripMenuItem, logToolStripMenuItem, manualToolStripMenuItem, maintenanceToolStripMenuItem, testFormToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(1466, 24);
@@ -821,6 +822,13 @@
             label4.TabIndex = 14;
             label4.Text = "Scan Work Number:";
             // 
+            // testFormToolStripMenuItem
+            // 
+            testFormToolStripMenuItem.Name = "testFormToolStripMenuItem";
+            testFormToolStripMenuItem.Size = new Size(83, 20);
+            testFormToolStripMenuItem.Text = "Manual Test";
+            testFormToolStripMenuItem.Click += testFormToolStripMenuItem_Click;
+            // 
             // DashboardForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -921,5 +929,6 @@
         private Panel panel2;
         private Label label8;
         private Button button4;
+        private ToolStripMenuItem testFormToolStripMenuItem;
     }
 }
