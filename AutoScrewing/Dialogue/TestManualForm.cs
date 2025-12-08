@@ -47,7 +47,7 @@ namespace AutoScrewing.Dialogue
             await PLCController.Send(new PLCController.PLCItem("WR", "MR2003", 1, ""));
             await Task.Delay(100);
             await PLCController.Send(new PLCController.PLCItem("WR", "MR2003", 0, ""));
-            await InvokeAsync(() => button3.Enabled = false);
+            await InvokeAsync(() => button3.Enabled = true);
         }
 
         private async void button4_Click(object sender, EventArgs e)
@@ -58,7 +58,7 @@ namespace AutoScrewing.Dialogue
             await Task.Delay(100);
             await PLCController.Send(new PLCController.PLCItem("WR", "MR2004", 0, ""));
 
-            await InvokeAsync(() => button4.Enabled = false);
+            await InvokeAsync(() => button4.Enabled = true);
         }
     }
 }
