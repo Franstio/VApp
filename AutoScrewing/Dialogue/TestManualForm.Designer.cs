@@ -71,26 +71,30 @@
             // 
             // button4
             // 
+            button4.BackColor = Color.FromArgb(46, 204, 113);
             button4.Dock = DockStyle.Fill;
             button4.Font = new Font("Segoe UI", 24F, FontStyle.Bold);
+            button4.ForeColor = Color.FromArgb(236, 240, 241);
             button4.Location = new Point(3, 318);
             button4.Name = "button4";
             button4.Size = new Size(794, 84);
             button4.TabIndex = 7;
             button4.Text = "Check Camera";
-            button4.UseVisualStyleBackColor = true;
+            button4.UseVisualStyleBackColor = false;
             button4.Click += button4_Click;
             // 
             // button3
             // 
+            button3.BackColor = Color.FromArgb(46, 204, 113);
             button3.Dock = DockStyle.Fill;
             button3.Font = new Font("Segoe UI", 24F, FontStyle.Bold);
+            button3.ForeColor = Color.FromArgb(236, 240, 241);
             button3.Location = new Point(3, 228);
             button3.Name = "button3";
             button3.Size = new Size(794, 84);
             button3.TabIndex = 6;
             button3.Text = "Check Height";
-            button3.UseVisualStyleBackColor = true;
+            button3.UseVisualStyleBackColor = false;
             button3.Click += button3_Click;
             // 
             // label4
@@ -139,14 +143,16 @@
             // 
             // button1
             // 
+            button1.BackColor = Color.FromArgb(46, 204, 113);
             button1.Dock = DockStyle.Fill;
             button1.Font = new Font("Segoe UI", 24F, FontStyle.Bold);
+            button1.ForeColor = Color.FromArgb(236, 240, 241);
             button1.Location = new Point(3, 48);
             button1.Name = "button1";
             button1.Size = new Size(794, 84);
             button1.TabIndex = 4;
             button1.Text = "Motor Run";
-            button1.UseVisualStyleBackColor = true;
+            button1.UseVisualStyleBackColor = false;
             button1.Click += button1_Click;
             // 
             // tableLayoutPanel2
@@ -167,9 +173,10 @@
             // 
             // button5
             // 
-            button5.BackColor = Color.White;
+            button5.BackColor = Color.FromArgb(46, 204, 113);
             button5.Dock = DockStyle.Fill;
             button5.Font = new Font("Segoe UI", 24F, FontStyle.Bold);
+            button5.ForeColor = Color.FromArgb(236, 240, 241);
             button5.Location = new Point(400, 3);
             button5.Name = "button5";
             button5.Size = new Size(391, 78);
@@ -180,14 +187,16 @@
             // 
             // button2
             // 
+            button2.BackColor = Color.FromArgb(46, 204, 113);
             button2.Dock = DockStyle.Fill;
             button2.Font = new Font("Segoe UI", 24F, FontStyle.Bold);
+            button2.ForeColor = Color.FromArgb(236, 240, 241);
             button2.Location = new Point(3, 3);
             button2.Name = "button2";
             button2.Size = new Size(391, 78);
             button2.TabIndex = 6;
             button2.Text = "Jig Centering Front";
-            button2.UseVisualStyleBackColor = true;
+            button2.UseVisualStyleBackColor = false;
             button2.Click += button2_Click_1;
             // 
             // TestManualForm
