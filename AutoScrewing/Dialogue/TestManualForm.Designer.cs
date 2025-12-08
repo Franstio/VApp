@@ -71,7 +71,7 @@
             // 
             // button4
             // 
-            button4.BackColor = Color.FromArgb(46, 204, 113);
+            button4.BackColor = Color.FromArgb(52, 152, 219);
             button4.Dock = DockStyle.Fill;
             button4.Font = new Font("Segoe UI", 24F, FontStyle.Bold);
             button4.ForeColor = Color.FromArgb(236, 240, 241);
@@ -85,7 +85,7 @@
             // 
             // button3
             // 
-            button3.BackColor = Color.FromArgb(46, 204, 113);
+            button3.BackColor = Color.FromArgb(52, 152, 219);
             button3.Dock = DockStyle.Fill;
             button3.Font = new Font("Segoe UI", 24F, FontStyle.Bold);
             button3.ForeColor = Color.FromArgb(236, 240, 241);
@@ -143,7 +143,7 @@
             // 
             // button1
             // 
-            button1.BackColor = Color.FromArgb(46, 204, 113);
+            button1.BackColor = Color.FromArgb(52, 152, 219);
             button1.Dock = DockStyle.Fill;
             button1.Font = new Font("Segoe UI", 24F, FontStyle.Bold);
             button1.ForeColor = Color.FromArgb(236, 240, 241);
@@ -173,7 +173,7 @@
             // 
             // button5
             // 
-            button5.BackColor = Color.FromArgb(46, 204, 113);
+            button5.BackColor = Color.FromArgb(52, 152, 219);
             button5.Dock = DockStyle.Fill;
             button5.Font = new Font("Segoe UI", 24F, FontStyle.Bold);
             button5.ForeColor = Color.FromArgb(236, 240, 241);
@@ -187,7 +187,7 @@
             // 
             // button2
             // 
-            button2.BackColor = Color.FromArgb(46, 204, 113);
+            button2.BackColor = Color.FromArgb(52, 152, 219);
             button2.Dock = DockStyle.Fill;
             button2.Font = new Font("Segoe UI", 24F, FontStyle.Bold);
             button2.ForeColor = Color.FromArgb(236, 240, 241);
