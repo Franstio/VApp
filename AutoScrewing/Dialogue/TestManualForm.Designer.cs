@@ -31,13 +31,16 @@
             tableLayoutPanel1 = new TableLayoutPanel();
             button4 = new Button();
             button3 = new Button();
-            button2 = new Button();
             label4 = new Label();
             label3 = new Label();
             label2 = new Label();
             label1 = new Label();
             button1 = new Button();
+            tableLayoutPanel2 = new TableLayoutPanel();
+            button5 = new Button();
+            button2 = new Button();
             tableLayoutPanel1.SuspendLayout();
+            tableLayoutPanel2.SuspendLayout();
             SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -47,12 +50,12 @@
             tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
             tableLayoutPanel1.Controls.Add(button4, 1, 4);
             tableLayoutPanel1.Controls.Add(button3, 1, 3);
-            tableLayoutPanel1.Controls.Add(button2, 1, 2);
             tableLayoutPanel1.Controls.Add(label4, 0, 4);
             tableLayoutPanel1.Controls.Add(label3, 0, 3);
             tableLayoutPanel1.Controls.Add(label2, 0, 2);
             tableLayoutPanel1.Controls.Add(label1, 0, 1);
             tableLayoutPanel1.Controls.Add(button1, 1, 1);
+            tableLayoutPanel1.Controls.Add(tableLayoutPanel2, 1, 2);
             tableLayoutPanel1.Dock = DockStyle.Fill;
             tableLayoutPanel1.Location = new Point(0, 0);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -86,21 +89,9 @@
             button3.Name = "button3";
             button3.Size = new Size(794, 84);
             button3.TabIndex = 6;
-            button3.Text = "Check High";
+            button3.Text = "Check Height";
             button3.UseVisualStyleBackColor = true;
             button3.Click += button3_Click;
-            // 
-            // button2
-            // 
-            button2.Dock = DockStyle.Fill;
-            button2.Font = new Font("Segoe UI", 24F, FontStyle.Bold);
-            button2.Location = new Point(3, 138);
-            button2.Name = "button2";
-            button2.Size = new Size(794, 84);
-            button2.TabIndex = 5;
-            button2.Text = "Jig Centering";
-            button2.UseVisualStyleBackColor = true;
-            button2.Click += button2_Click;
             // 
             // label4
             // 
@@ -154,9 +145,50 @@
             button1.Name = "button1";
             button1.Size = new Size(794, 84);
             button1.TabIndex = 4;
-            button1.Text = "Check Motor Run";
+            button1.Text = "Motor Run";
             button1.UseVisualStyleBackColor = true;
             button1.Click += button1_Click;
+            // 
+            // tableLayoutPanel2
+            // 
+            tableLayoutPanel2.ColumnCount = 2;
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableLayoutPanel2.Controls.Add(button5, 1, 0);
+            tableLayoutPanel2.Controls.Add(button2, 0, 0);
+            tableLayoutPanel2.Dock = DockStyle.Fill;
+            tableLayoutPanel2.Location = new Point(3, 138);
+            tableLayoutPanel2.Name = "tableLayoutPanel2";
+            tableLayoutPanel2.RowCount = 1;
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            tableLayoutPanel2.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tableLayoutPanel2.Size = new Size(794, 84);
+            tableLayoutPanel2.TabIndex = 8;
+            // 
+            // button5
+            // 
+            button5.BackColor = Color.White;
+            button5.Dock = DockStyle.Fill;
+            button5.Font = new Font("Segoe UI", 24F, FontStyle.Bold);
+            button5.Location = new Point(400, 3);
+            button5.Name = "button5";
+            button5.Size = new Size(391, 78);
+            button5.TabIndex = 7;
+            button5.Text = "Jig Centering Back";
+            button5.UseVisualStyleBackColor = false;
+            button5.Click += button5_Click;
+            // 
+            // button2
+            // 
+            button2.Dock = DockStyle.Fill;
+            button2.Font = new Font("Segoe UI", 24F, FontStyle.Bold);
+            button2.Location = new Point(3, 3);
+            button2.Name = "button2";
+            button2.Size = new Size(391, 78);
+            button2.TabIndex = 6;
+            button2.Text = "Jig Front";
+            button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click_1;
             // 
             // TestManualForm
             // 
@@ -167,6 +199,7 @@
             Name = "TestManualForm";
             Text = "Test Manual Form";
             tableLayoutPanel1.ResumeLayout(false);
+            tableLayoutPanel2.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -175,11 +208,13 @@
         private TableLayoutPanel tableLayoutPanel1;
         private Button button4;
         private Button button3;
-        private Button button2;
         private Label label4;
         private Label label3;
         private Label label2;
         private Label label1;
         private Button button1;
+        private TableLayoutPanel tableLayoutPanel2;
+        private Button button5;
+        private Button button2;
     }
 }
