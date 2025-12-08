@@ -21,8 +21,8 @@ namespace AutoScrewing.Dialogue
         }
         void SwitchButton(Button btn,bool green)
         {
-            btn.BackColor = ColorTranslator.FromHtml( green ? "#3498db" : "#27ae60");
-            btn.ForeColor = ColorTranslator.FromHtml(green ? "#ecf0f1" : "#bdc3c7"); 
+            btn.BackColor = ColorTranslator.FromHtml( green ?  "#27ae60":"#3498db");
+            btn.ForeColor = ColorTranslator.FromHtml(green ?  "#bdc3c7": "#ecf0f1"); 
         }
         private async void button1_Click(object sender, EventArgs e)
         {
