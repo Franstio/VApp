@@ -42,7 +42,7 @@ namespace AutoScrewing.Dialogue
 
             await InvokeAsync(() => SwitchButton(button2, true));
             await PLCController.Send(new PLCController.PLCItem("WR", "MR1201", 1, ""));
-            await Task.Delay(100);
+            await Task.Delay(2000);
             await PLCController.Send(new PLCController.PLCItem("WR", "MR1201", 0, ""));
 
             await InvokeAsync(() => button2.Enabled = true);
@@ -56,7 +56,7 @@ namespace AutoScrewing.Dialogue
             await InvokeAsync(() => button5.Enabled = false);
             await InvokeAsync(() => SwitchButton(button5, true));
             await PLCController.Send(new PLCController.PLCItem("WR", "MR1202", 1, ""));
-            await Task.Delay(100);
+            await Task.Delay(2000);
             await PLCController.Send(new PLCController.PLCItem("WR", "MR1202", 0, ""));
             await InvokeAsync(() => button5.Enabled = true);
             await InvokeAsync(() => SwitchButton(button5, false));
@@ -68,7 +68,7 @@ namespace AutoScrewing.Dialogue
             await InvokeAsync(() => button3.Enabled = false);
             await InvokeAsync(() => SwitchButton(button3, true));
             await PLCController.Send(new PLCController.PLCItem("WR", "MR1203", 1, ""));
-            await Task.Delay(100);
+            await Task.Delay(3000);
             await PLCController.Send(new PLCController.PLCItem("WR", "MR1203", 0, ""));
             await InvokeAsync(() => button3.Enabled = true);
             await InvokeAsync(() => SwitchButton(button3, false));
