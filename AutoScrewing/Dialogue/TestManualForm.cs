@@ -19,75 +19,105 @@ namespace AutoScrewing.Dialogue
             InitializeComponent();
             PLCController = pLCController;
         }
-        void SwitchButton(Button btn,bool green)
+        void SwitchButton(Button btn, bool green)
         {
-            btn.BackColor = ColorTranslator.FromHtml( green ?  "#27ae60":"#3498db");
-            btn.ForeColor = ColorTranslator.FromHtml(green ?  "#bdc3c7": "#ecf0f1"); 
+            btn.BackColor = ColorTranslator.FromHtml(green ? "#27ae60" : "#3498db");
+            btn.ForeColor = ColorTranslator.FromHtml(green ? "#bdc3c7" : "#ecf0f1");
         }
         private async void button1_Click(object sender, EventArgs e)
         {
-            await InvokeAsync(() => button1.Enabled = false);
-            await InvokeAsync(() => SwitchButton(button1, true));
-            await PLCController.Send(new PLCController.PLCItem("WR", "MR1200", 1, ""));
-            await Task.Delay(100);
-            await PLCController.Send(new PLCController.PLCItem("WR", "MR1200", 0, ""));
-            await InvokeAsync(() => button1.Enabled = true);
-            await InvokeAsync(() => SwitchButton(button1, false));
+            await executeTestForm(button1, "MR1200");
+            //await InvokeAsync(() => button1.Enabled = false);
+            //await InvokeAsync(() => SwitchButton(button1, true));
+            //await PLCController.Send(new PLCController.PLCItem("WR", "MR1200", 1, ""));
+            //await Task.Delay(100);
+            //await PLCController.Send(new PLCController.PLCItem("WR", "MR1200", 0, ""));
+            //await InvokeAsync(() => button1.Enabled = true);
+            //await InvokeAsync(() => SwitchButton(button1, false));
         }
 
         private async void button2_Click_1(object sender, EventArgs e)
         {
 
-            await InvokeAsync(() => button2.Enabled = false);
+            await executeTestForm(button2, "MR1201",2000);
+            //await InvokeAsync(() => button2.Enabled = false);
 
-            await InvokeAsync(() => SwitchButton(button2, true));
-            await PLCController.Send(new PLCController.PLCItem("WR", "MR1201", 1, ""));
-            await Task.Delay(2000);
-            await PLCController.Send(new PLCController.PLCItem("WR", "MR1201", 0, ""));
+            //await InvokeAsync(() => SwitchButton(button2, true));
+            //await PLCController.Send(new PLCController.PLCItem("WR", "MR1201", 1, ""));
+            //await Task.Delay(2000);
+            //await PLCController.Send(new PLCController.PLCItem("WR", "MR1201", 0, ""));
 
-            await InvokeAsync(() => button2.Enabled = true);
+            //await InvokeAsync(() => button2.Enabled = true);
 
-            await InvokeAsync(() => SwitchButton(button2, false));
+            //await InvokeAsync(() => SwitchButton(button2, false));
         }
 
         private async void button5_Click(object sender, EventArgs e)
         {
 
-            await InvokeAsync(() => button5.Enabled = false);
-            await InvokeAsync(() => SwitchButton(button5, true));
-            await PLCController.Send(new PLCController.PLCItem("WR", "MR1202", 1, ""));
-            await Task.Delay(2000);
-            await PLCController.Send(new PLCController.PLCItem("WR", "MR1202", 0, ""));
-            await InvokeAsync(() => button5.Enabled = true);
-            await InvokeAsync(() => SwitchButton(button5, false));
+            await executeTestForm(button5, "MR1202",2000);
+            //await InvokeAsync(() => button5.Enabled = false);
+            //await InvokeAsync(() => SwitchButton(button5, true));
+            //await PLCController.Send(new PLCController.PLCItem("WR", "MR1202", 1, ""));
+            //await Task.Delay(2000);
+            //await PLCController.Send(new PLCController.PLCItem("WR", "MR1202", 0, ""));
+            //await InvokeAsync(() => button5.Enabled = true);
+            //await InvokeAsync(() => SwitchButton(button5, false));
         }
 
         private async void button3_Click(object sender, EventArgs e)
         {
 
-            await InvokeAsync(() => button3.Enabled = false);
-            await InvokeAsync(() => SwitchButton(button3, true));
-            await PLCController.Send(new PLCController.PLCItem("WR", "MR1203", 1, ""));
-            await Task.Delay(3000);
-            await PLCController.Send(new PLCController.PLCItem("WR", "MR1203", 0, ""));
-            await InvokeAsync(() => button3.Enabled = true);
-            await InvokeAsync(() => SwitchButton(button3, false));
+            await executeTestForm(button3, "MR1203",3000);
+            //await InvokeAsync(() => button3.Enabled = false);
+            //await InvokeAsync(() => SwitchButton(button3, true));
+            //await PLCController.Send(new PLCController.PLCItem("WR", "MR1203", 1, ""));
+            //await Task.Delay(3000);
+            //await PLCController.Send(new PLCController.PLCItem("WR", "MR1203", 0, ""));
+            //await InvokeAsync(() => button3.Enabled = true);
+            //await InvokeAsync(() => SwitchButton(button3, false));
         }
 
         private async void button4_Click(object sender, EventArgs e)
         {
+            await executeTestForm(button4, "MR1204");
+            //await InvokeAsync(() => button4.Enabled = false);
 
-            await InvokeAsync(() => button4.Enabled = false);
+            //await InvokeAsync(() => SwitchButton(button4, true));
+            //await PLCController.Send(new PLCController.PLCItem("WR", "MR1204", 1, ""));
+            //await Task.Delay(100);
+            //await PLCController.Send(new PLCController.PLCItem("WR", "MR1204", 0, ""));
 
-            await InvokeAsync(() => SwitchButton(button4, true));
-            await PLCController.Send(new PLCController.PLCItem("WR", "MR1204", 1, ""));
-            await Task.Delay(100);
-            await PLCController.Send(new PLCController.PLCItem("WR", "MR1204", 0, ""));
+            //await InvokeAsync(() => button4.Enabled = true);
+            //await InvokeAsync(() => SwitchButton(button4, false));
+        }
+        async Task executeTestForm(Button btn, string command, int delay = 100)
+        {
+            await InvokeAsync(() => btn.Enabled = false);
 
-            await InvokeAsync(() => button4.Enabled = true);
-            await InvokeAsync(() => SwitchButton(button4, false));
+            await InvokeAsync(() => SwitchButton(btn, true));
+            await PLCController.Send(new PLCController.PLCItem("WR", command, 1, ""));
+            await Task.Delay(delay);
+            await PLCController.Send(new PLCController.PLCItem("WR", command, 0, ""));
+
+            await InvokeAsync(() => btn.Enabled = true);
+            await InvokeAsync(() => SwitchButton(btn, false));
+        }
+        private async void button6_Click(object sender, EventArgs e)
+        {
+            await executeTestForm(button6, "MR1205");
         }
 
-        
+        private async void button7_Click(object sender, EventArgs e)
+        {
+
+            await executeTestForm(button7, "MR1206");
+        }
+
+        private async void button8_Click(object sender, EventArgs e)
+        {
+
+            await executeTestForm(button8, "MR1207");
+        }
     }
 }
