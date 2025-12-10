@@ -103,6 +103,7 @@
             button7.Name = "button7";
             button7.Size = new Size(794, 55);
             button7.TabIndex = 10;
+            button7.Tag = "0";
             button7.Text = "Back Conveyor";
             button7.UseVisualStyleBackColor = false;
             button7.Click += button7_Click;
@@ -259,6 +260,7 @@
             Controls.Add(tableLayoutPanel1);
             Name = "TestManualForm";
             Text = "Test Manual Form";
+            FormClosing += TestManualForm_FormClosing;
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel2.ResumeLayout(false);
             ResumeLayout(false);

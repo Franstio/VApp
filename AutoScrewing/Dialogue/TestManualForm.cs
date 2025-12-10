@@ -39,7 +39,7 @@ namespace AutoScrewing.Dialogue
         private async void button2_Click_1(object sender, EventArgs e)
         {
 
-            await executeTestForm(button2, "MR1201",2000);
+            await executeTestForm(button2, "MR1201", 2000);
             //await InvokeAsync(() => button2.Enabled = false);
 
             //await InvokeAsync(() => SwitchButton(button2, true));
@@ -55,7 +55,7 @@ namespace AutoScrewing.Dialogue
         private async void button5_Click(object sender, EventArgs e)
         {
 
-            await executeTestForm(button5, "MR1202",2000);
+            await executeTestForm(button5, "MR1202", 2000);
             //await InvokeAsync(() => button5.Enabled = false);
             //await InvokeAsync(() => SwitchButton(button5, true));
             //await PLCController.Send(new PLCController.PLCItem("WR", "MR1202", 1, ""));
@@ -68,7 +68,7 @@ namespace AutoScrewing.Dialogue
         private async void button3_Click(object sender, EventArgs e)
         {
 
-            await executeTestForm(button3, "MR1203",3000);
+            await executeTestForm(button3, "MR1203", 3000);
             //await InvokeAsync(() => button3.Enabled = false);
             //await InvokeAsync(() => SwitchButton(button3, true));
             //await PLCController.Send(new PLCController.PLCItem("WR", "MR1203", 1, ""));
@@ -105,19 +105,27 @@ namespace AutoScrewing.Dialogue
         }
         private async void button6_Click(object sender, EventArgs e)
         {
-            await executeTestForm(button6, "MR1205");
+            await executeTestForm(button6, "MR1206");
         }
 
         private async void button7_Click(object sender, EventArgs e)
         {
+            bool toEnabled = button7.Tag?.ToString() == "1";
+            await InvokeAsync(() => SwitchButton(button7, toEnabled));
 
-            await executeTestForm(button7, "MR1206");
+            await PLCController.Send(new PLCController.PLCItem("WR", "MR1207", toEnabled ? 1 : 0, ""));
+            button7.Tag = toEnabled ? "0" : "1";
         }
 
         private async void button8_Click(object sender, EventArgs e)
         {
 
-            await executeTestForm(button8, "MR1207");
+            await executeTestForm(button8, "MR1205");
+        }
+
+        private async void TestManualForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            await PLCController.Send(new PLCController.PLCItem("WR", "MR1207", 0, ""));
         }
     }
 }
