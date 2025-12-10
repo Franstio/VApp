@@ -261,6 +261,7 @@
             Name = "TestManualForm";
             Text = "Test Manual Form";
             FormClosing += TestManualForm_FormClosing;
+            Load += TestManualForm_Load;
             tableLayoutPanel1.ResumeLayout(false);
             tableLayoutPanel2.ResumeLayout(false);
             ResumeLayout(false);

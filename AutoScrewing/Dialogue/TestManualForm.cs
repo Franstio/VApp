@@ -127,5 +127,11 @@ namespace AutoScrewing.Dialogue
         {
             await PLCController.Send(new PLCController.PLCItem("WR", "MR1207", 0, ""));
         }
+
+        private void TestManualForm_Load(object sender, EventArgs e)
+        {
+            button7.Tag = "1";
+            SwitchButton(button7, false);
+        }
     }
 }
