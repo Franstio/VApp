@@ -796,7 +796,7 @@ namespace AutoScrewing
                             MessageBox.Show("Transaction Success", "Notification");
                         });
 
-                        await Task.Delay(TimeSpan.FromSeconds(2));
+                        await Task.Delay(TimeSpan.FromSeconds(1));
                         owner.Dispose();
 
                         dataGridView2.Rows.Add([DateTime.Now.ToString("HH:mm:ss"), res.message ?? "-", res.code]);
