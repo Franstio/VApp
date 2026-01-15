@@ -782,14 +782,12 @@ namespace AutoScrewing
             try
             {
                 MesResponse? res = Settings1.Default.mesActive ? await meshController.Checking(operationusersn, worknumberorer, scan, scan2) : new MesResponse() { code = 1, data = "", message = "" };
-                if (res is not null)
-                {
-                    dataGridView2.Rows.Add([DateTime.Now.ToString("HH:mm:ss"), res.message ?? "-", res.code]);
-                }
+                
                 if (res is not null)
                 {
                     if (res.code == 1)
                     {
+                        dataGridView2.Rows.Add([DateTime.Now.ToString("HH:mm:ss"), res.message ?? "-", res.code]);
                         meshSend = false;
                         var mesh = await plcController.Send(new PLCController.PLCItem("WR", "MR811", 1, "Starting Transaction - ON"));
                         ShiftToStandby(item);
