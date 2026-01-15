@@ -310,14 +310,23 @@ namespace AutoScrewing
                     item.CurrentStatus = "Completed";
                     if (Settings1.Default.mesActive)
                     {
-                        var res = await meshController.Tracking(item.OperationUserSN, workNumberScanBox.Text, item.Scan_ID, item.Scan_ID2, item.FinalResult, item); ;
-                        if (res is not null)
+                        bool loop = false;
+                        do
                         {
-                            await InvokeAsync(() =>
+
+                            loop = false;
+                            var res = await meshController.Tracking(item.OperationUserSN, workNumberScanBox.Text, item.Scan_ID, item.Scan_ID2, item.FinalResult, item); ;
+                            if (res is not null)
                             {
-                                dataGridView2.Rows.Add([DateTime.Now.ToString("HH:mm:ss"), res.message ?? "-", res.code]);
-                            });
+                                if (res.code == -1 && res.message is not null && res.message.Contains("recovery mode"))
+                                    loop = true;
+                                await InvokeAsync(() =>
+                                {
+                                    dataGridView2.Rows.Add([DateTime.Now.ToString("HH:mm:ss"), res.message ?? "-", res.code]);
+                                });
+                            }
                         }
+                        while (loop);
                     }
                     await TransactionRepository.CreateTransaction(item);
                     RegisteredItem.Enqueue(FinalQueue.Dequeue());
