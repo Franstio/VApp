@@ -787,17 +787,7 @@ namespace AutoScrewing
                 {
                     if (res.code == 1)
                     {
-                        var owner = new Form { Visible = false };
-                        // Force the creation of the window handle.
-                        // Otherwise the BeginInvoke will not work.
-                        var handle = owner.Handle;
-                        owner.BeginInvoke((System.Windows.Forms.MethodInvoker)delegate
-                        {
-                            MessageBox.Show("Transaction Success", "Notification");
-                        });
-
-                        await Task.Delay(TimeSpan.FromSeconds(1));
-                        owner.Dispose();
+                        AutoClosingMessageBox.Show("Transaction Submitted", "Notification", 1000);
 
                         dataGridView2.Rows.Add([DateTime.Now.ToString("HH:mm:ss"), res.message ?? "-", res.code]);
                         meshSend = false;
