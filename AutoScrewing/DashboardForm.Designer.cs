@@ -29,10 +29,10 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            DataGridViewCellStyle dataGridViewCellStyle13 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle14 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle15 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle16 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle17 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle18 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle19 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle20 = new DataGridViewCellStyle();
             tableLayoutPanel1 = new TableLayoutPanel();
             screwingResultLabel = new Label();
             screwingTimeLabel = new Label();
@@ -226,22 +226,22 @@
             dataGridView2.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView2.ColumnHeadersVisible = false;
             dataGridView2.Columns.AddRange(new DataGridViewColumn[] { time, msg, code });
-            dataGridViewCellStyle13.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle13.BackColor = Color.FromArgb(31, 41, 55);
-            dataGridViewCellStyle13.Font = new Font("Segoe UI", 9F);
-            dataGridViewCellStyle13.ForeColor = Color.FromArgb(31, 41, 55);
-            dataGridViewCellStyle13.SelectionBackColor = Color.FromArgb(31, 41, 55);
-            dataGridViewCellStyle13.SelectionForeColor = Color.White;
-            dataGridViewCellStyle13.WrapMode = DataGridViewTriState.True;
-            dataGridView2.DefaultCellStyle = dataGridViewCellStyle13;
+            dataGridViewCellStyle17.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle17.BackColor = Color.FromArgb(31, 41, 55);
+            dataGridViewCellStyle17.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle17.ForeColor = Color.FromArgb(31, 41, 55);
+            dataGridViewCellStyle17.SelectionBackColor = Color.FromArgb(31, 41, 55);
+            dataGridViewCellStyle17.SelectionForeColor = Color.White;
+            dataGridViewCellStyle17.WrapMode = DataGridViewTriState.True;
+            dataGridView2.DefaultCellStyle = dataGridViewCellStyle17;
             dataGridView2.Dock = DockStyle.Fill;
             dataGridView2.GridColor = Color.White;
             dataGridView2.Location = new Point(1014, 3);
             dataGridView2.Name = "dataGridView2";
             dataGridView2.ReadOnly = true;
             dataGridView2.RowHeadersVisible = false;
-            dataGridViewCellStyle14.ForeColor = Color.White;
-            dataGridView2.RowsDefaultCellStyle = dataGridViewCellStyle14;
+            dataGridViewCellStyle18.ForeColor = Color.White;
+            dataGridView2.RowsDefaultCellStyle = dataGridViewCellStyle18;
             dataGridView2.Size = new Size(428, 239);
             dataGridView2.TabIndex = 14;
             dataGridView2.CellFormatting += dataGridView2_CellFormatting;
@@ -397,14 +397,14 @@
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridView1.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.DisplayedCells;
             dataGridView1.BackgroundColor = Color.White;
-            dataGridViewCellStyle15.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle15.BackColor = Color.FromArgb(229, 231, 235);
-            dataGridViewCellStyle15.Font = new Font("Sans Serif Collection", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle15.ForeColor = Color.FromArgb(31, 41, 55);
-            dataGridViewCellStyle15.SelectionBackColor = SystemColors.Highlight;
-            dataGridViewCellStyle15.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle15.WrapMode = DataGridViewTriState.True;
-            dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle15;
+            dataGridViewCellStyle19.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle19.BackColor = Color.FromArgb(229, 231, 235);
+            dataGridViewCellStyle19.Font = new Font("Sans Serif Collection", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle19.ForeColor = Color.FromArgb(31, 41, 55);
+            dataGridViewCellStyle19.SelectionBackColor = SystemColors.Highlight;
+            dataGridViewCellStyle19.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle19.WrapMode = DataGridViewTriState.True;
+            dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle19;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridView1.Columns.AddRange(new DataGridViewColumn[] { MatLotNo, LotNo, Screwing, Laser, Camera, Judgement });
             tableLayoutPanel7.SetColumnSpan(dataGridView1, 4);
@@ -414,11 +414,11 @@
             dataGridView1.Name = "dataGridView1";
             dataGridView1.ReadOnly = true;
             dataGridView1.RowHeadersVisible = false;
-            dataGridViewCellStyle16.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle16.BackColor = Color.White;
-            dataGridViewCellStyle16.Font = new Font("Sans Serif Collection", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            dataGridViewCellStyle16.ForeColor = Color.FromArgb(55, 65, 81);
-            dataGridView1.RowsDefaultCellStyle = dataGridViewCellStyle16;
+            dataGridViewCellStyle20.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle20.BackColor = Color.White;
+            dataGridViewCellStyle20.Font = new Font("Sans Serif Collection", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle20.ForeColor = Color.FromArgb(55, 65, 81);
+            dataGridView1.RowsDefaultCellStyle = dataGridViewCellStyle20;
             tableLayoutPanel7.SetRowSpan(dataGridView1, 2);
             dataGridView1.Size = new Size(1433, 250);
             dataGridView1.TabIndex = 4;
@@ -463,11 +463,11 @@
             // 
             tableLayoutPanel8.ColumnCount = 5;
             tableLayoutPanel2.SetColumnSpan(tableLayoutPanel8, 4);
-            tableLayoutPanel8.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30F));
-            tableLayoutPanel8.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15F));
-            tableLayoutPanel8.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15F));
-            tableLayoutPanel8.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
-            tableLayoutPanel8.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+            tableLayoutPanel8.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 38.0952377F));
+            tableLayoutPanel8.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 14.2857141F));
+            tableLayoutPanel8.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 14.2857141F));
+            tableLayoutPanel8.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 14.2857141F));
+            tableLayoutPanel8.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 19.0476189F));
             tableLayoutPanel8.Controls.Add(qtyNGLabel, 3, 0);
             tableLayoutPanel8.Controls.Add(qtyPassLabel, 2, 0);
             tableLayoutPanel8.Controls.Add(qtyInputLabel, 1, 0);
@@ -486,9 +486,9 @@
             qtyNGLabel.AutoSize = true;
             qtyNGLabel.Dock = DockStyle.Fill;
             qtyNGLabel.Font = new Font("Sans Serif Collection", 18F, FontStyle.Bold);
-            qtyNGLabel.Location = new Point(864, 0);
+            qtyNGLabel.Location = new Point(961, 0);
             qtyNGLabel.Name = "qtyNGLabel";
-            qtyNGLabel.Size = new Size(281, 57);
+            qtyNGLabel.Size = new Size(199, 57);
             qtyNGLabel.TabIndex = 16;
             qtyNGLabel.Text = "QTY NG: 0";
             qtyNGLabel.TextAlign = ContentAlignment.MiddleCenter;
@@ -498,9 +498,9 @@
             qtyPassLabel.AutoSize = true;
             qtyPassLabel.Dock = DockStyle.Fill;
             qtyPassLabel.Font = new Font("Sans Serif Collection", 18F, FontStyle.Bold);
-            qtyPassLabel.Location = new Point(649, 0);
+            qtyPassLabel.Location = new Point(756, 0);
             qtyPassLabel.Name = "qtyPassLabel";
-            qtyPassLabel.Size = new Size(209, 57);
+            qtyPassLabel.Size = new Size(199, 57);
             qtyPassLabel.TabIndex = 15;
             qtyPassLabel.Text = "QTY PASS: 0";
             qtyPassLabel.TextAlign = ContentAlignment.MiddleCenter;
@@ -510,9 +510,9 @@
             qtyInputLabel.AutoSize = true;
             qtyInputLabel.Dock = DockStyle.Fill;
             qtyInputLabel.Font = new Font("Sans Serif Collection", 18F, FontStyle.Bold);
-            qtyInputLabel.Location = new Point(434, 0);
+            qtyInputLabel.Location = new Point(551, 0);
             qtyInputLabel.Name = "qtyInputLabel";
-            qtyInputLabel.Size = new Size(209, 57);
+            qtyInputLabel.Size = new Size(199, 57);
             qtyInputLabel.TabIndex = 14;
             qtyInputLabel.Text = "QTY INPUT: 0";
             qtyInputLabel.TextAlign = ContentAlignment.MiddleCenter;
@@ -525,11 +525,11 @@
             tableLayoutPanel9.Controls.Add(button2, 1, 0);
             tableLayoutPanel9.Controls.Add(button1, 0, 0);
             tableLayoutPanel9.Dock = DockStyle.Fill;
-            tableLayoutPanel9.Location = new Point(1151, 3);
+            tableLayoutPanel9.Location = new Point(1166, 3);
             tableLayoutPanel9.Name = "tableLayoutPanel9";
             tableLayoutPanel9.RowCount = 1;
             tableLayoutPanel9.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel9.Size = new Size(285, 51);
+            tableLayoutPanel9.Size = new Size(270, 51);
             tableLayoutPanel9.TabIndex = 17;
             // 
             // button2
@@ -538,9 +538,9 @@
             button2.Dock = DockStyle.Fill;
             button2.Font = new Font("Sans Serif Collection", 11F, FontStyle.Bold);
             button2.ForeColor = Color.White;
-            button2.Location = new Point(145, 3);
+            button2.Location = new Point(138, 3);
             button2.Name = "button2";
-            button2.Size = new Size(137, 45);
+            button2.Size = new Size(129, 45);
             button2.TabIndex = 13;
             button2.Text = "RESET QTY";
             button2.UseVisualStyleBackColor = false;
@@ -554,7 +554,7 @@
             button1.ForeColor = Color.White;
             button1.Location = new Point(3, 3);
             button1.Name = "button1";
-            button1.Size = new Size(136, 45);
+            button1.Size = new Size(129, 45);
             button1.TabIndex = 12;
             button1.Text = "STATUS";
             button1.UseVisualStyleBackColor = false;
@@ -573,7 +573,7 @@
             tableLayoutPanel10.Name = "tableLayoutPanel10";
             tableLayoutPanel10.RowCount = 1;
             tableLayoutPanel10.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutPanel10.Size = new Size(425, 51);
+            tableLayoutPanel10.Size = new Size(542, 51);
             tableLayoutPanel10.TabIndex = 18;
             // 
             // button4
@@ -582,11 +582,11 @@
             button4.Dock = DockStyle.Fill;
             button4.Font = new Font("Sans Serif Collection", 11F, FontStyle.Bold);
             button4.ForeColor = SystemColors.Window;
-            button4.Location = new Point(278, 3);
+            button4.Location = new Point(354, 3);
             button4.Name = "button4";
-            button4.Size = new Size(144, 45);
+            button4.Size = new Size(185, 45);
             button4.TabIndex = 21;
-            button4.Text = "Scanner Bar";
+            button4.Text = "RESET SCANNER";
             button4.UseVisualStyleBackColor = false;
             button4.Click += button4_Click;
             // 
@@ -598,7 +598,7 @@
             button3.ForeColor = SystemColors.Window;
             button3.Location = new Point(3, 3);
             button3.Name = "button3";
-            button3.Size = new Size(142, 45);
+            button3.Size = new Size(183, 45);
             button3.TabIndex = 19;
             button3.Text = "RELASE JIG";
             button3.UseVisualStyleBackColor = false;
@@ -608,9 +608,9 @@
             // 
             panel2.Controls.Add(label8);
             panel2.Dock = DockStyle.Fill;
-            panel2.Location = new Point(151, 3);
+            panel2.Location = new Point(192, 3);
             panel2.Name = "panel2";
-            panel2.Size = new Size(121, 45);
+            panel2.Size = new Size(156, 45);
             panel2.TabIndex = 20;
             // 
             // label8
@@ -621,7 +621,7 @@
             label8.ForeColor = Color.White;
             label8.Location = new Point(0, 0);
             label8.Name = "label8";
-            label8.Size = new Size(121, 45);
+            label8.Size = new Size(156, 45);
             label8.TabIndex = 3;
             label8.Text = "DOOR";
             label8.TextAlign = ContentAlignment.MiddleCenter;
