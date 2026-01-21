@@ -1099,13 +1099,13 @@ namespace AutoScrewing
                 {
                     if (jigrelease)
                     {
-                        button3.Text = "Locking...";
+                        button3.Text = "LOCKING...";
                         button3.Enabled = pause;
                         button3.BackColor = pause ? Color.Red : Color.Gray;
                     }
                     else
                     {
-                        button3.Text = "Release";
+                        button3.Text = "RELEASE JIG";
                         button3.Enabled = pause;
                         button3.BackColor = pause ? Color.Green : Color.Orange;
                     }
